@@ -1,0 +1,49 @@
+<!-- <div class="wrapper">
+    <nav id="sidebar">
+        <ul class="list-unstyled components">
+            <li *ngFor="let cat of categories" class="active">
+                <a href="{{'#' + cat.Category + 'Submenu'}}" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" translate>{{cat.Description}}</a>
+                <ul class="collapse list-unstyled" id="{{cat.Category + 'Submenu'}}">
+                    <li *ngFor="let subcat of cat.subcategories">
+                        <a [routerLink]="['/home']" [queryParams]="{subcat: subcat.Description}" translate>{{subcat.Description}}</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+</div> -->
+<!-- <div class="col-1"><span style="font-size:30px;cursor:pointer" id="openbtn" (click)="openNav()">&#9776;</span>
+</div>
+<div id="sidebar" class="sidenav">
+    <nav id="">
+        <ul class="list-unstyled components">
+            <a href="javascript:void(0)" class="closebtn" (click)="closeNav()">&times;</a>
+            <li *ngFor="let cat of categories" class="active">
+                <a href="{{'#' + cat.Category + 'Submenu'}}" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" translate>{{cat.Description}}</a>
+                <ul class="collapse list-unstyled" id="{{cat.Category + 'Submenu'}}">
+                    <li *ngFor="let subcat of cat.subcategories">
+                        <a [routerLink]="['/home']" [queryParams]="{subcat: subcat.Description}" translate>{{subcat.Description}}</a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+  </div> -->
+  <div class="wrapper">
+  <!-- Sidebar -->
+  <nav id="sidebar">
+      <!-- <div class="sidebar-header">
+      </div> -->
+      <ul class="list-unstyled components">
+          <!-- <a href="javascript:void(0)" class="closebtn" (click)="toggleMenu()">&times;</a> -->
+          <li *ngFor="let cat of categories" class="active">
+              <a href="{{'#' + cat.Category + 'Submenu'}}" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" translate>{{cat.Description}}</a>
+              <ul class="collapse list-unstyled" id="{{cat.Category + 'Submenu'}}">
+                  <li *ngFor="let subcat of cat.subcategories">
+                      <a [routerLink]="['/home']" [queryParams]="{subcat: subcat.Description}" translate>{{subcat.Description}}</a>
+                  </li>
+              </ul>
+          </li>
+      </ul>
+  </nav>
+  </div>

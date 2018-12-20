@@ -1,0 +1,116 @@
+.container {
+    margin-left: 50px;
+    margin-top: 20px;
+}
+
+.Post-Disclaims {
+    margin-bottom: 20px;
+}
+
+.post-icon {
+    margin-right: 10px;
+}
+
+h1 {
+    font: bold 50px/1.5 Helvetica
+}
+
+.postindex div {
+    margin-right: 10px;
+    color: #A9A9A9;
+    font: Helvetica
+}
+
+.postindex {
+    margin-bottom: 20px;
+}
+
+.postDate {
+    color: #A9A9A9;
+    font: Helvetica
+}
+
+.fa-thumbs-up-clicked {
+    color: #FF8F00 !important;
+}
+
+.fa-thumbs-down-clicked {
+    color: #FF8F00 !important;
+}
+
+h4 {
+    color: #ff8f00;
+    font: bold 20pt Helvetica
+}
+
+.comment-post {
+    width: 85%
+}
+
+.row {
+    margin-left: 0px
+}
+
+.post-comment {
+    margin-top: 20px
+}
+
+.btn {
+    background-color: #FF8F00 !important;
+    box-shadow: none!important;
+    color: #ffffff!important;
+    border: none !important;
+}
+
+.btn:hover {
+    background-color: #FF6600 !important;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0 !important;
+    margin-left: -40px !important;
+}
+
+li img {
+    float: left;
+    margin: 0 15px 0 0;
+}
+
+li p {
+    font: 200 12px/1.5 Georgia, Times New Roman, serif;
+}
+
+li {
+    padding: 10px;
+    overflow: auto;
+}
+
+.panel-heading {
+    height: 70px;
+    padding-top: 10px;
+    margin-top: 10px;
+    border-top: 1px solid #DBDBDB
+}
+
+.username {
+    color: black!important;
+    font-size: 23px;
+    margin-top: -5px;
+}
+
+ngb-pagination /deep/ .pagination {
+    margin-bottom: 0 !important;
+}
+
+ngb-pagination /deep/ .pagination .page-item.active a {
+    box-shadow: none !important;
+    background-color: transparent;
+    color: #FF8F00;
+    font: bold
+}
+
+ngb-pagination /deep/ .pagination .page-item.active .page-link:hover {
+    background-color: transparent;
+    color: #FF8F00;
+}

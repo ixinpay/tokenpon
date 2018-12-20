@@ -1,0 +1,83 @@
+<div class="container col-12">
+    <div class="form-group">
+        <div class="Post-Disclaims">
+            <div>
+                <span style="font-weight: bold;">{{'GeGeChain is the first Overseas Chinese community, please help us grow, to take actions: if you have already registered, just click on Login; otherwise please' | translate}}</span>
+                <a style="font-weight: bold;" [routerLink]="['/register']" translate>Register Here</a>
+            </div>
+            <div>
+                <a href="../../assets/documents/disclaims.pdf " target="_blank " translate>Post Disclaims</a>
+            </div>
+        </div>
+        <div class="post-Detail">
+            <div class="row">
+                <div class="post-icon">
+                    <i class="fas fa-user-circle fa-4x"></i>
+                </div>
+                <div>
+                    <p><b>{{model.postedBy}}</b></p>
+                    <p class="postDate">{{model.postDate}}</p>
+                </div>
+                <div class="col-9">
+                    <button style="float: right;" class="btn float-right" [hidden]="!isAuthor" translate [routerLink]="['/chainpost/Post']" [queryParams]="{id: PostId}">Edit</button>
+                </div>
+            </div>
+            <div>
+                <h1>{{model.Title}}</h1>
+            </div>
+            <div class="row postindex">
+                <div>{{model.comments.length}} {{(model.comments.length>1)? " Replies" : " Reply"}}</div>
+                <div>{{likes}} {{likes>1? " Likes" : " Like"}}</div>
+                <div>{{dislikes}} {{dislikes>1? " dislikes" : " dislike"}}</div>
+
+            </div>
+            <div>
+                <div class="narrative" [innerHtml]="model.Narrative | safe: 'html'"></div>
+            </div>
+            <div>
+                <div *ngIf="currentUser != undefined">
+                    <i (click)="thumbsUp()" [ngClass]="{ 'fa-thumbs-up-clicked': alreadyLiked }" class="far fa-thumbs-up fa-lg col-4" placement="top" ngbTooltip="you liked it">
+                            <i style="font-size: medium;">{{likes}} likes</i>
+                    <label style="font-size: small" translate>(earn 5 tokens)</label>
+                    </i>
+                    <i (click)="thumbsDown()" [ngClass]="{ 'fa-thumbs-down-clicked': alreadyDisliked }" class="far fa-thumbs-down fa-lg col-4" placement="top" ngbTooltip="you didn't like it">
+                            <i style="font-size: medium;">{{dislikes}} dislikes</i>
+                    <label style="font-size: small" translate>(earn 5 tokens)</label>
+                    </i>
+                </div>
+            </div>
+            <div class="post-comment">
+                <h4 translate>Replies</h4>
+                <div class="form-group">
+                    <div>
+                        <form #commentForm="ngForm" (ngSubmit)="onSubmit(commentText.value); commentForm.reset()">
+                            <label for="commentTextarea" translate>Your comment (min 10 characters)(earn 20 tokens):</label>
+                            <textarea class="form-control comment-post" [ngModel]="comment" name="comment" required minlength="10" id="commentTextarea" #commentText="ngModel"></textarea>
+                            <div>
+                                <button class="btn btn-primary" [disabled]="!commentForm.form.valid" translate>Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <ul>
+                    <li *ngFor="let c of commentsPage">
+                        <div class="row col-12">
+                            <div class="col-sm-11">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <i class="fa fa-user-circle fa-2x"></i> <span class="username">{{c.postedBy}}</span>
+                                        <span class="text-muted float-right"> {{c.postedTime | date :'medium'}}</span>
+                                    </div>
+                                    <div class="panel-body">
+                                        {{c.comment}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [maxSize]="maxSize" [pageSize]="pageSize" [rotate]="true" (pageChange)="loadPage($event)"></ngb-pagination>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

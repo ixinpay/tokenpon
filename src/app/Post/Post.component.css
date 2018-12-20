@@ -1,0 +1,15 @@
+.show-error
+{
+  color: darkred;
+}
+
+.show-error-border
+{
+  border-color: darkred;
+}
+.validatefields
+{
+  margin-left: 40px;
+  display: inherit;
+  margin-top: -20px;
+}

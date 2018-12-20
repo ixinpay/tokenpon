@@ -1,0 +1,14 @@
+[
+    {
+      "Id": 1,
+      "Short": "en",
+      "Description": "English",
+      "src": "assets/countries/data/usa.svg"
+    },
+    {
+      "Id": 2,
+      "Short": "cn",
+      "Description": "中文",
+      "src": "assets/countries/data/chn.svg"
+    }
+]

@@ -1,0 +1,68 @@
+<nav class="navbar navbar-expand-md navbar-light sticky-top navFont" style="width:100%">
+    <a class="navbar-brand" [routerLink]="['/home']" translate>
+        <img src="../../assets/ixinlogo.png" style="width: 60px;"> Tokenpon(Demo)</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+        <ul class="nav navbar-nav navbar-right ml-auto">
+            <li class="nav-right">
+                <select [(ngModel)]="selectedLanguage" (ngModelChange)="onChange($event)" class="nav-lang">
+                            <option *ngFor="let lang of language" value="{{lang.Id}}">
+                                {{lang.Id == 1?"EN":lang.Description}}
+                            </option>
+                </select>
+            </li>
+            <li class="nav-right" *ngIf="currentUser != undefined">
+                <div class="nav-profile">
+                    Hi,
+                    <a [routerLink]="['/profile']" [queryParams]="{user: currentUser}">
+                        <b>{{currentUser}} </b>
+                    </a>
+
+                </div>
+            </li>
+            <li *ngIf="currentUser == undefined">
+                <button class="btn btn-info btn-md nav-log" [routerLink]="['/login']" translate>Login</button>
+            </li>
+            <li *ngIf="currentUser != undefined">
+                <button class="btn btn-info btn-md nav-log" [routerLink]="['/home']" (click)="LogOut()" translate>Logout</button>
+            </li>
+        </ul>
+        <!-- <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <li class="nav-item active">
+                <a class="nav-link" [routerLink]="['/home']" translate>ChainPage</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" [routerLink]="['/chainpost']" translate>ChainPost</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="http://linkgear.net/wallet" translate>LinkGearWallet</a>
+            </li>
+        </ul> -->
+        <!-- <ul class="nav navbar-nav navbar-right">
+            <li class="nav-right">
+                <select [(ngModel)]="selectedLanguage" (ngModelChange)="onChange($event)" class="nav-lang">
+                            <option *ngFor="let lang of language" value="{{lang.Id}}">
+                                {{lang.Id == 1?"EN":lang.Description}}
+                            </option>
+                </select>
+            </li>
+            <li class="nav-right" *ngIf="currentUser != undefined">
+                <div class="nav-profile">
+                    Hi,
+                    <a [routerLink]="['/profile']" [queryParams]="{user: currentUser}">
+                        <b>{{currentUser}} </b>
+                    </a>
+
+                </div>
+            </li>
+            <li *ngIf="currentUser == undefined">
+                <button class="btn btn-info btn-md nav-log" [routerLink]="['/login']" translate>Login</button>
+            </li>
+            <li *ngIf="currentUser != undefined">
+                <button class="btn btn-info btn-md nav-log" [routerLink]="['/home']" (click)="LogOut()" translate>Logout</button>
+            </li>
+        </ul> -->
+    </div>
+</nav>

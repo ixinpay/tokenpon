@@ -1,0 +1,146 @@
+<style>
+    .nopadding {
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+</style>
+<div class="container col-sm-12 col-md-11 col-lg-8">
+    <form (ngSubmit)="PostForm.form.valid && onSubmit()" #PostForm="ngForm">
+        <div class="form-group">
+            <div class="row">
+
+                <div class="col-xs-12">
+                    <blockquote class="blockquote bq-primary">
+                        <p class="bq-title" translate>Submit a Post</p>
+                        <!-- <p> Description </p> -->
+                    </blockquote>
+                </div>
+            </div>
+            <!--  title text -->
+            <div class="md-form" [ngClass]="{ 'has-error': PostForm.submitted && !Title.valid }">
+                <i class="fa fa-check prefix grey-text"></i>
+                <label for="PostTitle" class=" active " translate>Title</label>
+                <input required type="text" id="PostTitle" name="Title" #Title="ngModel" [ngClass]="{ 'show-error-border': PostForm.submitted && !Title.valid }"
+                    validate [(ngModel)]="model.Title" class="form-control">
+                <label for="PostTitle" class=" active " translate>Title</label>
+
+            </div>
+            <small *ngIf="PostForm.submitted && !Title.valid" class="validatefields" [ngClass]="{ 'show-error': PostForm.submitted && !Title.valid }"
+                translate>Title is required</small>
+            <br>
+            <!-- category -->
+
+
+            <div class="md-form" style="margin-left:-15px;" [ngClass]="{ 'has-error': PostForm.submitted && !Channel.valid }">
+
+                <i class="col-sm-2 fa fa-certificate prefix grey-text"></i>
+
+
+                <select required class="col-sm-offset-2 col-sm-12" #Channel="ngModel" (change)="channeldropdown($event.target.value)"
+                    [ngClass]="{ 'show-error-border': PostForm.submitted && !Channel.valid }" [(ngModel)]="model.Channel"
+                    name="Channel" style="margin-left:60px;height: 60px; border-color: lightgray;border-left:none;border-right:none;border-top:none; ">
+                    <option value="" disabled selected translate>Choose your option</option>
+                    <option *ngFor="let ch of channels" [value]="ch.Description" translate>{{ch.Description}}</option>
+                </select>
+                <br>
+                <small *ngIf="PostForm.submitted && !Channel.valid" style="display:inherit;margin-left: 60px;"
+                    [ngClass]="{ 'show-error': PostForm.submitted && !Channel.valid }" translate>Channel is required</small>
+                <label style="padding-left: 15px;" for="Channel" class="active" translate>Channel</label>
+                <!-- [hidden]="!isAuthor"  color: #007bff -->
+            </div>
+            <br>
+
+            <!--  event date time  -->
+            <!-- <div class="md-form"  [hidden]="!isEvent"  [ngClass]="{ 'has-error': PostForm.submitted && !Title.valid }">
+                <i class="fas fa-calendar-alt prefix grey-text"></i>
+                <label for="PostTitle" class=" active " translate>DateTime</label>
+                <input required type="text" id="eventDateTime" name="DateTime" placeholder="MM/DD/YYYY" #DateTime="ngModel" [ngClass]="{ 'show-error-border': PostForm.submitted && !DateTime.valid }" validate [(ngModel)]="model.DateTime" class="form-control">
+                <label for="eventDateTime" class=" active " translate>DateTime</label>
+
+            </div>
+            <small *ngIf="PostForm.submitted && !Title.valid" class="validatefields" [ngClass]="{ 'show-error': PostForm.submitted && !Title.valid }" translate>DateTime required</small>
+            <br  [hidden]="!isEvent" >
+          -->
+            <!--  address  -->
+            <!--   <div class="md-form"  [hidden]="!isEvent"  [ngClass]="{ 'has-error': PostForm.submitted && !Title.valid }">
+              <i class="fa fa-check prefix grey-text"></i>
+              <label for="PostTitle" class=" active " translate>Address</label>
+              <input required type="text" id="eventAddress" name="Title" #Address="ngModel" [ngClass]="{ 'show-error-border': PostForm.submitted && !Address.valid }" validate [(ngModel)]="model.Address" class="form-control">
+              <label for="eventAddress" class=" active " translate>Address</label>
+
+          </div>
+          <small *ngIf="PostForm.submitted && !Title.valid" class="validatefields" [ngClass]="{ 'show-error': PostForm.submitted && !Title.valid }" translate>Address is required</small>
+          <br  [hidden]="!isEvent" >
+        -->
+
+            <!-- post  -->
+            <div class="md-form row">
+                <i class="col-sm-2  fa fa-info-circle prefix grey-text"></i>
+                <div class=" col-sm-12" style="margin-left:40px; ">
+                    <quill-editor [(ngModel)]="model.Narrative" name="ngModel" #Narrative="ngModel"></quill-editor>
+                    <!-- <textarea name="body" id="Content_Editor" style="overflow: hidden;" #Body="ngModel"   [(ngModel)]="model.Body"   class=" form-control">
+</textarea> -->
+                    <!-- <div [froalaEditor]>Hello, Froala!</div> -->
+
+
+                </div>
+                <label style="padding-left: 15px;" for="editor" class="active" translate>Your Post</label>
+
+            </div>
+            <br>
+
+            <br><br>
+
+            <br>
+            <div class="md-form row">
+                <i class="col-sm-2 fa fa-tags prefix grey-text"></i>
+                <tag-input [(ngModel)]="model.Tags" name="Tags" #Tags="ngModel" [editable]="true" [separatorKeyCodes]="[32, 188]"
+                    style="margin-left:60px;" [modelAsStrings]="true" translate> </tag-input>
+                <label style="padding-left: 15px;" for="Tags" class="active" translate>Tags</label>
+            </div>
+            <br>
+
+
+            <label>
+
+                Disclaimer：By checking here, I CERTIFY THAT I HAVE READ THIS DOCUMENT AND I FULLY UNDERSTAND ITS
+                CONTENT. I AM AWARE THAT THIS IS A RELEASE OF LIABILITY AND A CONTRACT AND I SIGN IT OF MY OWN FREE
+                WILL. I fully understands the risks involved in the activities, and fully, voluntarily and freely
+                assume any and all risks. I understand that participant is fully responsible for all his/her activity
+                and any consequence may occur. I acknowledge and agree that the organizer assumes no liability for any
+                accident, illness, injury, loss or damage to personal property or any other consequences arising or
+                resulting directly or indirectly from the participation in the event. Linkgear and its Supernodes will
+                not be held any responsibility of any information and views included by the content and any loss caused
+                by information or views on this website. (edited)
+
+                免责声明：阁阁链上所发表的文章仅供参考使用，内容编者自负，您须对您自主决定的行为负责。领格及超级节点对发布于Chainpost
+                上的内容及资料中所包含的信息及观点不承担任何责任及义务，且不对因本网站资料全部或部分内容产生的或因依赖该资料而引致的任何损失承担任何责任，也不对任何因本网站提供的资料不充分、不完整或未能提供特定资料产生的任何损失承担任何责任。
+
+
+            </label>
+
+            <br><br>
+            <!-- <pre> Tags-Outcome:
+             {{model.Tags | json}}
+            </pre> -->
+
+            <div>
+                <input type="checkbox" [(ngModel)]="model.notification" name="notification" #notification="ngModel"
+                    translate> check here if you want to be notified when a new comment is posted
+            </div>
+            <!-- submit  cancel&-->
+            <div class="row">
+                <div class="text-center col-md-8 col-xs-12">
+                    <button class="btn btn-outline-secondary  waves-effect" type="submit" translate>{{isUpdate? 'Update
+                        Post': 'Post'}}
+                        <i class="fa fa-paper-plane-o ml-2"></i>
+                    </button> &nbsp; &nbsp; &nbsp;
+                    <button class="btn btn-outline-danger  waves-effect" [routerLink]="['/chainpost']" type="submit"
+                        translate>Cancel
+                        <i class="fa fa-ban ml-2"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

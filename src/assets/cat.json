@@ -1,0 +1,63 @@
+[
+ {
+   "Category": 1000,
+   "Description": "Food & Drink"
+ },
+ {
+   "Category": 1001,
+   "Description": "Real Estate"
+ },
+ {
+   "Category": 1002,
+   "Description": "Car & Services"
+ },
+ {
+   "Category": 1003,
+   "Description": "Law"
+ },
+ {
+   "Category": 1004,
+   "Description": "Insurance"
+ },
+ {
+   "Category": 1005,
+   "Description": "Finance"
+ },
+ {
+   "Category": 1006,
+   "Description": "Doctor"
+ },
+ {
+   "Category": 1007,
+   "Description": "Healthcare"
+ },
+ {
+   "Category": 1008,
+   "Description": "Study & Tour"
+ },
+ {
+   "Category": 1009,
+   "Description": "Education & Training"
+ },
+ {
+   "Category": 1010,
+   "Description": "Life Services"
+ },
+ {
+   "Category": 1011,
+   "Description": "Lifestyle Leisure"
+ },
+ {
+   "Category": 1012,
+   "Description": "Business Services"
+ },
+ {
+   "Category": 1013,
+   "Description": "Chinese Community"
+ },
+ {
+  "Category": 1014,
+  "Description": "Others"
+}
+
+]

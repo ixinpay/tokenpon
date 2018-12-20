@@ -1,0 +1,20 @@
+﻿<div class="sidenavchainpost">
+    <div class="row">
+        <!-- side nav -->
+        <div class="col-xs-4 nopadding">
+            <div class="wrapper">
+                <nav id="sidebar">
+                    <ul class="list-unstyled components">
+                        <li *ngFor="let postcat of DynamicChannelcats" data="postcat.ChannelName" class="active">
+                            <a [routerLink]="['/chainpost']" [queryParams]="{postcat: postcat.ChannelName}" translate [(ngModel)]="postcat.ChannelName" ngDefaultControl>{{postcat.ChannelName}}</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        <!-- post list -->
+        <div class="col-xs-6 col-sm-6 col-md-8">
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>

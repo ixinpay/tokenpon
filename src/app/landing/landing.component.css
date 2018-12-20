@@ -1,0 +1,342 @@
+.chain-gege {
+    color: #FFFFFF;
+    font-weight: bold;
+    font-family: Helvetica;
+    padding-top: 200px;
+    padding-left: 150px;
+}
+
+.chain-pic {
+    background: url("../../assets/hero-image.jpg");
+    width: 100%;
+    height: 750px;
+}
+
+.chain-start {
+    border: 1px solid #FF8F00;
+    width: 200px;
+    height: 60px;
+    border-radius: 100px;
+    text-align: center;
+    background-color: #FF8F00;
+    margin-top: 50px;
+}
+
+.chain-start:hover {
+    background-color: #FF6600;
+    border: 1px solid #FF6600;
+}
+
+.chain-btn {
+    font-size: 15px;
+    color: #FFFFFF;
+}
+
+.start-sec {
+    padding-top: 15px;
+}
+
+.chain-gege h1 {
+    color: #ff8f00!important;
+    font-weight: bold;
+}
+
+.chain-maindes {
+    padding-top: 20px;
+}
+
+.chain-title {
+    font-family: Helvetica;
+    color: #707070;
+    font-size: 30pt;
+    font-weight: bold;
+    padding-top: 80px;
+}
+
+.chain-img {
+    display: block;
+    margin: 0 100px 0 auto;
+    width: 400px !important;
+}
+
+.chain-des {
+    display: block;
+    margin: 0 auto;
+    margin: 0 150px 0 auto;
+}
+
+.chain-sec {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.chain-link {
+    color: #ff8f00;
+    font-weight: bold;
+}
+
+.chain-link:hover {
+    text-decoration: underline !important;
+}
+
+.chain-main p {
+    margin-top: 20px;
+}
+
+@media screen and (max-width: 991px) {
+    .chain-main {
+        padding-left: 50px;
+    }
+    .chain-img {
+        display: block;
+        margin: 0 0 0 0;
+        width: 400px !important;
+    }
+}
+
+hr {
+    background: #ff8f00;
+    width: 60px;
+    height: 3px;
+}
+
+
+/* ---- */
+
+.chain-bottom {
+    background: #ff8f00;
+    height: 300px;
+    position: relative;
+}
+
+.chain-signup {
+    border: 3px solid #FFFFFF;
+    width: 160px;
+    height: 35px;
+    border-radius: 100px;
+    text-align: center;
+    background-color: #FF8F00;
+    margin-top: 50px;
+    color: #FFFFFF;
+}
+
+.bottom-btn {
+    font-size: 15px !important;
+    color: #FFFFFF;
+    font-weight: bold;
+    padding-top: 5px !important;
+}
+
+.chain-signup:hover {
+    background-color: #FFFFFF;
+}
+
+.chain-signup {
+    display: block;
+    margin: 0 auto;
+}
+
+.chain-signup:hover a {
+    color: #ff8f00;
+}
+
+.bottom-des {
+    padding-top: 100px;
+    width: 640px;
+    height: 300px;
+    padding: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -100px 0 0 -300px
+}
+
+.bottom-des p {
+    text-align: center;
+    color: #FFFFFF;
+    font-weight: bold;
+    font-size: 30px;
+}
+
+
+/*----*/
+
+.jumbotron {
+    padding: 0em;
+}
+
+.jumbotron h4,
+.jumbotron p,
+.jumbotron a {
+    font-size: 15px !important;
+    font-family: sans-serif !important;
+    color: #FFFFFF !important;
+}
+
+.secHead {
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    background-color: lightgray;
+}
+
+.secHead:hover {
+    background-color: goldenrod;
+    color: #FFFFFF;
+}
+
+.panel-heading {
+    padding: 25px;
+    border-bottom: 1px solid transparent;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+
+.panel {
+    /*border: 1px solid #3c3d41;
+  */
+    border-radius: 0 !important;
+    transition: box-shadow 0.5s;
+}
+
+.panel:hover {
+    box-shadow: 5px 0px 40px rgba(0, 0, 0, .2);
+}
+
+
+/*-------------------footer css--------------*/
+
+.footer-bs {
+    margin-right: -15px;
+    margin-left: -15px;
+    background-color: #3c3d41;
+    padding: 60px 40px;
+    color: rgba(255, 255, 255, 1.00);
+    margin-bottom: -20px;
+    position: absolute;
+    width: 100%;
+}
+
+.footer-bs .footer-brand,
+.footer-bs .footer-nav,
+.footer-bs .footer-social,
+.footer-bs .footer-ns {
+    padding: 10px 25px;
+}
+
+.footer-bs .footer-nav,
+.footer-bs .footer-social,
+.footer-bs .footer-ns {
+    border-color: transparent;
+}
+
+.footer-bs .footer-brand h2 {
+    margin: 0px 0px 10px;
+}
+
+.footer-bs .footer-brand p {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.70);
+}
+
+.footer-bs .footer-nav ul.pages {
+    list-style: none;
+    padding: 0px;
+}
+
+.footer-bs .footer-nav ul.pages li {
+    padding: 5px 0px;
+}
+
+.footer-bs .footer-nav ul.pages a {
+    color: rgba(255, 255, 255, 1.00);
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.footer-bs .footer-nav ul.pages a:hover {
+    color: rgba(255, 255, 255, 0.80);
+    text-decoration: none;
+}
+
+.footer-bs .footer-nav h4 {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 10px;
+}
+
+.footer-bs .footer-nav ul.list {
+    list-style: none;
+    padding: 0px;
+}
+
+.footer-bs .footer-nav ul.list li {
+    padding: 5px 0px;
+}
+
+.footer-bs .footer-nav ul.list a {
+    color: rgba(255, 255, 255, 0.80);
+}
+
+.footer-bs .footer-nav ul.list a:hover {
+    color: rgba(255, 255, 255, 0.60);
+    text-decoration: none;
+}
+
+.footer-bs .footer-social ul {
+    list-style: none;
+    padding: 0px;
+}
+
+.footer-bs .footer-social h4 {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+}
+
+.footer-bs .footer-social li {
+    padding: 5px 4px;
+}
+
+.footer-bs .footer-social a {
+    color: rgba(255, 255, 255, 1.00);
+}
+
+.footer-bs .footer-social a:hover {
+    color: rgba(255, 255, 255, 0.80);
+    text-decoration: none;
+}
+
+.footer-bs .footer-ns h4 {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 10px;
+}
+
+.footer-bs .footer-ns p {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.70);
+}
+
+#chain-logo {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#chain-footer {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    color: #707070 !important;
+}
+
+.jumbotron h4 {
+    color: #707070 !important;
+    font-weight: bold;
+}

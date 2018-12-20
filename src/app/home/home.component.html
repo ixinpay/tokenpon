@@ -1,0 +1,60 @@
+﻿<!-- <div class="pull-right">
+    <h4>Hi {{currentUser.firstName}}! <a [routerLink]="['/login']">Logout</a></h4>
+</div>
+<div class="row navbar-collapse collapse justify-content-between">
+    <ul class="navbar-nav mr-auto" SideClass="navbar navbar-light blue-grey lighten-5">
+        <li class="nav-item">
+            <h4><a [routerLink]="['/home']">Home</a></h4>
+        </li>
+        <li class="nav-item">
+            <h4><a [routerLink]="['/contract']">Contract</a></h4>
+        </li>
+    </ul>
+</div><br> -->
+<!-- <nav class="navbar navbar-fixed-top navbar-dark bg-inverse">
+        <div class="container">
+            <a class="navbar-brand">Yellow Page</a>
+            <ul class="nav navbar-nav" routerLinkActive="active">
+                <li class="nav-item"><h4><a [routerLink]="['/home']">Home</a></h4></li>
+                <li class="nav-item"><h4><a [routerLink]="['/contract']">Contract</a></h4></li>
+            </ul>
+        </div>
+    </nav> -->
+<!-- <div class="row">
+    <app-claim></app-claim>
+</div> -->
+
+
+<!-- <div>
+    <div class="row">
+        <div class="col-xs-4 nopadding">
+            <app-side-nav></app-side-nav>
+        </div>
+        <div class="col-xs-6 col-sm-6 col-md-8">
+            <label>main</label>
+            <router-outlet></router-outlet>
+        </div>
+
+    </div>
+</div> -->
+<div class="wrapper">
+
+    <!-- Sidebar -->
+    <app-side-nav></app-side-nav>
+
+    <!-- Page Content -->
+    <div id="content">
+        <div class="row">
+            <div class="col-1">
+                <button id="sidebarCollapse" (click)="toggleMenu($event)">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+            <div class="col-11 nopadding">
+                <router-outlet></router-outlet>
+            </div>
+        </div>
+    </div>
+</div>
