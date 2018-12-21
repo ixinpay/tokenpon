@@ -7,7 +7,7 @@
             <div *ngIf="f.submitted && !firstName.valid" class="alert alert-danger">First Name is required</div>
         </div> -->
 
-        <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !region.valid }">
+        <!-- <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !region.valid }">
             <label for="region" class="required" translate>Region</label><label for="region2" translate>(We are seeking 21 Super Nodes and contact to us if you are interested)</label>
             <select class="form-control" name="region" [ngClass]="{ 'show-error-border': f.submitted && !region.valid }" [(ngModel)]="model.region" #region="ngModel" required>
                 <option value="Chicago">{{"Greater Chicago Area"| translate}}</option>
@@ -18,15 +18,15 @@
                 <option value="Others">{{"Other Area" | translate}}</option>
             </select>
             <small *ngIf="f.submitted && !region.valid" class="" [ngClass]="{ 'show-error': f.submitted && !region.valid }" translate>Region is required</small>
-        </div>
-        <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !type.valid }">
+        </div> -->
+        <!-- <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !type.valid }">
             <label for="type" class="required" translate>Type</label>
             <select class="form-control" name="type" [ngClass]="{ 'show-error-border': f.submitted && !type.valid }" [(ngModel)]="model.type" #type="ngModel" required>
                 <option selected="selected" value="Business" translate>Business</option>
                 <option value="Person" translate>Person</option>
             </select>
             <small *ngIf="f.submitted && !type.valid" class="" [ngClass]="{ 'show-error': f.submitted && !type.valid }" translate>Type is required</small>
-        </div>
+        </div> -->
         <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !userName.valid }">
             <label for="userName" class="required" translate>User Name</label>
             <input type="text" class="form-control" name="userName" [ngClass]="{ 'show-error-border': f.submitted && !userName.valid }" [(ngModel)]="model.userName" #userName="ngModel" required />

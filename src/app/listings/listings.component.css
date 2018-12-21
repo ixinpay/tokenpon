@@ -97,3 +97,8 @@
  .page-link a {
      background-color: #FF8F00!important;
  }
+
+ agm-map {
+    height: 500px;
+    width: 90%
+  }

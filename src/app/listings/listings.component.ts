@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, NgModule } from '@angular/core';
 import { UserService, AlertService, SwarmService, MongoService } from '../_services/index';
 import { Router, ActivatedRoute, Params, ParamMap } from '@angular/router';
 import { Http, Response } from '@angular/http';
@@ -17,11 +17,15 @@ import { environment } from 'environments/environment';
 import { isNullOrUndefined } from 'util';
 import { Title } from '@angular/platform-browser';
 import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
+// import { AgmCoreModule } from '@agm/core';
+import { MouseEvent } from '@agm/core';
+
 @Component({
   moduleId: module.id.toString(),
   templateUrl: './listings.component.html',
   styleUrls: ['./listings.component.css']
 })
+
 export class ListingsComponent implements OnInit {
   @Input() catId = 0;
   private subscription: ISubscription;
@@ -47,6 +51,13 @@ export class ListingsComponent implements OnInit {
   dislikes: number = 0;
   numoflikes: number = 0;
   numofdislikes: number = 0;
+  listView: boolean = true;
+
+  zoom: number = 8;
+  // initial center position for the map
+  lat: number = 51.673858;
+  lng: number = 7.815982;
+
   constructor(
     private route: ActivatedRoute, private swarmService: SwarmService,
     private router: Router, private globals: Globals, private mongoService: MongoService,
@@ -62,7 +73,7 @@ export class ListingsComponent implements OnInit {
     //     titleService.setTitle(res);
     //   });
     // });
-    
+
     this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
     if (this.currentUser) {
       this.model.submitBy = this.currentUser.email;
@@ -127,7 +138,8 @@ export class ListingsComponent implements OnInit {
             }
           });
       }
-    });
+
+    });console.log(this.markers)
   }
 
   public getLikeCount(claim: any): number {
@@ -203,7 +215,7 @@ export class ListingsComponent implements OnInit {
       // console.log(this.claims[j].pictures[0]);
       this.listings[j] = {
         imgUrl: isNullOrUndefined(this.claims[j].pictures[0]) || this.claims[j].pictures[0] == "" ?
-                  "../../assets/linkGearGGold.png" : this.swarmService.getFileUrls(new Array(this.claims[j].pictures[0])),
+          "../../assets/linkGearGGold.png" : this.swarmService.getFileUrls(new Array(this.claims[j].pictures[0])),
         _id: this.claims[j]._id,
         businessMainCategory: this.claims[j].businessMainCategory,
         businessName: this.claims[j].businessName,
@@ -215,12 +227,14 @@ export class ListingsComponent implements OnInit {
         zip: this.claims[j].zip,
         likes: this.votes[j].likes,
         dislikes: this.votes[j].dislikes,
-        viewCount: this.claims[j].viewCount == null || this.claims[j].viewCount == undefined? 0:  this.claims[j].viewCount,
+        viewCount: this.claims[j].viewCount == null || this.claims[j].viewCount == undefined ? 0 : this.claims[j].viewCount,
         comments: this.claims[j].comments.length
       };
     }
     this.claimsPage = this.listings.slice(0, this.pageSize);
     // console.log(this.claimsPage)
+    //get coordinates
+    this.getCoordinates();
   }
 
   Search(searchTxt: string) {
@@ -388,7 +402,7 @@ export class ListingsComponent implements OnInit {
   approveClaim(id: number) {
     //alert("approved");
   }
-  
+
   ngOnInit() {
 
   }
@@ -456,4 +470,64 @@ export class ListingsComponent implements OnInit {
         }
       });
   }
+  toggleView() {
+    this.listView = !this.listView;
+  }
+  clickedMarker(label: string, index: number) {
+    console.log(`clicked the marker: ${label || index}`)
+  }
+
+  mapClicked($event: MouseEvent) {
+    this.markers.push({
+      lat: $event.coords.lat,
+      lng: $event.coords.lng,
+      draggable: true
+    });
+  }
+
+  markerDragEnd(m: marker, $event: MouseEvent) {
+    console.log('dragEnd', m, $event);
+  }
+  getAddresses(): string[] {
+    let addresses: string[] = [];
+    this.claimsPage.forEach(element => {
+      addresses.push(element.businessName + "||" + element.street.trim().replace(/ /g, "+") + ",+"
+        + element.city.trim().replace(/ /g, "+") + ",+" + element.state.trim().replace(/ /g, "+"));
+    });
+    return addresses;
+  }
+  getCoordinates() {
+    this.markers = [];
+    this.getAddresses().forEach(element => {
+      console.log(element);
+      let values = element.split("||");
+      let label = values[0];
+      let address = values[1];
+      this.http.get(environment.GoogleGeocodingAPI.replace("{addr}", address))
+        .subscribe(response => {
+          if (response.status === 200) {
+            
+            if (response.json().results[0] !== undefined) {
+              // console.log(response.json().results[0].geometry.location);
+              let mk: marker = {
+                lat: parseFloat(response.json().results[0].geometry.location.lat),
+                lng: parseFloat(response.json().results[0].geometry.location.lng),
+                label: label,
+                draggable: false
+              };
+              this.markers.push(mk);
+              console.log(this.markers);
+            }
+          }
+        });
+    });
+  }
+  markers: marker[] = []
+}
+// just an interface for type safety.
+interface marker {
+  lat: Number;
+  lng: Number;
+  label?: string;
+  draggable: boolean;
 }

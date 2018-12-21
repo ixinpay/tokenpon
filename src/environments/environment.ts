@@ -16,9 +16,10 @@ export const environment = {
    production: false,
    HttpProvider: "http://localhost:8545",
    // web3HttpProvider: "http://34.238.58.243:8506",
-   OothAPI: 'http://23.238.58.243:8091/auth/',
+   OothAPI: 'http://34.238.58.243:8091/auth/',
    MongoAPI: 'http://23.238.58.243:8080/api/',
    SwarmProvider: 'http://34.238.58.243:5001/',
+   GoogleGeocodingAPI: "https://maps.googleapis.com/maps/api/geocode/json?address={addr}&key=AIzaSyA5IGhOP4Sk_MzGLLMtmmjdXNP1bN_3Y_g",
    // SwarmProvider: 'http://swarm-gateways.net/',
    //************************************************
    // Common

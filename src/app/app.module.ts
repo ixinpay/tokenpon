@@ -53,6 +53,8 @@ import { NguCarouselModule } from '@ngu/carousel';
 import { ActivationComponent } from './activation/activation.component';
 import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
 import { SafePipe } from './_helpers/safe.pipe';
+import { AgmCoreModule } from '@agm/core';
+import { AgmJsMarkerClustererModule } from '@agm/js-marker-clusterer';
 // const SERVICES = [
 //   MetaCoinService,
 //   Web3Service,
@@ -89,7 +91,11 @@ import { SafePipe } from './_helpers/safe.pipe';
     LightboxModule,
     NguCarouselModule,
     FroalaEditorModule.forRoot(), 
-    FroalaViewModule.forRoot()
+    FroalaViewModule.forRoot(),
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyA5IGhOP4Sk_MzGLLMtmmjdXNP1bN_3Y_g'
+    }),
+    AgmJsMarkerClustererModule
   ],
   declarations: [
     AppComponent,

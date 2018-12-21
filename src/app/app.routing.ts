@@ -26,20 +26,20 @@ const appRoutes: Routes = [
         { path: 'claim', component: ClaimComponent, canActivate: [AuthGuard] },
         { path: 'claim-detail', component: ClaimDetailComponent }
     ] },
-    {path: 'chainpost', component: ChainPostComponent, children:[
-      { path: '', component: PostListingsComponent },
-      { path: 'Post-listings', component: PostListingsComponent },
-      { path: 'Post-listings:/cat', component: PostListingsComponent },
-      { path: 'Post', component: PostComponent},
-      { path: 'Post-detail', component: PostDetailsComponent }
+    // {path: 'chainpost', component: ChainPostComponent, children:[
+    //   { path: '', component: PostListingsComponent },
+    //   { path: 'Post-listings', component: PostListingsComponent },
+    //   { path: 'Post-listings:/cat', component: PostListingsComponent },
+    //   { path: 'Post', component: PostComponent},
+    //   { path: 'Post-detail', component: PostDetailsComponent }
 
-    ]},
+    // ]},
     { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
 
     // otherwise redirect to home
-    { path: '**', redirectTo: '' }
+    { path: '**', redirectTo: '/home' }
 ];
 
 export const routing = RouterModule.forRoot(appRoutes);
