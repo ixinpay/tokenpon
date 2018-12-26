@@ -64,8 +64,9 @@
                 [rotate]="true" (pageChange)="loadPage($event)"></ngb-pagination>
         </div>
     </div>
+    <!-- <div #googleMap style="width:100%;height:500px" class="col-12 row"></div> -->
     <div *ngIf="!listView" class="col-12 row">
-            <agm-map 
+            <agm-map #AgmMap (mapReady)="mapReady($event)"
             [latitude]="lat"
             [longitude]="lng"
             [zoom]="zoom"
@@ -83,7 +84,7 @@
                 (dragEnd)="markerDragEnd(m, $event)">
                 
               <agm-info-window>
-                <strong>{{m.label}}</strong>
+                <strong>{{m.toolTip}}</strong>
               </agm-info-window>
               
             </agm-marker>

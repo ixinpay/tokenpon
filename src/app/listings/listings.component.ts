@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, NgModule } from '@angular/core';
+import { Component, OnInit, Input, NgModule, ViewChild } from '@angular/core';
 import { UserService, AlertService, SwarmService, MongoService } from '../_services/index';
 import { Router, ActivatedRoute, Params, ParamMap } from '@angular/router';
 import { Http, Response } from '@angular/http';
@@ -18,8 +18,8 @@ import { isNullOrUndefined } from 'util';
 import { Title } from '@angular/platform-browser';
 import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 // import { AgmCoreModule } from '@agm/core';
-import { MouseEvent } from '@agm/core';
-
+import { MouseEvent, GoogleMapsAPIWrapper, AgmMap, LatLngBounds, LatLngBoundsLiteral } from '@agm/core';
+import { } from 'googlemaps';
 @Component({
   moduleId: module.id.toString(),
   templateUrl: './listings.component.html',
@@ -27,6 +27,10 @@ import { MouseEvent } from '@agm/core';
 })
 
 export class ListingsComponent implements OnInit {
+  @ViewChild('AgmMap') agmMap: AgmMap;
+  // map: google.maps.Map;
+  protected map: any;
+
   @Input() catId = 0;
   private subscription: ISubscription;
   currentUser: User;
@@ -53,10 +57,11 @@ export class ListingsComponent implements OnInit {
   numofdislikes: number = 0;
   listView: boolean = true;
 
+  markers: marker[] = []
   zoom: number = 8;
   // initial center position for the map
-  lat: number = 51.673858;
-  lng: number = 7.815982;
+  lat: number;
+  lng: number;
 
   constructor(
     private route: ActivatedRoute, private swarmService: SwarmService,
@@ -65,83 +70,8 @@ export class ListingsComponent implements OnInit {
     private alertService: AlertService, private titleService: Title,
     private http: Http, private translate: TranslateService
   ) {
-    //set title
-    this.titleService.setTitle("ChainPage");
-    // translate.onLangChange.subscribe((event: LangChangeEvent) => {
-    //   console.log("lang changed")
-    //   translate.get('page_title').subscribe((res: string) => {
-    //     titleService.setTitle(res);
-    //   });
-    // });
 
-    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    if (this.currentUser) {
-      this.model.submitBy = this.currentUser.email;
-    }
-    this.subscription = this.http.get('/assets/cat.json')
-      .subscribe(data => {
-        this.categories = data.json();
-        //console.log(data);
-      });
-    this.subscription = this.http.get('/assets/country.json')
-      .subscribe(data => {
-        this.countries = data.json();
-        //console.log(data);
-      });
-    //get query param
-    this.page = 1;
-    this.maxSize = 10;
-    this.pageSize = 20;
-    this.subscription = this.route.queryParams.subscribe(params => {
-      //console.log(params['cat']);
-      this.catParam = params['cat'];
-      this.subcatPram = params['subcat'];
-      // console.log(this.catParam);
-      // load listings from BigChainDB
-      // this.getAllTransactionsByAsset(this.catParam);
-      // load listings from MongoDB
-      if (this.catParam) {
-        // console.log("here")
-        this.subscription = this.mongoService.GetListingsByCat(this.catParam, this.globals.ChainpageAppId)
-          .subscribe(response => {
-            if (response.status == 200) {
-              // console.log(response.json());
-              this.showListings(response);
-            }
-            else {
-              this.toasterService.pop("error", response.statusText);
-            }
-          })
-      }
-      else if (this.subcatPram) {
-        this.subscription = this.mongoService.GetListingsBySubcat(this.subcatPram, this.globals.ChainpageAppId)
-          .subscribe(response => {
-            if (response.status == 200) {
-              // console.log(response.json());
-              this.showListings(response);
-            }
-            else {
-              this.toasterService.pop("error", response.statusText);
-            }
-          })
-      }
-      else {
-        // console.log("else");
-        this.subscription = this.mongoService.GetListings(this.globals.ChainpageAppId)
-          .subscribe(response => {
-            if (response.status == 200) {
-              // console.log(response.json());
-              this.showListings(response);
-            }
-            else {
-              this.toasterService.pop("error", response.statusText);
-            }
-          });
-      }
-
-    });console.log(this.markers)
   }
-
   public getLikeCount(claim: any): number {
     let likeCount = 0;
     claim.votes.forEach(element => {
@@ -236,7 +166,6 @@ export class ListingsComponent implements OnInit {
     //get coordinates
     this.getCoordinates();
   }
-
   Search(searchTxt: string) {
     // console.log("Search text: " + searchTxt);
     // this.catParam = undefined;
@@ -348,9 +277,6 @@ export class ListingsComponent implements OnInit {
       //
     }
   }
-
-
-
   loadPage(pageNum: number) {
     if (pageNum !== this.previousPage) {
       this.previousPage = pageNum;
@@ -404,8 +330,110 @@ export class ListingsComponent implements OnInit {
   }
 
   ngOnInit() {
+    //set title
+    this.titleService.setTitle("ChainPage");
+    // translate.onLangChange.subscribe((event: LangChangeEvent) => {
+    //   console.log("lang changed")
+    //   translate.get('page_title').subscribe((res: string) => {
+    //     titleService.setTitle(res);
+    //   });
+    // });
 
+    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    if (this.currentUser) {
+      this.model.submitBy = this.currentUser.email;
+    }
+    this.subscription = this.http.get('/assets/cat.json')
+      .subscribe(data => {
+        this.categories = data.json();
+        //console.log(data);
+      });
+    this.subscription = this.http.get('/assets/country.json')
+      .subscribe(data => {
+        this.countries = data.json();
+        //console.log(data);
+      });
+    //get query param
+    this.page = 1;
+    this.maxSize = 10;
+    this.pageSize = 20;
+    this.subscription = this.route.queryParams.subscribe(params => {
+      //console.log(params['cat']);
+      this.catParam = params['cat'];
+      this.subcatPram = params['subcat'];
+      // console.log(this.catParam);
+      // load listings from BigChainDB
+      // this.getAllTransactionsByAsset(this.catParam);
+      // load listings from MongoDB
+      if (this.catParam) {
+        // console.log("here")
+        this.subscription = this.mongoService.GetListingsByCat(this.catParam, this.globals.ChainpageAppId)
+          .subscribe(response => {
+            if (response.status == 200) {
+              // console.log(response.json());
+              this.showListings(response);
+            }
+            else {
+              this.toasterService.pop("error", response.statusText);
+            }
+          })
+      }
+      else if (this.subcatPram) {
+        this.subscription = this.mongoService.GetListingsBySubcat(this.subcatPram, this.globals.ChainpageAppId)
+          .subscribe(response => {
+            if (response.status == 200) {
+              // console.log(response.json());
+              this.showListings(response);
+            }
+            else {
+              this.toasterService.pop("error", response.statusText);
+            }
+          })
+      }
+      else {
+        // console.log("else");
+        this.subscription = this.mongoService.GetListings(this.globals.ChainpageAppId)
+          .subscribe(response => {
+            if (response.status == 200) {
+              // console.log(response.json());
+              this.showListings(response);
+            }
+            else {
+              this.toasterService.pop("error", response.statusText);
+            }
+          });
+      }
+
+    }); console.log(this.markers)
   }
+  // ngAfterViewInit() {
+  //   //populate markers
+  //   this.getCoordinates();
+  //   // For center
+  //   var mapProp = {
+  //     center: new google.maps.LatLng(28.4595, 77.0266),
+  //     zoom: 13,
+  //     mapTypeId: google.maps.MapTypeId.HYBRID // also use ROADMAP,SATELLITE or TERRAIN
+  //   };
+
+  //   this.map = new google.maps.Map(this.gmapElement.nativeElement, mapProp);
+  //   var marker = new google.maps.Marker({ position: mapProp.center });
+  //   marker.setMap(this.map);
+  //   var infowindow = new google.maps.InfoWindow({ content: "Hey !! Here we are" });
+  //   infowindow.open(this.map, marker);
+  //   this.setMultipleMarker(this.markers, this);
+  // }
+  setMultipleMarker(markers, self) {
+    markers.forEach(function (marker) {
+      (function (marker) {
+        let mark = new google.maps.Marker({ position: new google.maps.LatLng(marker.lat, marker.lng) });
+        let infowindow = new google.maps.InfoWindow({ content: marker.toolTip });
+        infowindow.open(self.map, mark);
+        mark.setMap(self.map);
+      })(marker)
+    })
+  }
+
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }
@@ -477,14 +505,18 @@ export class ListingsComponent implements OnInit {
     console.log(`clicked the marker: ${label || index}`)
   }
 
-  mapClicked($event: MouseEvent) {
-    this.markers.push({
-      lat: $event.coords.lat,
-      lng: $event.coords.lng,
-      draggable: true
-    });
+  // mapClicked($event: MouseEvent) {
+  //   this.markers.push({
+  //     lat: $event.coords.lat,
+  //     lng: $event.coords.lng,
+  //     draggable: true
+  //   });
+  // }
+  public markerClicked = (markerObj) => {
+    if (this.map)
+      this.map.setCenter({ lat: markerObj.latitude, lng: markerObj.longitude });
+    console.log('clicked', markerObj, { lat: markerObj.latitude, lng: markerObj.longitude });
   }
-
   markerDragEnd(m: marker, $event: MouseEvent) {
     console.log('dragEnd', m, $event);
   }
@@ -498,6 +530,7 @@ export class ListingsComponent implements OnInit {
   }
   getCoordinates() {
     this.markers = [];
+    let index = 1;
     this.getAddresses().forEach(element => {
       console.log(element);
       let values = element.split("||");
@@ -506,13 +539,24 @@ export class ListingsComponent implements OnInit {
       this.http.get(environment.GoogleGeocodingAPI.replace("{addr}", address))
         .subscribe(response => {
           if (response.status === 200) {
-            
             if (response.json().results[0] !== undefined) {
               // console.log(response.json().results[0].geometry.location);
+              if(this.lat == undefined){
+                this.lat = parseFloat(response.json().results[0].geometry.location.lat);
+                this.lng = parseFloat(response.json().results[0].geometry.location.lng);
+              }
+              // const bounds = new google.maps.LatLngBounds();
+              // for (const mm of this.markers) {
+              //   bounds.extend(new google.maps.LatLng(mm.lat, mm.lng));
+              // }
+              // // @ts-ignore
+              // this.agmMap.fitBounds(bounds);
+
               let mk: marker = {
                 lat: parseFloat(response.json().results[0].geometry.location.lat),
                 lng: parseFloat(response.json().results[0].geometry.location.lng),
-                label: label,
+                toolTip: label,
+                label: index.toString(),
                 draggable: false
               };
               this.markers.push(mk);
@@ -520,14 +564,18 @@ export class ListingsComponent implements OnInit {
             }
           }
         });
+      index++;
     });
   }
-  markers: marker[] = []
+  protected mapReady(map) {
+    this.map = map;
+  }
 }
 // just an interface for type safety.
 interface marker {
-  lat: Number;
-  lng: Number;
-  label?: string;
+  lat: number;
+  lng: number;
+  toolTip: string;
+  label: string;
   draggable: boolean;
 }
