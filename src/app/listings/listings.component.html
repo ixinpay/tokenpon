@@ -84,7 +84,11 @@
                 (dragEnd)="markerDragEnd(m, $event)">
                 
               <agm-info-window>
-                <strong>{{m.toolTip}}</strong>
+                <strong>{{m.tooltip.businessName}}</strong>
+                <br><br>
+                <label>{{m.tooltip.street}}</label>
+                <br>
+                <label>{{m.tooltip.city}} {{m.tooltip.state}} {{m.tooltip.zip}}</label>
               </agm-info-window>
               
             </agm-marker>

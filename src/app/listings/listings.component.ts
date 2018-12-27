@@ -58,7 +58,7 @@ export class ListingsComponent implements OnInit {
   listView: boolean = true;
 
   markers: marker[] = []
-  zoom: number = 8;
+  zoom: number = 10;
   // initial center position for the map
   lat: number;
   lng: number;
@@ -521,9 +521,15 @@ export class ListingsComponent implements OnInit {
     console.log('dragEnd', m, $event);
   }
   getAddresses(): string[] {
-    let addresses: string[] = [];
+    let addresses: any[] = [];
     this.claimsPage.forEach(element => {
-      addresses.push(element.businessName + "||" + element.street.trim().replace(/ /g, "+") + ",+"
+      let tooltip = {
+        businessName: element.businessName,
+        street: element.street.trim(),
+        city: element.city.trim(),
+        state: element.state.trim()
+      }
+      addresses.push(JSON.stringify(tooltip) + "||" + element.street.trim().replace(/ /g, "+") + ",+"
         + element.city.trim().replace(/ /g, "+") + ",+" + element.state.trim().replace(/ /g, "+"));
     });
     return addresses;
@@ -532,9 +538,9 @@ export class ListingsComponent implements OnInit {
     this.markers = [];
     let index = 1;
     this.getAddresses().forEach(element => {
-      console.log(element);
+      // console.log(element);
       let values = element.split("||");
-      let label = values[0];
+      let tooltip = JSON.parse(values[0]);
       let address = values[1];
       this.http.get(environment.GoogleGeocodingAPI.replace("{addr}", address))
         .subscribe(response => {
@@ -555,12 +561,12 @@ export class ListingsComponent implements OnInit {
               let mk: marker = {
                 lat: parseFloat(response.json().results[0].geometry.location.lat),
                 lng: parseFloat(response.json().results[0].geometry.location.lng),
-                toolTip: label,
-                label: index.toString(),
+                label: index.toString(), 
+                tooltip: tooltip,
                 draggable: false
               };
               this.markers.push(mk);
-              console.log(this.markers);
+              console.log(mk);
             }
           }
         });
@@ -571,11 +577,11 @@ export class ListingsComponent implements OnInit {
     this.map = map;
   }
 }
-// just an interface for type safety.
+
 interface marker {
   lat: number;
   lng: number;
-  toolTip: string;
   label: string;
+  tooltip: any;
   draggable: boolean;
 }
