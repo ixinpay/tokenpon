@@ -26,8 +26,6 @@
         "../node_modules/mdbootstrap/css/bootstrap.min.css",
         "../node_modules/mdbootstrap/css/mdb.min.css",
         "../node_modules/ngx-lightbox/lightbox.css",
-        "../node_modules/froala-editor/css/froala_editor.pkgd.min.css",
-        "../node_modules/froala-editor/css/froala_style.min.css",
         "../node_modules/font-awesome/css/font-awesome.css"
       ],
       "scripts": [
@@ -36,8 +34,7 @@
         "../node_modules/mdbootstrap/js/jquery-3.3.1.min.js",
         "../node_modules/mdbootstrap/js/popper.min.js",
         "../node_modules/mdbootstrap/js/mdb.min.js",
-        "../node_modules/mdbootstrap/js/bootstrap.min.js",
-        "../node_modules/froala-editor/js/froala_editor.pkgd.min.js"
+        "../node_modules/mdbootstrap/js/bootstrap.min.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {

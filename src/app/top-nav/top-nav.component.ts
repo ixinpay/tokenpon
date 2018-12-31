@@ -47,7 +47,7 @@ export class TopNavComponent implements OnInit {
   currentUserAccount: string = undefined;
   CurrentUserName: string = undefined;
   currentUserEmail: string = undefined;
-  selectedLanguage = "2";
+  selectedLanguage = "1";
   selectedFlag: string;
   language: any[] = [];
   elementType: 'url' | 'canvas' | 'img' = 'url';

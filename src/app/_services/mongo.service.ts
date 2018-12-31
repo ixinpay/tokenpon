@@ -13,12 +13,12 @@ export class MongoService {
     private readonly API = location.protocol + '//' + location.hostname + ':8080/api/';
     constructor(private http: Http) { }
 
-    saveListing(listing) {
-        return this.http.post(this.API + 'saveListing/', listing)
+    saveProfile(listing) {
+        return this.http.post(this.API + 'saveProfile/', listing)
         // .map((response: Response) =>response.json())
     }
-    updateListing(listing) {
-        return this.http.post(this.API + 'updateListing/', listing)
+    updateProfile(listing) {
+        return this.http.post(this.API + 'updateProfile/', listing)
         // .map((response: Response) =>response.json())
     }
     GetListings(appId) {

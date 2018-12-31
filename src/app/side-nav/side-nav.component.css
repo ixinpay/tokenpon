@@ -75,11 +75,11 @@
  }
   */
  
- .wrapper {
+ /* .wrapper {
      display: flex;
      width: 100%;
      align-items: stretch;
- }
+ } */
   
  a[data-toggle="collapse"] {
      position: relative;
@@ -93,10 +93,10 @@
      transform: translateY(-50%);
  }
  
- .wrapper {
+ /* .wrapper {
      display: flex;
      align-items: stretch;
- }
+ } */
  
  #sidebar.active {
      margin-left: -250px;
@@ -160,7 +160,7 @@
 }
  
  #sidebar ul.components {
-     padding: 20px 0;
+     padding: 0px 0;
  }
  
  #sidebar ul p {
@@ -192,20 +192,9 @@
      background: #3c3d41;
  }
 
-
-/*  
- #sidebar {
-    height: 100%;
-    min-width: 250px;
-    max-width: 250px;
-    background: #7386D5;
-    color: #fff;
-    transition: all 0.6s cubic-bezier(0.945, 0.020, 0.270, 0.665);
-    transform-origin: center left;
-} */
 #sidebar.active {
     margin-left: -250px;
-    transform: rotateY(100deg); /* Rotate sidebar vertically by 100 degrees. */
+    /* transform: rotateY(100deg); Rotate sidebar vertically by 100 degrees. */
 }
 a[data-toggle="collapse"] {
     position: relative;
@@ -218,64 +207,51 @@ a[data-toggle="collapse"] {
     right: 20px;
     transform: translateY(-50%);
 }
-/* body {
-    font-family: 'Poppins', sans-serif;
-    background: #fafafa;
-}
 
-p {
-    font-family: 'Poppins', sans-serif;
-    font-size: 1.1em;
-    font-weight: 300;
-    line-height: 1.7em;
-    color: #999;
-}
-
-a, a:hover, a:focus {
-    color: inherit;
-    text-decoration: none;
-    transition: all 0.3s;
-}
-
-#sidebar {
-    background: #7386D5;
+.closeDiv{
+    background: #3c3d41;
     color: #fff;
     transition: all 0.3s;
 }
 
-#sidebar .sidebar-header {
-    padding: 20px;
-    background: #6d7fcc;
+#btnClose{
+    margin-left: 230px;
+    width: 40px;
+  height: 40px;
+  background-color: transparent;
 }
-
-#sidebar ul.components {
-    padding: 20px 0;
-    border-bottom: 1px solid #47748b;
+#btnClose.active{
+    margin-left: 10px;
 }
-
-#sidebar ul p {
-    color: #fff;
-    padding: 10px;
+#btnClose span{
+    color: white;
+    width: 80%;
+    height: 2px;
+    margin: 0 auto;
+    background: #555;
+    transition: all 0.8s cubic-bezier(0.810, -0.330, 0.345, 1.375);
 }
-
-#sidebar ul li a {
-    padding: 10px;
-    font-size: 1.1em;
-    display: block;
+#btnClose span:first-of-type {
+/* rotate first one */
+    transform: rotate(45deg) translate(2px, 2px);
 }
-#sidebar ul li a:hover {
-    color: #7386D5;
-    background: #fff;
+#btnClose span:nth-of-type(2) {
+/* second one is not visible */
+opacity: 0;
 }
-
-#sidebar ul li.active > a, a[aria-expanded="true"] {
-    color: #fff;
-    background: #6d7fcc;
+#btnClose span:last-of-type {
+/* rotate third one */
+transform: rotate(-45deg) translate(1px, -1px);
 }
-ul ul a {
-    font-size: 0.9em !important;
-    padding-left: 30px !important;
-    background: #6d7fcc;
+#btnClose.active span {
+    /* no rotation */
+    transform: none;
+    /* all bars are visible */
+    opacity: 1;
+    margin: 150px auto;
+  }
+/* #btnClose.active:after{
+    content: ">";
 } */
 
 @media (max-width: 768px) {
@@ -285,10 +261,40 @@ ul ul a {
        the vertical rotation.   */
     #sidebar {
         margin-left: -250px;
-        transform: rotateY(100deg);
+        /* transform: rotateY(100deg); */
     }
     #sidebar.active {
         margin-left: 0;
         transform: none;
     }
+    #btnClose{
+        margin-left: 10px;
+    }
+    #btnClose.active {
+        margin-left: 230px;
+    }
+    #btnClose span:first-of-type,
+    #btnClose span:nth-of-type(2),
+    #btnClose span:last-of-type {
+        transform: none;
+        opacity: 1;
+        margin: 5px auto;
+    }
+
+    /* Removing the vertical margin and make the first and last bars rotate again when the sidebar is open, hiding the second bar */
+    #btnClose.active span {
+        margin: 0 auto;
+    }
+    #btnClose.active span:first-of-type {
+        transform: rotate(45deg) translate(2px, 2px);
+    }
+    #btnClose.active span:nth-of-type(2) {
+        opacity: 0;
+    }
+    #btnClose.active span:last-of-type {
+        transform: rotate(-45deg) translate(1px, -1px);
+    }
+    /* #btnClose.active:after{
+        content: ">";
+    } */
 }

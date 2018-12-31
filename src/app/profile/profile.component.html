@@ -30,43 +30,22 @@
                         </li>
                         <li class="col-12" [ngClass]="{'active': selectedPage == profilePages[1]}">
                             <a (click)="onPageClick(profilePages[1])" translate>
-                                <i class="fa fa-cog" aria-hidden="true"></i> {{profilePages[1]}}
+                                <i class="fa fa-building" aria-hidden="true"></i> {{profilePages[1]}}
                             </a>
                         </li>
+                        <li class="col-12" [ngClass]="{'active': selectedPage == profilePages[2]}">
+                                <a (click)="onPageClick(profilePages[2])" translate>
+                                    <i class="fa fa-cog" aria-hidden="true"></i> {{profilePages[2]}}
+                                </a>
+                            </li>
                     </ul>
-                    <!-- <ngb-tabset type="Simple" Orientation="vertical">
-              <ngb-tab>
-                <ng-template ngbTabTitle>
-                  <i class="fa fa-user"></i> Account Information</ng-template>
-                <ng-template ngbTabContent>
-                  
-                </ng-template>
-              </ngb-tab>
-              <ngb-tab>
-                <ng-template ngbTabTitle>
-                    <i class="fa fa-cog" aria-hidden="true"></i> Account Settings</ng-template>
-                <ng-template ngbTabContent>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid.
-    
-                </ng-template>
-              </ngb-tab>
-              <ngb-tab title="Disabled" [disabled]="true">
-                <ng-template ngbTabContent>
-                  <p>Sed commodo, leo at suscipit dictum, quam est porttitor sapien, eget sodales nibh elit id diam. Nulla facilisi.
-                    Donec egestas ligula vitae odio interdum aliquet. Duis lectus turpis, luctus eget tincidunt eu, congue et
-                    odio. Duis pharetra et nisl at faucibus. Quisque luctus pulvinar arcu, et molestie lectus ultrices et. Sed
-                    diam urna, egestas ut ipsum vel, volutpat volutpat neque. Praesent fringilla tortor arcu. Vivamus faucibus
-                    nisl enim, nec tristique ipsum euismod facilisis. Morbi ut bibendum est, eu tincidunt odio. Orci varius natoque
-                    penatibus et magnis dis parturient montes, nascetur ridiculus mus. Mauris aliquet odio ac lorem aliquet ultricies
-                    in eget neque. Phasellus nec tortor vel tellus pulvinar feugiat.</p>
-                </ng-template>
-              </ngb-tab>
-            </ngb-tabset> -->
                 </div>
                 <!-- END MENU -->
             </div>
         </div>
         <div class="col-xs-8 col-sm-8 col-md-8 col-lg-9">
-            <div *ngIf="selectedPage == profilePages[0]">
+            <div *ngIf="selectedPage == profilePages[0]" class="card">
+                    <div class="card-body card-head">
                 <div>
                     <label translate>Your token balance: </label>
                     <b>{{tokenBalance}}</b>
@@ -74,95 +53,490 @@
                 <div>
                     <label translate>Your account number: </label>
                     <b>{{accountNumber}}</b>
-                    <ngx-qrcode [qrc-element-type]="img" qrc-class="qrSize" [qrc-element-type]="elementType" [qrc-value]="accountNumber">
+                    <ngx-qrcode [qrc-element-type]="img" qrc-class="qrSize" [qrc-element-type]="elementType"
+                        [qrc-value]="accountNumber">
                     </ngx-qrcode>
                 </div>
                 <br>
-                <!-- <div class="col-sm-12">
-                        <div class="card">
-                            <div class="card-body card-head">
-                                <h4>Transfer Tokens</h4>
-                                <form (ngSubmit)="transferForm.form.valid && sendToken()" name="transferForm" #transferForm="ngForm">
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <div class="col-6">
-                                                <div class="md-form input-group input-group-sm mt-0 mb-3">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text" id="inputGroup-sizing-sm">To Whom:</span>
-                                                    </div>
-                                                    <input type="text" name="toAddress" #Address="ngModel" class="form-control" [(ngModel)]="toAddress" required>
-                                                    <div>
-                                                        <small *ngIf="transferForm.submitted && !Address.valid" class="show-error" translate>*</small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-6">
-                                                <div class="md-form input-group input-group-sm mt-0 mb-2">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text" id="inputGroup-sizing-sm">Amount:</span>
-                                                    </div>
-                                                    <input type="number" name="token" #Amount="ngModel" class="form-control" [(ngModel)]="token" required>
-                                                    <div>
-                                                        <small *ngIf="transferForm.submitted && !Amount.valid" class="show-error" translate>*</small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-6">
-                                                <div class="md-form input-group input-group-sm mt-0 mb-3">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text" id="inputGroup-sizing-sm">Password:</span>
-                                                    </div>
-                                                    <div class="input-group-append">
-                                                        <input id="tbPass" name="tbPass" #Password="ngModel" [type]="showPassword ? 'text' : 'password'" class="form-control" ngModel required>
-                                                        <div class="input-group-append">
-                                                            <a (click)="togglePass()">
-                                                                <i [ngClass]="showPassword ? 'fas fa-eye' : 'fas fa-eye-slash'"></i>
-                                                            </a>
-                                                        </div>
-                                                        <div>
-                                                            <small *ngIf="transferForm.submitted && !Password.valid" class="show-error" translate>*</small>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-6">
-                                                    <button type="submit" class="btn btn-mdb-color btn-sm">Send</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div> -->
             </div>
-            <div *ngIf="selectedPage == profilePages[1]">                
+            </div>
+            <div *ngIf="selectedPage == profilePages[1]">
                 <div class="col-sm-12">
                     <!-- second card -->
                     <div class="card">
                         <div class="card-body card-head">
-                            <!-- <button class="btn btn-blue-grey btn-sm float-right">Edit</button> -->
-                            <h4>Update Profile</h4>                            
-                            <form (ngSubmit)="profileForm.form.valid && updateProfile()" name="profileForm" #profileForm="ngForm">
+                            <button class="btn btn-blue-grey btn-sm float-right" (click)="toggleBusinessEdit()">
+                                {{inBusinessEdit ? "Update" : "Edit"}}</button>
+                            <!-- <h4>Update Profile</h4> -->
+                            <form *ngIf="!inBusinessEdit" (ngSubmit)="claimForm.form.valid && updateBusinessProfile()" name="claimForm"
+                                #claimForm="ngForm">
                                 <div class="form-group">
                                     <div class="row">
-                                        <div class="col-3">
-                                            <label class="text-info" translate>Region </label>
+                                        <div class="col-12">
+                                            <div class="main-cat">
+                                                <div class="claim-head">
+                                                    <h4 translate>General Info</h4>
+                                                </div>
+                                                <div>
+                                                    <div class="row">
+                                                        <div class="form-group col-sm-6">
+                                                            <label for="country" class="required" translate>Country</label>
+                                                            <label translate>{{model.country}}</label>
+                                                        </div>
+                                                        <!-- <div class="form-group col-sm-6">
+                                                            <label for="region" class="required" [ngClass]="{ 'has-error': claimForm.submitted && !name.valid }"
+                                                                translate>Region</label>
+                                                            <select class="form-control" name="region" id="region"
+                                                                [ngClass]="{ 'show-error-border': claimForm.submitted && !region.valid }"
+                                                                [(ngModel)]="model.region" #region="ngModel" required>
+                                                                <option value="Chicago">{{"Greater Chicago Area"|
+                                                                    translate}}</option>
+                                                                <option value="Baltimore">{{"Maryland Area" |
+                                                                    translate}}</option>
+                                                                <option value="NYC">{{"Greater New York Area" |
+                                                                    translate}}</option>
+                                                                <option value="Toronto">{{"Greater Toronto Area" |
+                                                                    translate}}</option>
+                                                                <option selected="selected" value="WashingtonDC">{{"Greater
+                                                                    Washington DC Area" | translate}}</option>
+                                                                <option value="Others">{{"Other Area" | translate}}</option>
+                                                            </select>
+                                                            <div class="col-sm-6">
+                                                                <small *ngIf="claimForm.submitted && !region.valid"
+                                                                    translate class="" [ngClass]="{ 'show-error': claimForm.submitted && !region.valid }">*
+                                                                    This is required</small>
+                                                            </div>
+                                                        </div> -->
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="form-group col-sm-6">
+                                                            <label for="name" translate>Contact Person</label>
+                                                                <label translate>{{model.name}}</label>
+                                                        </div>
+                                                        <div class="form-group col-sm-6">
+                                                            <label for="businessName" translate>Business Name</label>
+                                                                <label translate>{{model.businessName}}</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="main-cat">
+                                                <div class="claim-head">
+                                                    <h4 translate>Address</h4>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="form-group col-sm-4">
+                                                        <label for="street"
+                                                            translate>Street</label>
+                                                            <label translate>{{model.street}}</label>
+                                                    </div>
+                                                    <div class="form-group col-sm-4">
+                                                            <label for="city" class="required" translate>City</label>
+                                                            <label translate>{{model.city}}</label>
+                                                    </div>
+                                                    <div class="form-group col-sm-2">
+                                                            <label for="state" class="required" translate>State/Province</label>
+                                                            <label translate>{{model.state}}</label>
+                                                    </div>
+                                                    <div class="form-group col-sm-2">
+                                                            <label for="zip" class="required" translate>Zip Code</label>
+                                                            <label translate>{{model.zip}}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="main-cat">
+                                                <div class="claim-head">
+                                                    <h4 translate>Contact</h4>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="form-group col-sm-6">
+                                                            <label for="email" class="required" translate>Email</label>
+                                                            <label translate>{{model.email}}</label>
+                                                    </div>
+                                                    <div class="form-group col-sm-6">
+                                                            <label for="phone" class="required" translate>Phone</label>
+                                                            <label translate>{{model.phone}}</label>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="form-group col-sm-6">
+                                                            <label for="webPage" class="required" translate>WebPage</label>
+                                                            <label translate>{{model.webPage}}</label>  
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="main-cat">
+                                                <div class="claim-head">
+                                                    <h4 translate>Business Info</h4>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="form-group col-sm-6">
+                                                        <label for="businessMainCategory" class="required" translate>Main Category</label>
+                                                            <label translate>{{model.businessMainCategory}}</label>
+                                                    </div>
+                                                    <div class="form-group col-sm-6">
+                                                        <label for="businessSubCategory" class="required" translate>Sub Category</label>
+                                                            <label translate>{{model.businessSubCategory}}</label>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="form-group col-sm-6">
+                                                        <label for="servicingArea" class="required" translate>Servicing Area</label>
+                                                            <label translate>{{model.servicingArea}}</label>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="form-group col-sm-6">
+                                                        <label for="businessHour" translate>Business Hour</label>
+                                                        <label class="label">{{model.businessHour}}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="main-cat">
+                                                <div class="claim-head">
+                                                    <h4 translate>Business Description</h4>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="form-group col-sm-12">
+                                                            <label for="service" class="required" translate>Description</label>
+                                                            <label class="label">{{model.service}}</label>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="col-5">
-                                            <label *ngIf="!inEdit" translate>{{regionDisplayName == null ? "You have not selected a region" : regionDisplayName}}</label>
-                                            <select *ngIf="inEdit" class="form-control" [(ngModel)]="model.local.region" name="region">
-                                                <option *ngFor="let node of supernodes" [(ngValue)]="node.key" translate>{{node.region}}</option>
-                                                <!-- <option value="Chicago">{{"Greater Chicago Area"| translate}}</option>
-                                                <option value="Baltimore">{{"Maryland Area" | translate}}</option>
-                                                <option value="NYC">{{"Greater New York Area" | translate}}</option>
-                                                <option value="Toronto">{{"Greater Toronto Area" | translate}}</option>
-                                                <option selected="selected" value="WashingtonDC">{{"Greater Washington DC Area" | translate}}</option>
-                                                <option value="Others">{{"Other Area" | translate}}</option> -->
-                                            </select>
+                                    </div>
+                                </div>
+                            </form>
+                            <form *ngIf="inBusinessEdit" (ngSubmit)="claimForm.form.valid && updateBusinessProfile()" name="claimForm"
+                                #claimForm="ngForm">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="main-cat">
+                                                <div class="claim-head">
+                                                    <h4 translate>General Info</h4>
+                                                </div>
+                                                <div [ngClass]="{ 'has-error': claimForm.submitted && !country.valid }">
+                                                    <div class="row">
+                                                        <div class="form-group col-sm-6">
+                                                            <label for="country" class="required" translate>Country</label>
+                                                            <select (change)="countryDropDownChanged($event.target.value)"
+                                                                (ngModelChange)="onChange($event)" [ngClass]="{ 'show-error-border': claimForm.submitted && !country.valid }"
+                                                                class="form-control" id="country" required [(ngModel)]="model.country"
+                                                                [ngClass]="{ 'show-error-border': claimForm.submitted && !country.valid }"
+                                                                name="country" #country="ngModel">
+                                                                <option *ngFor="let c of countries" [value]="c.Country">{{c.Country}}</option>
+                                                            </select>
+                                                            <div class="col-sm-6">
+                                                                <small *ngIf="claimForm.submitted && !country.valid"
+                                                                    translate class="" [ngClass]="{ 'show-error': claimForm.submitted && !country.valid }">*
+                                                                    This is required</small>
+                                                            </div>
+
+                                                        </div>
+                                                        <!-- <div class="form-group col-sm-6">
+                                                            <label for="region" class="required" [ngClass]="{ 'has-error': claimForm.submitted && !name.valid }"
+                                                                translate>Region</label>
+                                                            <select class="form-control" name="region" id="region"
+                                                                [ngClass]="{ 'show-error-border': claimForm.submitted && !region.valid }"
+                                                                [(ngModel)]="model.region" #region="ngModel" required>
+                                                                <option value="Chicago">{{"Greater Chicago Area"|
+                                                                    translate}}</option>
+                                                                <option value="Baltimore">{{"Maryland Area" |
+                                                                    translate}}</option>
+                                                                <option value="NYC">{{"Greater New York Area" |
+                                                                    translate}}</option>
+                                                                <option value="Toronto">{{"Greater Toronto Area" |
+                                                                    translate}}</option>
+                                                                <option selected="selected" value="WashingtonDC">{{"Greater
+                                                                    Washington DC Area" | translate}}</option>
+                                                                <option value="Others">{{"Other Area" | translate}}</option>
+                                                            </select>
+                                                            <div class="col-sm-6">
+                                                                <small *ngIf="claimForm.submitted && !region.valid"
+                                                                    translate class="" [ngClass]="{ 'show-error': claimForm.submitted && !region.valid }">*
+                                                                    This is required</small>
+                                                            </div>
+                                                        </div> -->
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="form-group col-sm-6">
+                                                            <label for="name" class="required" [ngClass]="{ 'has-error': claimForm.submitted && !name.valid }"
+                                                                translate>Contact Person</label>
+                                                            <input type="text" class="form-control" id="name" required
+                                                                [(ngModel)]="model.name" [ngClass]="{ 'show-error-border': claimForm.submitted && !name.valid }"
+                                                                name="name" #name="ngModel">
+                                                            <div class="col-sm-6">
+                                                                <small *ngIf="claimForm.submitted && !name.valid"
+                                                                    translate class="" [ngClass]="{ 'show-error': claimForm.submitted && !name.valid }">*
+                                                                    This is required</small>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group col-sm-6">
+                                                            <label for="businessName" class="required" [ngClass]="{ 'has-error': claimForm.submitted && !businessName.valid }"
+                                                                translate>Business Name</label>
+                                                            <input type="text" class="form-control" id="businessName"
+                                                                required [(ngModel)]="model.businessName" [ngClass]="{ 'show-error-border': claimForm.submitted && !businessName.valid }"
+                                                                name="businessName" #businessName="ngModel">
+                                                            <div class="col-sm-6">
+                                                                <small *ngIf="claimForm.submitted && !businessName.valid"
+                                                                    translate class="" [ngClass]="{ 'show-error': claimForm.submitted && !businessName.valid }">*
+                                                                    This is required</small>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="main-cat">
+                                                <div class="claim-head">
+                                                    <h4 translate>Address</h4>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="form-group col-sm-4">
+                                                        <label for="street" class="required" [ngClass]="{ 'has-error': claimForm.submitted && !street.valid }"
+                                                            translate>Street</label>
+                                                        <input type="text" class="form-control" id="street" required
+                                                            [(ngModel)]="model.street" [ngClass]="{ 'show-error-border': claimForm.submitted && !street.valid }"
+                                                            name="street" #street="ngModel">
+                                                        <div class="col-sm-8">
+                                                            <small *ngIf="claimForm.submitted && !street.valid"
+                                                                translate class="" [ngClass]="{ 'show-error': claimForm.submitted && !street.valid }">*
+                                                                This is required</small>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group col-sm-4">
+                                                        <div [ngClass]="{ 'has-error': claimForm.submitted && !city.valid }">
+                                                            <label for="city" class="required" translate>City</label>
+                                                            <input type="text" class="form-control" id="city" required
+                                                                [(ngModel)]="model.city" [ngClass]="{ 'show-error-border': claimForm.submitted && !city.valid }"
+                                                                name="city" #city="ngModel">
+                                                            <div class="col-sm-8">
+                                                                <small *ngIf="claimForm.submitted && !city.valid"
+                                                                    translate class="" [ngClass]="{ 'show-error': claimForm.submitted && !city.valid }">*
+                                                                    This is required</small>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group col-sm-2">
+                                                        <div [ngClass]="{ 'has-error': claimForm.submitted && !state.valid }">
+                                                            <label for="state" class="required" translate>State/Province</label>
+                                                            <select class="form-control" id="state" required
+                                                                [(ngModel)]="model.state" [ngClass]="{ 'show-error-border': claimForm.submitted && !state.valid }"
+                                                                name="state" #state="ngModel">
+                                                                <option *ngFor="let s of state_province" [value]="s.abbreviation">{{s.abbreviation}}</option>
+                                                            </select>
+                                                            <div class="col-sm-14">
+                                                                <small *ngIf="claimForm.submitted && !state.valid"
+                                                                    translate class="" [ngClass]="{ 'show-error': claimForm.submitted && !state.valid }">*
+                                                                    This is required</small>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group col-sm-2">
+                                                        <div [ngClass]="{ 'has-error': claimForm.submitted && !zip.valid }">
+                                                            <label for="zip" class="required" translate>Zip Code</label>
+                                                            <input type="text" class="form-control" id="zip" required
+                                                                [(ngModel)]="model.zip" [ngClass]="{ 'show-error-border': claimForm.submitted && !zip.valid }"
+                                                                name="zip" #zip="ngModel">
+                                                            <div class="col-sm-14">
+                                                                <small *ngIf="claimForm.submitted && !zip.valid"
+                                                                    translate class="" [ngClass]="{ 'show-error': claimForm.submitted && !zip.valid }">*
+                                                                    This is required</small>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="main-cat">
+                                                <div class="claim-head">
+                                                    <h4 translate>Contact</h4>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="form-group col-sm-6">
+                                                        <div [ngClass]="{ 'has-error': claimForm.submitted && !email.valid }">
+                                                            <label for="email" class="required" translate>Email</label>
+                                                            <input type="text" class="form-control" id="email" pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
+                                                                required [(ngModel)]="model.email" [ngClass]="{ 'show-error-border': claimForm.submitted && !email.valid }"
+                                                                name="email" #email="ngModel">
+                                                            <div class="col-sm-6">
+                                                                <small *ngIf="claimForm.submitted && !email.valid"
+                                                                    translate class="" [ngClass]="{ 'show-error': claimForm.submitted && !email.valid }">*
+                                                                    This is required</small>
+                                                                <small *ngIf="email.errors?.pattern && email.touched"
+                                                                    [ngClass]="{'show-error': email.errors?.pattern && email.touched}"
+                                                                    translate>* Email is invalid</small>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group col-sm-6">
+                                                        <div [ngClass]="{ 'has-error': claimForm.submitted && !phone.valid }">
+                                                            <label for="phone" class="required" translate>Phone</label>
+                                                            <input type="text" mask="(000)000-0000" class="form-control"
+                                                                id="phone" required [(ngModel)]="model.phone" [ngClass]="{ 'show-error-border': claimForm.submitted && !phone.valid }"
+                                                                name="phone" #phone="ngModel">
+                                                            <div class="col-sm-6">
+                                                                <small *ngIf="claimForm.submitted && !phone.valid"
+                                                                    translate class="" [ngClass]="{ 'show-error': claimForm.submitted && !phone.valid }">*
+                                                                    This is required</small>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="form-group col-sm-6">
+                                                        <div [ngClass]="{ 'has-error': claimForm.submitted && !webPage.valid }">
+                                                            <label for="webPage" class="required" translate>WebPage</label>
+                                                            <input type="text" id="webPage" class="form-control" id="webPage"
+                                                                pattern="^((http|https):\/\/[w|W]+(\.[a-zA-Z0-9]+)+.*)$"
+                                                                [(ngModel)]="model.webPage" [ngClass]="{ 'show-error-border': claimForm.submitted && !webPage.dirty }"
+                                                                name="webPage" #webPage="ngModel">
+                                                            <!-- <div class="col-sm-6">
+                                                                <small *ngIf="claimForm.submitted && !webPage.dirty"
+                                                                    translate class="" [ngClass]="{ 'show-error': claimForm.submitted && !webPage.dirty }">*
+                                                                    This is required</small>
+                                                                <small *ngIf="webPage.errors?.pattern && webPage.touched"
+                                                                    [ngClass]="{'show-error': webPage.errors?.pattern && webPage.touched}"
+                                                                    translate>* Please enter valid URL
+                                                                    (eg.http://www.google.com)</small>
+                                                            </div> -->
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="main-cat">
+                                                <div class="claim-head">
+                                                    <h4 translate>Business Info</h4>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="form-group col-sm-6">
+                                                        <label for="businessMainCategory" class="required" [ngClass]="{ 'has-error': claimForm.submitted && !businessCategory.valid }"
+                                                            translate>Main Category</label>
+                                                        <select class="form-control" id="businessMainCategory" required
+                                                            (change)="MainCategoryDropDownChanged($event.target.value)"
+                                                            [(ngModel)]="model.businessMainCategory" [ngClass]="{ 'show-error-border': claimForm.submitted && !businessCategory.valid }"
+                                                            name="businessMainCategory" #businessCategory="ngModel">
+                                                            <option *ngFor="let cat of categories" [value]="cat.Description"
+                                                                translate>{{cat.Description}}</option>
+                                                        </select>
+                                                        <div class="col-sm-6">
+                                                            <small *ngIf="claimForm.submitted && !businessCategory.valid"
+                                                                translate class="" [ngClass]="{ 'show-error': claimForm.submitted && !businessCategory.valid }">*
+                                                                This is required</small>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group col-sm-6">
+                                                        <label for="businessSubCategory" class="required" [ngClass]="{ 'has-error': claimForm.submitted && !businessSubCategory.valid }"
+                                                            translate>Sub Category</label>
+                                                        <select class="form-control" id="businessSubCategory" required
+                                                            [(ngModel)]="model.businessSubCategory" [ngClass]="{ 'show-error-border': claimForm.submitted && !businessSubCategory.valid }"
+                                                            name="businessSubCategory" #businessSubCategory="ngModel">
+                                                            <option value="" translate></option>
+                                                            <option *ngFor="let subcat of subcategories" [value]="subcat.Description"
+                                                                translate>{{subcat.Description}}</option>
+                                                        </select>
+                                                        <div class="col-sm-6">
+                                                            <small *ngIf="claimForm.submitted && !businessSubCategory.valid"
+                                                                translate class="" [ngClass]="{ 'show-error': claimForm.submitted && !businessSubCategory.valid }">*
+                                                                This is required</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="form-group col-sm-6">
+                                                        <label for="servicingArea" class="required" [ngClass]="{ 'has-error': claimForm.submitted && !servicingArea.valid }"
+                                                            translate>Servicing Area</label>
+                                                        <input type="text" class="form-control" id="servicingArea"
+                                                            required [(ngModel)]="model.servicingArea" [ngClass]="{ 'show-error-border': claimForm.submitted && !servicingArea.valid }"
+                                                            name="servicingArea" #servicingArea="ngModel">
+                                                        <div class="col-sm-6">
+                                                            <small *ngIf="claimForm.submitted && !servicingArea.valid"
+                                                                translate class="" [ngClass]="{ 'show-error': claimForm.submitted && !servicingArea.valid }">*
+                                                                This is required</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="form-group col-sm-6">
+                                                        <label for="businessHour" class="required" [ngClass]="{ 'has-error': claimForm.submitted && !businessHour.valid }"
+                                                            translate>Business Hour</label>
+                                                        <input type="text" class="form-control" id="businessHour"
+                                                            required [(ngModel)]="model.businessHour" [ngClass]="{ 'show-error-border': claimForm.submitted && !businessHour.valid }"
+                                                            name="businessHour" #businessHour="ngModel">
+                                                        <div class="col-sm-6">
+                                                            <small *ngIf="claimForm.submitted && !businessHour.valid"
+                                                                translate class="" [ngClass]="{ 'show-error': claimForm.submitted && !businessHour.valid }">*
+                                                                This is required</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row" *ngIf="false">
+                                                    <div class="col-sm-12">
+                                                        <input type="text" readonly class="form-control" id="formType"
+                                                            [(ngModel)]="model.formType" name="formType" #formType="ngModel">
+                                                        <input type="text" readonly class="form-control" id="publishDate"
+                                                            [(ngModel)]="model.publishDate" name="publishDate"
+                                                            #publishDate="ngModel">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="main-cat">
+                                                <div class="claim-head">
+                                                    <h4 translate>Business Description</h4>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="form-group col-sm-12">
+                                                        <div [ngClass]="{ 'has-error': claimForm.submitted && !service.valid }">
+                                                            <label for="service" class="required" translate>Description</label>
+                                                            <textarea class="form-control" style="resize: none;" rows="6"
+                                                                id="service" required [(ngModel)]="model.service"
+                                                                [ngClass]="{ 'show-error-border': claimForm.submitted && !service.valid }"
+                                                                name="service" #service="ngModel"></textarea>
+                                                            <div class="col-sm-6">
+                                                                <small *ngIf="claimForm.submitted && !service.valid"
+                                                                    translate class="" [ngClass]="{ 'show-error': claimForm.submitted && !service.valid }">*
+                                                                    This is required</small>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="form-group col-sm-12">
+                                                        <label for="image_uploads" translate>Choose images(<2MB) to
+                                                                upload (PNG, JPG)(coming soon) <span class="btn btn-mdb-color btn-sm"
+                                                                translate>Browse</span>
+                                                        </label>
+                                                        <input style="display: none;" type="file" id="image_uploads"
+                                                            accept=".jpg, .jpeg, .png" multiple (change)="detectFiles($event)"
+                                                            title="Choose">
+                                                        <div *ngIf="isOversize"><small translate class="show-error"
+                                                                translate>* picture(s) too large</small></div>
+                                                        <div *ngIf="isAlreadyAdded"><small translate class="show-error"
+                                                                translate>* picture(s) already added</small></div>
+                                                        <div *ngIf="isOverTotal"><small translate class="show-error"
+                                                                translate>* you have reached the max allowable uploads</small></div>
+                                                        <div>
+                                                            <div class="img-wrap" *ngFor="let url of urls">
+                                                                <span class="close" (click)="deleteFile(url)">&times;</span>
+                                                                <img [src]="url.url" class="rounded mb-3" width="150"
+                                                                    height="150" data-id="{{url.id}}">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="col-4">
-                                            <button type="submit" class="btn btn-mdb-color btn-sm" translate>{{inEdit ? 'Update' : 'Edit'}}</button>                                            
-                                        </div>
+                                        <div class="submitBtn">
+                                                <button type="submit" class="btn btn-success" translate>{{isUpdate? 'Update': 'Submit'}}</button>
+                                                <button *ngIf="isUpdate" class="btn btn-outline-danger  waves-effect" [routerLink]=""
+                                                    [queryParams]="{id: claimId}" type="submit" translate>Cancel
+                                                    <i class="fa fa-ban ml-2"></i>
+                                                </button>
+                                                <button *ngIf="!isUpdate" class="btn btn-outline-danger  waves-effect" [routerLink]="" type="submit"
+                                                    translate>Cancel
+                                                    <i class="fa fa-ban ml-2"></i>
+                                                </button>
+                                                <button type="button" (click)="test()">test</button>
+                                            </div>
                                     </div>
                                 </div>
                             </form>

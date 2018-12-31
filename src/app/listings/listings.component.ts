@@ -20,6 +20,8 @@ import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 // import { AgmCoreModule } from '@agm/core';
 import { MouseEvent, GoogleMapsAPIWrapper, AgmMap, LatLngBounds, LatLngBoundsLiteral } from '@agm/core';
 import { } from 'googlemaps';
+import {Marker} from '../_models/index'
+
 @Component({
   moduleId: module.id.toString(),
   templateUrl: './listings.component.html',
@@ -33,7 +35,8 @@ export class ListingsComponent implements OnInit {
 
   @Input() catId = 0;
   private subscription: ISubscription;
-  currentUser: User;
+  // currentUser: User;
+  currentUser: string;
   model: any = {};
   imgUrl: String;
   votes: any[] = [];
@@ -57,7 +60,7 @@ export class ListingsComponent implements OnInit {
   numofdislikes: number = 0;
   listView: boolean = true;
 
-  markers: marker[] = []
+  markers: Marker[] = []
   zoom: number = 10;
   // initial center position for the map
   lat: number;
@@ -339,9 +342,10 @@ export class ListingsComponent implements OnInit {
     //   });
     // });
 
-    this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    // this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    this.currentUser = localStorage.getItem('currentUser');
     if (this.currentUser) {
-      this.model.submitBy = this.currentUser.email;
+      this.model.submitBy = this.currentUser;
     }
     this.subscription = this.http.get('/assets/cat.json')
       .subscribe(data => {
@@ -517,7 +521,7 @@ export class ListingsComponent implements OnInit {
       this.map.setCenter({ lat: markerObj.latitude, lng: markerObj.longitude });
     console.log('clicked', markerObj, { lat: markerObj.latitude, lng: markerObj.longitude });
   }
-  markerDragEnd(m: marker, $event: MouseEvent) {
+  markerDragEnd(m: Marker, $event: MouseEvent) {
     console.log('dragEnd', m, $event);
   }
   getAddresses(): string[] {
@@ -558,7 +562,7 @@ export class ListingsComponent implements OnInit {
               // // @ts-ignore
               // this.agmMap.fitBounds(bounds);
 
-              let mk: marker = {
+              let mk: Marker = {
                 lat: parseFloat(response.json().results[0].geometry.location.lat),
                 lng: parseFloat(response.json().results[0].geometry.location.lng),
                 label: index.toString(), 
@@ -566,22 +570,14 @@ export class ListingsComponent implements OnInit {
                 draggable: false
               };
               this.markers.push(mk);
+              index++;
               console.log(mk);
             }
           }
-        });
-      index++;
+        });      
     });
   }
   protected mapReady(map) {
     this.map = map;
   }
-}
-
-interface marker {
-  lat: number;
-  lng: number;
-  label: string;
-  tooltip: any;
-  draggable: boolean;
 }

@@ -61,6 +61,14 @@ isClass2Visible: false;
   }
   toggleMenu(){
     $('#sidebar').toggleClass('active');
+    $('#btnClose').toggleClass('active');
+    // if($('#sidebar').hasClass('active')) {
+    //   $('#sidebarCollapse').html('>')
+    // }
+    // else{
+    //   $('#sidebarCollapse').html('<')
+    // }
+    // $('#sidebarCollapse').toggleClass('active');
 }
   ngOnInit() {
   }

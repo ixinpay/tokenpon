@@ -64,8 +64,14 @@ hr {
     /* width: 640px; */
     width: 85%
 }
-
-
+.no-gutters {
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+  }
+agm-map {
+    height: 150px;
+    width: 250px;
+  }
 /* ul {
     list-style-type: none;
     width: 100%;

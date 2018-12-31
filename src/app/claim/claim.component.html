@@ -7,7 +7,7 @@
 <div class="container col-sm-18 col-md-12 col-lg-10">
     <form (ngSubmit)="claimForm.form.valid && onSubmit()" #claimForm="ngForm">
         <div class="form-group">
-            <div class="main-cat">
+            <!-- <div class="main-cat">
                 <div class="claim-head">
                     <h4 translate>General Info</h4>
                 </div>
@@ -224,13 +224,72 @@
             </div>
             <div>
                 <input type="checkbox" [(ngModel)]="model.notification" name="notification" #notification="ngModel"> <label translate>check here if you want to be notified when a new comment is posted</label>
+            </div> -->
+            <div>
+                <div>
+                    <img src="../../assets/LinkGear.png" style="height:100px">Company Logo
+                </div>
+                <div>
+                    <label>4600 Park st Baltimore, MD 21223</label>
+                </div>
+                <div class="row col-10">
+                        <table class="table table-hover table-hover">
+                                <thead>
+                                  <tr>
+                                    <th style="width:30%">Amount Spend</th>
+                                    <th style="width:30%">Discount</th>
+                                    <th style="width:30%">Token Number</th>
+                                    <th style="width:10%">Action</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <td><input type="text" class="form-control"></td>
+                                    <td>
+                                        <select class="form-control">
+                                            <option>5%</option>
+                                            <option>10%</option>
+                                            <option>15%</option>
+                                        </select>
+                                    </td>
+                                    <td><input type="text" class="form-control"></td>
+                                    <td>
+                                        <button class="btn btn-default btn-sm" type="button">Add</button>
+                                    </td>
+                                  </tr>                                  
+                                </tbody>
+                              </table>
+                </div>
             </div>
+            <div class="row">
+                <div class="form-group col-sm-12">
+                    <label for="image_uploads" translate>Choose images(<2MB) to upload (PNG, JPG)(coming soon) <span
+                            class="btn btn-mdb-color btn-sm" translate>Browse</span>
+                    </label>
+                    <input style="display: none;" type="file" id="image_uploads" accept=".jpg, .jpeg, .png" multiple
+                        (change)="detectFiles($event)" title="Choose">
+                    <div *ngIf="isOversize"><small translate class="show-error" translate>* picture(s) too large</small></div>
+                    <div *ngIf="isAlreadyAdded"><small translate class="show-error" translate>* picture(s) already
+                            added</small></div>
+                    <div *ngIf="isOverTotal"><small translate class="show-error" translate>* you have reached the
+                            max allowable uploads</small></div>
+                    <div>
+                        <div class="img-wrap" *ngFor="let url of urls">
+                            <span class="close" (click)="deleteFile(url)">&times;</span>
+                            <img [src]="url.url" class="rounded mb-3" width="150" height="150" data-id="{{url.id}}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="submitBtn">
                 <button type="submit" class="btn btn-success" translate>{{isUpdate? 'Update': 'Submit'}}</button>
-                <button *ngIf="isUpdate" class="btn btn-outline-danger  waves-effect" [routerLink]="['/home/claim-detail']" [queryParams]="{id: claimId}" type="submit" translate>Cancel
+                <button *ngIf="isUpdate" class="btn btn-outline-danger  waves-effect" [routerLink]="['/home/claim-detail']"
+                    [queryParams]="{id: claimId}" type="submit" translate>Cancel
                     <i class="fa fa-ban ml-2"></i>
                 </button>
-                <button *ngIf="!isUpdate" class="btn btn-outline-danger  waves-effect" [routerLink]="['/home']" type="submit" translate>Cancel
+                <button *ngIf="!isUpdate" class="btn btn-outline-danger  waves-effect" [routerLink]="['/home']" type="submit"
+                    translate>Cancel
                     <i class="fa fa-ban ml-2"></i>
                 </button>
             </div>

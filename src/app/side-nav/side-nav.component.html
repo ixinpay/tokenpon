@@ -30,12 +30,21 @@
     </nav>
   </div> -->
   <div class="wrapper">
+        <div class="closeDiv text-center">
+            <!-- <a href="javascript:void(0)" id="btnClose" (click)="toggleMenu()">&#60;</a> -->
+            <!-- <button id="btnClose" (click)="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button> -->
+        </div>
   <!-- Sidebar -->
   <nav id="sidebar">
       <!-- <div class="sidebar-header">
       </div> -->
+      
       <ul class="list-unstyled components">
-          <!-- <a href="javascript:void(0)" class="closebtn" (click)="toggleMenu()">&times;</a> -->
+          
           <li *ngFor="let cat of categories" class="active">
               <a href="{{'#' + cat.Category + 'Submenu'}}" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle" translate>{{cat.Description}}</a>
               <ul class="collapse list-unstyled" id="{{cat.Category + 'Submenu'}}">
@@ -46,4 +55,5 @@
           </li>
       </ul>
   </nav>
+  
   </div>

@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute, Params, ParamMap } from '@angular/router';
-import { UserService, BigchanDbService, AlertService, OothService, VoteService, MongoService, SwarmService } from '../_services/index';
+import { UserService, GoogleGeoService, AlertService, OothService, MongoService, SwarmService } from '../_services/index';
 import { Globals } from "../globals";
 import { ToasterModule, ToasterService, ToasterConfig } from 'angular2-toaster';
 import { ISubscription } from "rxjs/Subscription";
@@ -13,6 +13,10 @@ import { environment } from 'environments/environment';
 import { Lightbox } from 'ngx-lightbox';
 import { NguCarousel, NguCarouselStore } from '@ngu/carousel';
 import { Title } from '@angular/platform-browser';
+import { AgmCoreModule, MouseEvent, GoogleMapsAPIWrapper, AgmMap, LatLngBounds, LatLngBoundsLiteral } from '@agm/core';
+import { } from 'googlemaps';
+import {Marker} from '../_models/index'
+
 @Component({
   moduleId: module.id.toString(),
   selector: 'app-claim-detail',
@@ -57,9 +61,20 @@ export class ClaimDetailComponent implements OnInit {
   private account: string;
   private userId: string;
   private tokenBalance: number;
+
+  @ViewChild('AgmMap') agmMap: AgmMap;
+  // map: google.maps.Map;
+  protected map: any;
+  markers: Marker[] = []
+  zoom: number = 10;
+  // initial center position for the map
+  lat: number;
+  lng: number;
+
   constructor(private http: Http, private route: ActivatedRoute, private globals: Globals, private oothService: OothService,
-    private lightbox: Lightbox, private toasterService: ToasterService, private titleService: Title,
+    private lightbox: Lightbox, private toasterService: ToasterService, private titleService: Title, private googleGeoService: GoogleGeoService,
     private router: Router, private mongoService: MongoService, private swarmService: SwarmService) {
+
     this.account = localStorage.getItem("currentUserAccount");
     this.page = 1;
     this.maxSize = 100;
@@ -106,6 +121,38 @@ export class ClaimDetailComponent implements OnInit {
         if (response.status == 200) {
           // console.log(response);
           this.model = response.json();
+          console.log(this.model);
+          
+          //get map geo
+          this.googleGeoService.getGoogleGeoData(this.model.street, this.model.city, this.model.state, this.model.zip)
+          .subscribe(response => {
+            if (response.status === 200) {
+              if (response.json().results[0] !== undefined) {
+                // console.log(response.json().results[0].geometry.location);
+                if(this.lat == undefined){
+                  this.lat = parseFloat(response.json().results[0].geometry.location.lat);
+                  this.lng = parseFloat(response.json().results[0].geometry.location.lng);
+                }
+                console.log("lat = " + this.lat + " lng = " + this.lng)
+                // const bounds = new google.maps.LatLngBounds();
+                // for (const mm of this.markers) {
+                //   bounds.extend(new google.maps.LatLng(mm.lat, mm.lng));
+                // }
+                // // @ts-ignore
+                // this.agmMap.fitBounds(bounds);
+  
+                let marker = {
+                  lat: parseFloat(response.json().results[0].geometry.location.lat),
+                  lng: parseFloat(response.json().results[0].geometry.location.lng),
+                  label: '', 
+                  tooltip: '',
+                  draggable: false
+                };
+                this.markers.push(marker);
+                console.log(this.markers);
+              }
+            }
+          });
           //set title
           this.titleService.setTitle(this.model.name + "--" + this.model.businessName)
           this.swarmService.getFileUrls(this.model.pictures)
@@ -753,5 +800,29 @@ export class ClaimDetailComponent implements OnInit {
   }
   onmoveFn(data: NguCarouselStore) {
     console.log(data);
+  }
+
+  clickedMarker(label: string, index: number) {
+    console.log(`clicked the marker: ${label || index}`)
+  }
+
+  // mapClicked($event: MouseEvent) {
+  //   this.markers.push({
+  //     lat: $event.coords.lat,
+  //     lng: $event.coords.lng,
+  //     draggable: true
+  //   });
+  // }
+  public markerClicked = (markerObj) => {
+    if (this.map)
+      this.map.setCenter({ lat: markerObj.latitude, lng: markerObj.longitude });
+    console.log('clicked', markerObj, { lat: markerObj.latitude, lng: markerObj.longitude });
+  }
+  markerDragEnd(m: Marker, $event: MouseEvent) {
+    console.log('dragEnd', m, $event);
+  }
+
+  protected mapReady(map) {
+    this.map = map;
   }
 }

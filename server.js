@@ -63,7 +63,7 @@ var VoteSchema = new Schema({
     postedBy: { type: String },
     postedTime: { type: Number }
 });
-var ListingSchema = new Schema({
+var TokenponProfileSchema = new Schema({
     name: { type: String },
     businessName: { type: String },
     street: { type: String },
@@ -89,13 +89,13 @@ var ListingSchema = new Schema({
     region: { type: String },
     notification: { type: Boolean}
 });
-// ListingSchema.index({name: 'text', businessName: 'text',
+// TokenponProfileSchema.index({name: 'text', businessName: 'text',
 // street: 'text', city: 'text', state: 'text', zip: 'text',
 // country: 'text', email: 'text', service: 'text', servicingArea: 'text',
 // businessMainCategory: 'text', businessSubCategory: 'text',
 // service: 'text', servicingArea: 'text'
 // });
-ListingSchema.index({ '$**': 'text' });
+TokenponProfileSchema.index({ '$**': 'text' });
 
 var ChainPostSchema = new Schema({
     Title: { type: String },
@@ -114,10 +114,10 @@ var ChainPostSchema = new Schema({
 });
 ChainPostSchema.index({ Tags: 'text' });
 
-var modelChainPage = mongo.model('Listing', ListingSchema);
+var modelChainPage = mongo.model('tokenponProfile', TokenponProfileSchema);
 var modelChainPost = mongo.model('Post', ChainPostSchema);
 
-app.post("/api/saveListing", function(req, res) {
+app.post("/api/saveProfile", function(req, res) {
     //var mod = new modelChainPage(req.body);
     var model;
     if (req.body.appId == ChainpageAppId) {
@@ -137,7 +137,7 @@ app.post("/api/saveListing", function(req, res) {
     });
 })
 
-app.post("/api/updateListing", function(req, res) {
+app.post("/api/updateProfile", function(req, res) {
     //var mod = new model(req.body);
     // console.log(req.body._id)
     var model;
