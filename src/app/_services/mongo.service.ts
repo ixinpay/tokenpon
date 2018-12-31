@@ -13,6 +13,15 @@ export class MongoService {
     private readonly API = location.protocol + '//' + location.hostname + ':8080/api/';
     constructor(private http: Http) { }
 
+    GetProfile(email, appId) {
+        console.log(email);
+        let params = new URLSearchParams();
+        params.append('email', email);
+        params.append('appId', appId);
+        // let params = new HttpParams().set('id', id);
+        return this.http.get(this.API + 'getListing/' + email + "/" + appId)
+        // .map((response: Response) => response.json())
+    }
     saveProfile(listing) {
         return this.http.post(this.API + 'saveProfile/', listing)
         // .map((response: Response) =>response.json())

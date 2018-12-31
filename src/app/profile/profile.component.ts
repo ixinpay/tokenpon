@@ -8,12 +8,18 @@ import { SupoerNode, Claim, Vote } from '../_models/index'
 import { Globals } from 'app/globals';
 import { Http, Response, RequestOptions, Headers } from '@angular/http';
 import { environment } from 'environments/environment';
+import { NguCarousel, NguCarouselStore } from '@ngu/carousel';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
+  //ng-carousel
+  public carouselBanner: NguCarousel;
+  public carouselTileOneItems: Array<any> = [];
+  storeCarouselData: NguCarouselStore;
+
   regionDisplayName: string = null;
   inBusinessEdit = false;
   // model: any = {};
@@ -46,8 +52,10 @@ export class ProfileComponent implements OnInit {
   catarr: any[] = [];
   state_province: any[] = [];
   claimId: string;
-  isUpdate: boolean = false;
+  // isUpdate: boolean = false;
   maincategoryid: this;
+  private albums: any[] = [];
+
   //end claim page
   constructor(private oothService: OothService, private route: ActivatedRoute
     , private toasterService: ToasterService, private translate: TranslateService,
@@ -56,7 +64,7 @@ export class ProfileComponent implements OnInit {
     private globals: Globals, private mongoService: MongoService,
     private alertService: AlertService,
     private http: Http, private swarmService: SwarmService) {
-      
+
     this.accountNumber = localStorage.getItem("currentUserAccount");
     this.accountEmail = localStorage.getItem("currentUserEmail");
     this.route.queryParams.subscribe(params => {
@@ -66,7 +74,7 @@ export class ProfileComponent implements OnInit {
     this.selectedPage = this.profilePages[0];
     //get user data
     this.oothService.getUser()
-      .then(res =>{
+      .then(res => {
         this.model = res;
         console.log(this.model.local)
         console.log(this.model.local.region)
@@ -80,7 +88,7 @@ export class ProfileComponent implements OnInit {
             console.log("      key:", key, "value:", node[key]);
             this.supernodes.push(new SupoerNode(key, node[key]));
             //get region display string
-            if(this.model.local.region === key){
+            if (this.model.local.region === key) {
               this.regionDisplayName = node[key];
             }
           }
@@ -115,6 +123,32 @@ export class ProfileComponent implements OnInit {
       .subscribe(data => {
         this.countries = data.json();
         //console.log(data);
+      });
+  }
+  //get user profile data
+  getProfileData() {
+    this.mongoService.GetProfile(this.accountEmail, this.globals.TokenponAppId)
+      .subscribe(response => {
+        if (response.status == 200) {
+          // console.log(response);
+          this.model = response.json();
+          console.log(this.model);
+
+
+        }
+      });
+    this.swarmService.getFileUrls(this.model.pictures)
+      .forEach(img => {
+        const src = img;
+        //const caption = 'Image caption here';
+        const thumb = img;
+        const album = {
+          src: src,
+          //caption: caption,
+          thumb: thumb
+        };
+
+        this.albums.push(album);
       });
   }
   togglePass() {
@@ -156,11 +190,11 @@ export class ProfileComponent implements OnInit {
   //   }
   // }
   getRegionDisplayNameByKey(key: string) {
-    for (let node of this.supernodes) {     
-        //get region display string
-        if(node.key === key){
-          this.regionDisplayName = node.region;
-          return;        
+    for (let node of this.supernodes) {
+      //get region display string
+      if (node.key === key) {
+        this.regionDisplayName = node.region;
+        return;
       }
     }
   }
@@ -170,8 +204,48 @@ export class ProfileComponent implements OnInit {
         console.log("balance=" + balance)
         this.tokenBalance = balance;
       });
-  }
 
+      //load picture carousel
+      this.carouselBanner = {
+        grid: { xs: 2, sm: 3, md: 4, lg: 4, all: 0 },
+        speed: 600,
+        slide: 1,
+        point: {
+          visible: true
+        },
+        load: 2,
+        // loop: true,
+        touch: true,
+        easing: 'ease',
+        animation: 'lazy'
+      }
+      this.carouselTileOneLoad();
+  }
+  public carouselTileOneLoad() {
+    const len = this.carouselTileOneItems.length;
+    if (len <= 30) {
+      for (let i = len; i < len + 15; i++) {
+        // this.carouselTileOneItems.push(
+        //   this.imgags[Math.floor(Math.random() * this.imgags.length)]
+        // );
+        this.carouselTileOneItems = this.albums;
+      }
+    }
+  }
+  onMoveData(data) {
+    // console.log(data);
+  }
+  getCarouselData(ent) {
+    this.storeCarouselData = ent;
+  }
+  public myfunc(event: Event) {
+    // carouselLoad will trigger this funnction when your load value reaches
+    // it is helps to load the data by parts to increase the performance of the app
+    // must use feature to all carousel
+  }
+  onmoveFn(data: NguCarouselStore) {
+    console.log(data);
+  }
   //update merchant profile
   MainCategoryDropDownChanged(newValue: string) {
     // console.log(newValue);
@@ -225,7 +299,7 @@ export class ProfileComponent implements OnInit {
     if (filesToUpload) {
       for (let file of filesToUpload) {
         //reach max image allowed
-        if(this.files.length >= environment.chainPageImageMaxCount){
+        if (this.files.length >= environment.chainPageImageMaxCount) {
           this.isOverTotal = true;
           return;
         }
@@ -250,8 +324,8 @@ export class ProfileComponent implements OnInit {
           }
           else {
             //get set id = max(id) + 1
-            console.log(Math.max.apply(Math, this.files.map(function(obj){return obj.id;})))
-            id = Math.max.apply(Math, this.files.map(function(obj){return obj.id;})) + 1;
+            console.log(Math.max.apply(Math, this.files.map(function (obj) { return obj.id; })))
+            id = Math.max.apply(Math, this.files.map(function (obj) { return obj.id; })) + 1;
             //only add files which are not in the array yet
             if (!this.fileAlreadyAdded(file.name)) {
               this.files.push({ "id": id, "file": file });
@@ -329,9 +403,9 @@ export class ProfileComponent implements OnInit {
     this.model.postedTime = Date.now();
     //this.model.notification = this.toNotify;    
     console.log(this.model.notification)
-    if (this.isUpdate == true) {
+    // if (this.inBusinessEdit == true) {
       // console.log(this.model);
-      this.model.appId = this.globals.ChainpageAppId;
+      this.model.appId = this.globals.TokenponAppId;
       this.mongoService.updateProfile(this.model)
         .subscribe(response => {
           // console.log(response);
@@ -342,30 +416,30 @@ export class ProfileComponent implements OnInit {
             this.toasterService.pop("error", "fail to update listing");
           }
         );
-    }
-    else {
-      //upload to mongodb
-      // console.log(this.model);
-      this.model.appId = this.globals.ChainpageAppId;
-      this.mongoService.saveProfile(this.model)
-        .subscribe(
-          response => {
-            console.log(response);
-            if (response.status === 200) {
-              let id: String = JSON.parse(JSON.stringify(response))._body;
-              id = id.replace(/"/g, "");
-              this.toasterService.pop('success', 'Submit successful');
-              // this.router.navigate(['/home/claim-detail'], { queryParams: { id: id } });
-            }
-            else {
-              this.toasterService.pop("error", "fail to submit listing");
-            }
-          },
-          err => {
-            this.toasterService.pop("error", "fail to submit listing");
-          }
-        );
-    }
+    // }
+    // else {
+    //   //upload to mongodb
+    //   // console.log(this.model);
+    //   this.model.appId = this.globals.TokenponAppId;
+    //   this.mongoService.saveProfile(this.model)
+    //     .subscribe(
+    //       response => {
+    //         console.log(response);
+    //         if (response.status === 200) {
+    //           let id: String = JSON.parse(JSON.stringify(response))._body;
+    //           id = id.replace(/"/g, "");
+    //           this.toasterService.pop('success', 'Submit successful');
+    //           // this.router.navigate(['/home/claim-detail'], { queryParams: { id: id } });
+    //         }
+    //         else {
+    //           this.toasterService.pop("error", "fail to submit listing");
+    //         }
+    //       },
+    //       err => {
+    //         this.toasterService.pop("error", "fail to submit listing");
+    //       }
+    //     );
+    // }
   }
   updateBusinessProfile() {
     this.submitted = true;
@@ -395,8 +469,12 @@ export class ProfileComponent implements OnInit {
       "Food & Drink", "Group Purchase", this.globals.chainFormName, this.currentUser, Date.now()
       , new Array<Comment>(), new Array<Vote>());
   }
-  toggleBusinessEdit(){
+  toggleBusinessEdit() {
     this.inBusinessEdit = !this.inBusinessEdit;
+  }
+  cancelProfileUpdate(){
+    this.inBusinessEdit = false;
+    console.log(this.inBusinessEdit);
   }
   //end of update merchant profile
 }

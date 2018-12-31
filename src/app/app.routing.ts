@@ -17,7 +17,7 @@ const appRoutes: Routes = [
         { path: '', component: ListingsComponent },
         { path: 'listing:/cat', component: ListingsComponent },
         // { path: 'contract', component: ContractComponent, canActivate: [AuthGuard] },
-        { path: 'claim', component: ClaimComponent, canActivate: [AuthGuard] },
+        { path: 'claim', component: ClaimComponent },
         { path: 'claim-detail', component: ClaimDetailComponent }
     ] },
     // {path: 'chainpost', component: ChainPostComponent, children:[
@@ -28,7 +28,7 @@ const appRoutes: Routes = [
     //   { path: 'Post-detail', component: PostDetailsComponent }
 
     // ]},
-    { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
+    { path: 'profile', component: ProfileComponent },
     { path: 'login', component: LoginComponent },
     // { path: 'register', component: RegisterComponent },
 

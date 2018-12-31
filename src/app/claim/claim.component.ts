@@ -77,7 +77,7 @@ export class ClaimComponent implements OnInit {
     }
   }
   getClaim(id: string) {
-    this.mongoService.GetListing(id, this.globals.ChainpageAppId)
+    this.mongoService.GetListing(id, this.globals.TokenponAppId)
       .subscribe(response => {
         // console.log(response)
         this.model = response.json();

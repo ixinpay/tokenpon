@@ -34,10 +34,10 @@
                             </a>
                         </li>
                         <li class="col-12" [ngClass]="{'active': selectedPage == profilePages[2]}">
-                                <a (click)="onPageClick(profilePages[2])" translate>
-                                    <i class="fa fa-cog" aria-hidden="true"></i> {{profilePages[2]}}
-                                </a>
-                            </li>
+                            <a (click)="onPageClick(profilePages[2])" translate>
+                                <i class="fa fa-cog" aria-hidden="true"></i> {{profilePages[2]}}
+                            </a>
+                        </li>
                     </ul>
                 </div>
                 <!-- END MENU -->
@@ -45,31 +45,31 @@
         </div>
         <div class="col-xs-8 col-sm-8 col-md-8 col-lg-9">
             <div *ngIf="selectedPage == profilePages[0]" class="card">
-                    <div class="card-body card-head">
-                <div>
-                    <label translate>Your token balance: </label>
-                    <b>{{tokenBalance}}</b>
+                <div class="card-body card-head">
+                    <div>
+                        <label translate>Your token balance: </label>
+                        <b>{{tokenBalance}}</b>
+                    </div>
+                    <div>
+                        <label translate>Your account number: </label>
+                        <b>{{accountNumber}}</b>
+                        <ngx-qrcode [qrc-element-type]="img" qrc-class="qrSize" [qrc-element-type]="elementType"
+                            [qrc-value]="accountNumber">
+                        </ngx-qrcode>
+                    </div>
+                    <br>
                 </div>
-                <div>
-                    <label translate>Your account number: </label>
-                    <b>{{accountNumber}}</b>
-                    <ngx-qrcode [qrc-element-type]="img" qrc-class="qrSize" [qrc-element-type]="elementType"
-                        [qrc-value]="accountNumber">
-                    </ngx-qrcode>
-                </div>
-                <br>
-            </div>
             </div>
             <div *ngIf="selectedPage == profilePages[1]">
                 <div class="col-sm-12">
                     <!-- second card -->
                     <div class="card">
                         <div class="card-body card-head">
-                            <button class="btn btn-blue-grey btn-sm float-right" (click)="toggleBusinessEdit()">
-                                {{inBusinessEdit ? "Update" : "Edit"}}</button>
+                            <button *ngIf="!inBusinessEdit" class="btn btn-blue-grey btn-sm float-right" 
+                                (click)="toggleBusinessEdit()" translate>Edit</button>
                             <!-- <h4>Update Profile</h4> -->
-                            <form *ngIf="!inBusinessEdit" (ngSubmit)="claimForm.form.valid && updateBusinessProfile()" name="claimForm"
-                                #claimForm="ngForm">
+                            <form *ngIf="!inBusinessEdit" (ngSubmit)="claimForm.form.valid && updateBusinessProfile()"
+                                name="claimForm" #claimForm="ngForm">
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-12">
@@ -111,11 +111,11 @@
                                                     <div class="row">
                                                         <div class="form-group col-sm-6">
                                                             <label for="name" translate>Contact Person</label>
-                                                                <label translate>{{model.name}}</label>
+                                                            <label translate>{{model.name}}</label>
                                                         </div>
                                                         <div class="form-group col-sm-6">
                                                             <label for="businessName" translate>Business Name</label>
-                                                                <label translate>{{model.businessName}}</label>
+                                                            <label translate>{{model.businessName}}</label>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -126,21 +126,20 @@
                                                 </div>
                                                 <div class="row">
                                                     <div class="form-group col-sm-4">
-                                                        <label for="street"
-                                                            translate>Street</label>
-                                                            <label translate>{{model.street}}</label>
+                                                        <label for="street" translate>Street</label>
+                                                        <label translate>{{model.street}}</label>
                                                     </div>
                                                     <div class="form-group col-sm-4">
-                                                            <label for="city" class="required" translate>City</label>
-                                                            <label translate>{{model.city}}</label>
+                                                        <label for="city" class="required" translate>City</label>
+                                                        <label translate>{{model.city}}</label>
                                                     </div>
                                                     <div class="form-group col-sm-2">
-                                                            <label for="state" class="required" translate>State/Province</label>
-                                                            <label translate>{{model.state}}</label>
+                                                        <label for="state" class="required" translate>State/Province</label>
+                                                        <label translate>{{model.state}}</label>
                                                     </div>
                                                     <div class="form-group col-sm-2">
-                                                            <label for="zip" class="required" translate>Zip Code</label>
-                                                            <label translate>{{model.zip}}</label>
+                                                        <label for="zip" class="required" translate>Zip Code</label>
+                                                        <label translate>{{model.zip}}</label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -150,18 +149,18 @@
                                                 </div>
                                                 <div class="row">
                                                     <div class="form-group col-sm-6">
-                                                            <label for="email" class="required" translate>Email</label>
-                                                            <label translate>{{model.email}}</label>
+                                                        <label for="email" class="required" translate>Email</label>
+                                                        <label translate>{{model.email}}</label>
                                                     </div>
                                                     <div class="form-group col-sm-6">
-                                                            <label for="phone" class="required" translate>Phone</label>
-                                                            <label translate>{{model.phone}}</label>
+                                                        <label for="phone" class="required" translate>Phone</label>
+                                                        <label translate>{{model.phone}}</label>
                                                     </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="form-group col-sm-6">
-                                                            <label for="webPage" class="required" translate>WebPage</label>
-                                                            <label translate>{{model.webPage}}</label>  
+                                                        <label for="webPage" class="required" translate>WebPage</label>
+                                                        <label translate>{{model.webPage}}</label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -171,18 +170,21 @@
                                                 </div>
                                                 <div class="row">
                                                     <div class="form-group col-sm-6">
-                                                        <label for="businessMainCategory" class="required" translate>Main Category</label>
-                                                            <label translate>{{model.businessMainCategory}}</label>
+                                                        <label for="businessMainCategory" class="required" translate>Main
+                                                            Category</label>
+                                                        <label translate>{{model.businessMainCategory}}</label>
                                                     </div>
                                                     <div class="form-group col-sm-6">
-                                                        <label for="businessSubCategory" class="required" translate>Sub Category</label>
-                                                            <label translate>{{model.businessSubCategory}}</label>
+                                                        <label for="businessSubCategory" class="required" translate>Sub
+                                                            Category</label>
+                                                        <label translate>{{model.businessSubCategory}}</label>
                                                     </div>
                                                 </div>
                                                 <div class="row">
                                                     <div class="form-group col-sm-6">
-                                                        <label for="servicingArea" class="required" translate>Servicing Area</label>
-                                                            <label translate>{{model.servicingArea}}</label>
+                                                        <label for="servicingArea" class="required" translate>Servicing
+                                                            Area</label>
+                                                        <label translate>{{model.servicingArea}}</label>
                                                     </div>
                                                 </div>
                                                 <div class="row">
@@ -198,17 +200,32 @@
                                                 </div>
                                                 <div class="row">
                                                     <div class="form-group col-sm-12">
-                                                            <label for="service" class="required" translate>Description</label>
-                                                            <label class="label">{{model.service}}</label>
+                                                        <label for="service" class="required" translate>Description</label>
+                                                        <label class="label">{{model.service}}</label>
                                                     </div>
                                                 </div>
                                             </div>
+                                            <ngu-carousel #myCarousels1 [inputs]="carouselBanner" (carouselLoad)="carouselTileOneLoad()"
+                                                (onMove)="onMoveData($event)" [reset]="rsts" (initData)="getCarouselData($event)">
+                                                <ngu-tile NguCarouselItem *ngFor="let image of albums; let i=index">
+                                                    <img style="cursor: pointer;width: 100%;height: 100px;" [src]="image.thumb"
+                                                        (click)="open(i)" class="img-thumbnail hoverable" />
+                                                </ngu-tile>
+                                                <a NguCarouselPrev class="carousel-control-prev">
+                                                    <i class="fa fa-chevron-left fa-lg text-muted pt-5"></i>
+                                                    <span class="sr-only">Previous</span>
+                                                </a>
+                                                <a NguCarouselNext class="carousel-control-next text-faded">
+                                                    <i class="fa fa-chevron-right fa-lg text-muted pt-5"></i>
+                                                    <span class="sr-only">Next</span>
+                                                </a>
+                                            </ngu-carousel>
                                         </div>
                                     </div>
                                 </div>
                             </form>
-                            <form *ngIf="inBusinessEdit" (ngSubmit)="claimForm.form.valid && updateBusinessProfile()" name="claimForm"
-                                #claimForm="ngForm">
+                            <form *ngIf="inBusinessEdit" (ngSubmit)="claimForm.form.valid && updateBusinessProfile()"
+                                name="claimForm" #claimForm="ngForm">
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-12">
@@ -526,17 +543,18 @@
                                             </div>
                                         </div>
                                         <div class="submitBtn">
-                                                <button type="submit" class="btn btn-success" translate>{{isUpdate? 'Update': 'Submit'}}</button>
-                                                <button *ngIf="isUpdate" class="btn btn-outline-danger  waves-effect" [routerLink]=""
-                                                    [queryParams]="{id: claimId}" type="submit" translate>Cancel
-                                                    <i class="fa fa-ban ml-2"></i>
-                                                </button>
-                                                <button *ngIf="!isUpdate" class="btn btn-outline-danger  waves-effect" [routerLink]="" type="submit"
-                                                    translate>Cancel
-                                                    <i class="fa fa-ban ml-2"></i>
-                                                </button>
-                                                <button type="button" (click)="test()">test</button>
-                                            </div>
+                                            <button type="submit" class="btn btn-success" translate>{{isUpdate?
+                                                'Update': 'Submit'}}</button>
+                                            <button *ngIf="isUpdate" class="btn btn-outline-danger  waves-effect"
+                                                [routerLink]="" [queryParams]="{id: claimId}" type="submit" translate>Cancel
+                                                <i class="fa fa-ban ml-2"></i>
+                                            </button>
+                                            <button type="button" class="btn btn-outline-danger  waves-effect"
+                                                (click)="cancelProfileUpdate()" translate>Cancel
+                                                <i class="fa fa-ban ml-2"></i>
+                                            </button>
+                                            <button type="button" (click)="test()">test</button>
+                                        </div>
                                     </div>
                                 </div>
                             </form>

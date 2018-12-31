@@ -8,7 +8,7 @@ export class Globals {
   readonly tokenDeductAmmount_ChainpageComment = 5;
   readonly tokenDeductAmmount_ChainpageUpVote = 5;
   readonly tokenDeductAmmount_ChainpageDownVote = 10;
-  readonly ChainpageAppId = 1;
+  readonly TokenponAppId = 1;
   readonly ChainpostAppId = 2;
   readonly action = { comment: "comment", like: "like", dislike: "dislike", post: "post", login: "login" };
   readonly ChainPageNewCommentSubject = "New comment posted";

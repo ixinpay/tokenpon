@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
 import { environment } from '../../environments/environment';
 import { Marker } from 'app/_models/marker';
-import { AnyARecord } from 'dns';
+// import { AnyARecord } from 'dns';
 
 @Injectable()
 export class GoogleGeoService {

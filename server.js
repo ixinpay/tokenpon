@@ -4,7 +4,7 @@ var bodyParser = require('body-parser');
 var mongo = require("mongoose");
 const https = require('https')
 const fs = require('fs')
-const ChainpageAppId = 1
+const TokenponAppId = 1
 const ChainpostAppId = 2
     // The chain page url
     //var gChainPageUrl = "http://localhost:4200";
@@ -117,10 +117,25 @@ ChainPostSchema.index({ Tags: 'text' });
 var modelChainPage = mongo.model('tokenponProfile', TokenponProfileSchema);
 var modelChainPost = mongo.model('Post', ChainPostSchema);
 
+app.get("/api/getProfile/:email/:appId", function(req, res) {
+    var model;
+    if (req.params.appId == TokenponAppId) {
+        model = TokenponProfileSchema;
+    } else if (req.params.appId == ChainpostAppId) {
+        model = modelChainPost;
+    }
+    model.findOne({ _id: req.params.email }, function(err, data) {
+        if (err) {
+            res.send(err);
+        } else {
+            res.send(data);
+        }
+    });
+})
 app.post("/api/saveProfile", function(req, res) {
     //var mod = new modelChainPage(req.body);
     var model;
-    if (req.body.appId == ChainpageAppId) {
+    if (req.body.appId == TokenponAppId) {
         model = new modelChainPage(req.body);
     } else if (req.body.appId == ChainpostAppId) {
         model = new modelChainPost(req.body);
@@ -141,7 +156,7 @@ app.post("/api/updateProfile", function(req, res) {
     //var mod = new model(req.body);
     // console.log(req.body._id)
     var model;
-    if (req.body.appId == ChainpageAppId) {
+    if (req.body.appId == TokenponAppId) {
         model = modelChainPage;
         model.update({ _id: req.body._id }, {
                 "$set": {
@@ -203,7 +218,7 @@ app.post("/api/updateProfile", function(req, res) {
 app.post("/api/deleteListing", function(req, res) {
     console.log("ID to be deleted: " + req.body.id)
     var model;
-    if (req.body.appId == ChainpageAppId) {
+    if (req.body.appId == TokenponAppId) {
         model = modelChainPage;
     } else if (req.body.appId == ChainpostAppId) {
         model = modelChainPost;
@@ -221,7 +236,7 @@ app.get("/api/getListings/:appId", function(req, res) {
     // console.log(req.params.appId)
     var model;
     var filter = {};
-    if (req.params.appId == ChainpageAppId) {
+    if (req.params.appId == TokenponAppId) {
         model = modelChainPage;
     } else if (req.params.appId == ChainpostAppId) {
         model = modelChainPost;
@@ -238,7 +253,7 @@ app.get("/api/getListings/:appId", function(req, res) {
 
 app.get("/api/getListingsByCat/:cat/:appId", function(req, res) {
     var model;
-    if (req.params.appId == ChainpageAppId) {
+    if (req.params.appId == TokenponAppId) {
         model = modelChainPage;
         model.find({ businessMainCategory: req.params.cat }, function(err, data) {
             if (err) {
@@ -262,7 +277,7 @@ app.get("/api/getListingsByCat/:cat/:appId", function(req, res) {
 
 app.get("/api/getListingsBySubcat/:subcat/:appId", function(req, res) {
     var model;
-    if (req.params.appId == ChainpageAppId) {
+    if (req.params.appId == TokenponAppId) {
         model = modelChainPage;
     } else if (req.params.appId == ChainpostAppId) {
         model = modelChainPost;
@@ -278,7 +293,7 @@ app.get("/api/getListingsBySubcat/:subcat/:appId", function(req, res) {
 
 app.get("/api/getListing/:id/:appId", function(req, res) {
     var model;
-    if (req.params.appId == ChainpageAppId) {
+    if (req.params.appId == TokenponAppId) {
         model = modelChainPage;
     } else if (req.params.appId == ChainpostAppId) {
         model = modelChainPost;
@@ -293,7 +308,7 @@ app.get("/api/getListing/:id/:appId", function(req, res) {
 })
 app.get("/api/getViewCount/:id/:appId", function(req, res) {
     var model;
-    if (req.params.appId == ChainpageAppId) {
+    if (req.params.appId == TokenponAppId) {
         model = modelChainPage;
     } else if (req.params.appId == ChainpostAppId) {
         model = modelChainPost;
@@ -309,7 +324,7 @@ app.get("/api/getViewCount/:id/:appId", function(req, res) {
 app.post("/api/incrementViewCount", function(req, res) {
     console.log("record id: " + req.body.id)
     var model;
-    if (req.body.appId == ChainpageAppId) {
+    if (req.body.appId == TokenponAppId) {
         model = modelChainPage;
     } else if (req.body.appId == ChainpostAppId) {
         model = modelChainPost;
@@ -330,7 +345,7 @@ app.post("/api/incrementViewCount", function(req, res) {
 app.post("/api/addComment", function(req, res) {
     console.log(req.body)
     var model;
-    if (req.body.appId == ChainpageAppId) {
+    if (req.body.appId == TokenponAppId) {
         model = modelChainPage;
     } else if (req.body.appId == ChainpostAppId) {
         model = modelChainPost;
@@ -352,7 +367,7 @@ app.post("/api/addComment", function(req, res) {
 
 app.post("/api/updateComment", function(req, res) {
     var model;
-    if (req.body.appId == ChainpageAppId) {
+    if (req.body.appId == TokenponAppId) {
         model = modelChainPage;
     } else if (req.body.appId == ChainpostAppId) {
         model = modelChainPost;
@@ -372,7 +387,7 @@ app.post("/api/updateComment", function(req, res) {
 })
 app.post("/api/deleteComment", function(req, res) {
     var model;
-    if (req.body.appId == ChainpageAppId) {
+    if (req.body.appId == TokenponAppId) {
         model = modelChainPage;
     } else if (req.body.appId == ChainpostAppId) {
         model = modelChainPost;
@@ -393,7 +408,7 @@ app.post("/api/deleteComment", function(req, res) {
 app.post("/api/addVote", function(req, res) {
     console.log(req.body)
     var model;
-    if (req.body.appId == ChainpageAppId) {
+    if (req.body.appId == TokenponAppId) {
         model = modelChainPage;
     } else if (req.body.appId == ChainpostAppId) {
         model = modelChainPost;
@@ -414,7 +429,7 @@ app.post("/api/addVote", function(req, res) {
 })
 app.post("/api/deleteVote", function(req, res) {
     var model;
-    if (req.body.appId == ChainpageAppId) {
+    if (req.body.appId == TokenponAppId) {
         model = modelChainPage;
     } else if (req.body.appId == ChainpostAppId) {
         model = modelChainPost;
@@ -436,7 +451,7 @@ app.post("/api/deleteVote", function(req, res) {
 app.get("/api/searchListings/:searchtext/:appId", function(req, res) {
     var model;
     console.log(req.params.searchtext + "" + req.params.appId)
-    if (req.params.appId == ChainpageAppId) {
+    if (req.params.appId == TokenponAppId) {
         model = modelChainPage;
     } else if (req.params.appId == ChainpostAppId) {
         model = modelChainPost;
