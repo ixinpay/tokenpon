@@ -22,7 +22,7 @@ export class ProfileComponent implements OnInit {
 
   regionDisplayName: string = null;
   inBusinessEdit = false;
-  // model: any = {};
+  model: any = {};
   showPassword = false;
   userName: string;
   tokenBalance: number;
@@ -41,7 +41,7 @@ export class ProfileComponent implements OnInit {
   files: any[] = [];
   fileNames: any[] = [];
   currentUser: string;
-  model: any = {};
+  profileModel: any = {};
   claims: Claim[] = [];
   submitted = false;
   categories: any[] = [];
@@ -70,6 +70,7 @@ export class ProfileComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       this.userName = params["user"];
     });
+    this.getProfileData();
     this.profilePages = new Array("Account Information", "Business Profile", "Account Settings");
     this.selectedPage = this.profilePages[0];
     //get user data
@@ -127,17 +128,17 @@ export class ProfileComponent implements OnInit {
   }
   //get user profile data
   getProfileData() {
-    this.mongoService.GetProfile(this.accountEmail, this.globals.TokenponAppId)
+    this.mongoService.GetProfile(this.userName, this.globals.TokenponAppId)
       .subscribe(response => {
         if (response.status == 200) {
           // console.log(response);
-          this.model = response.json();
-          console.log(this.model);
+          this.profileModel = response.json();
+          console.log(this.profileModel);
 
 
         }
       });
-    this.swarmService.getFileUrls(this.model.pictures)
+    this.swarmService.getFileUrls(this.profileModel.pictures)
       .forEach(img => {
         const src = img;
         //const caption = 'Image caption here';
@@ -184,9 +185,9 @@ export class ProfileComponent implements OnInit {
   // updateProfile(){
   //   this.inEdit = !this.inEdit;
   //   if(!this.inEdit){
-  //     console.log(this.model.local.region);
-  //     this.oothService.onUpdateUser(this.model.local.region)
-  //     .then(() => {this.getRegionDisplayNameByKey(this.model.local.region);});
+  //     console.log(this.profileModel.local.region);
+  //     this.oothService.onUpdateUser(this.profileModel.local.region)
+  //     .then(() => {this.getRegionDisplayNameByKey(this.profileModel.local.region);});
   //   }
   // }
   getRegionDisplayNameByKey(key: string) {
@@ -383,7 +384,7 @@ export class ProfileComponent implements OnInit {
     this.swarmService.uploadFiles(this.files)
       .subscribe(res => {
         console.log(res);
-        this.model.pictures = res
+        this.profileModel.pictures = res
         // after uploading pictures, upload data
         this.uploadData();
       },
@@ -394,19 +395,19 @@ export class ProfileComponent implements OnInit {
   }
   uploadData() {
     // set the upload time stamp
-    delete this.model["__v"]
-    // console.log("model = " + JSON.stringify(this.model));
-    // if (this.model.id === undefined) {
-    //   this.model.id = "NA";
+    delete this.profileModel["__v"]
+    // console.log("profileModel = " + JSON.stringify(this.profileModel));
+    // if (this.profileModel.id === undefined) {
+    //   this.profileModel.id = "NA";
     // }
-    this.model.postedBy = this.currentUser;
-    this.model.postedTime = Date.now();
-    //this.model.notification = this.toNotify;    
-    console.log(this.model.notification)
+    this.profileModel.postedBy = this.currentUser;
+    this.profileModel.postedTime = Date.now();
+    //this.profileModel.notification = this.toNotify;    
+    console.log(this.profileModel.notification)
     // if (this.inBusinessEdit == true) {
-      // console.log(this.model);
-      this.model.appId = this.globals.TokenponAppId;
-      this.mongoService.updateProfile(this.model)
+      // console.log(this.profileModel);
+      this.profileModel.appId = this.globals.TokenponAppId;
+      this.mongoService.updateProfile(this.profileModel)
         .subscribe(response => {
           // console.log(response);
           this.toasterService.pop('success', 'Update successful');
@@ -419,9 +420,9 @@ export class ProfileComponent implements OnInit {
     // }
     // else {
     //   //upload to mongodb
-    //   // console.log(this.model);
-    //   this.model.appId = this.globals.TokenponAppId;
-    //   this.mongoService.saveProfile(this.model)
+    //   // console.log(this.profileModel);
+    //   this.profileModel.appId = this.globals.TokenponAppId;
+    //   this.mongoService.saveProfile(this.profileModel)
     //     .subscribe(
     //       response => {
     //         console.log(response);
@@ -451,7 +452,7 @@ export class ProfileComponent implements OnInit {
     else {
       console.log("no pictures to upload")
       //set pictures to empty
-      this.model.pictures = [];
+      this.profileModel.pictures = [];
       this.uploadData();
     }
   }
@@ -464,7 +465,7 @@ export class ProfileComponent implements OnInit {
     }
   }
   test() {
-    this.model = new Claim("John", "John Business", "123 abc st.", "DC", "DC", "20001",
+    this.profileModel = new Claim("John", "John Business", "123 abc st.", "DC", "DC", "20001",
       "USA", "test@test.com", "123-123-1234", "http://www.test.com", "Baby", "DC", "9-5",
       "Food & Drink", "Group Purchase", this.globals.chainFormName, this.currentUser, Date.now()
       , new Array<Comment>(), new Array<Vote>());

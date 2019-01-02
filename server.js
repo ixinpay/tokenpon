@@ -117,14 +117,14 @@ ChainPostSchema.index({ Tags: 'text' });
 var modelChainPage = mongo.model('tokenponProfile', TokenponProfileSchema);
 var modelChainPost = mongo.model('Post', ChainPostSchema);
 
-app.get("/api/getProfile/:email/:appId", function(req, res) {
+app.get("/api/getProfile/:username/:appId", function(req, res) {
     var model;
     if (req.params.appId == TokenponAppId) {
         model = TokenponProfileSchema;
     } else if (req.params.appId == ChainpostAppId) {
         model = modelChainPost;
     }
-    model.findOne({ _id: req.params.email }, function(err, data) {
+    model.findOne({ postedBy: req.params.username }, function(err, data) {
         if (err) {
             res.send(err);
         } else {
