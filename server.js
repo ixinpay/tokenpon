@@ -63,6 +63,32 @@ var VoteSchema = new Schema({
     postedBy: { type: String },
     postedTime: { type: Number }
 });
+var TokenponSchema = new Schema({
+    name: { type: String },
+    businessName: { type: String },
+    street: { type: String },
+    city: { type: String },
+    state: { type: String },
+    zip: { type: String },
+    country: { type: String },
+    email: { type: String },
+    phone: { type: String },
+    webPage: { type: String },
+    service: { type: String },
+    servicingArea: { type: String },
+    businessHour: { type: String },
+    businessMainCategory: { type: String },
+    businessSubCategory: { type: String },
+    formType: { type: String },
+    postedBy: { type: String },
+    postedTime: { type: Number },
+    comments: [CommentSchema],
+    votes: [VoteSchema],
+    pictures: [String],
+    viewCount: { type: Number },
+    region: { type: String },
+    notification: { type: Boolean}
+});
 var TokenponProfileSchema = new Schema({
     name: { type: String },
     businessName: { type: String },
@@ -95,7 +121,7 @@ var TokenponProfileSchema = new Schema({
 // businessMainCategory: 'text', businessSubCategory: 'text',
 // service: 'text', servicingArea: 'text'
 // });
-TokenponProfileSchema.index({ '$**': 'text' });
+TokenponSchema.index({ '$**': 'text' });
 
 var ChainPostSchema = new Schema({
     Title: { type: String },
@@ -114,13 +140,14 @@ var ChainPostSchema = new Schema({
 });
 ChainPostSchema.index({ Tags: 'text' });
 
-var modelChainPage = mongo.model('tokenponProfile', TokenponProfileSchema);
+var modelTokenpon = mongo.model('tokenpon', TokenponSchema);
+var modelTokenponProfile = mongo.model('tokenponProfile', TokenponProfileSchema);
 var modelChainPost = mongo.model('Post', ChainPostSchema);
 
 app.get("/api/getProfile/:username/:appId", function(req, res) {
     var model;
     if (req.params.appId == TokenponAppId) {
-        model = TokenponProfileSchema;
+        model = modelTokenponProfile;
     } else if (req.params.appId == ChainpostAppId) {
         model = modelChainPost;
     }
@@ -133,10 +160,10 @@ app.get("/api/getProfile/:username/:appId", function(req, res) {
     });
 })
 app.post("/api/saveProfile", function(req, res) {
-    //var mod = new modelChainPage(req.body);
+    //var mod = new modelTokenponProfile(req.body);
     var model;
     if (req.body.appId == TokenponAppId) {
-        model = new modelChainPage(req.body);
+        model = new modelTokenponProfile(req.body);
     } else if (req.body.appId == ChainpostAppId) {
         model = new modelChainPost(req.body);
         console.log("====model====:" + model);
@@ -157,7 +184,7 @@ app.post("/api/updateProfile", function(req, res) {
     // console.log(req.body._id)
     var model;
     if (req.body.appId == TokenponAppId) {
-        model = modelChainPage;
+        model = modelTokenponProfile;
         model.update({ _id: req.body._id }, {
                 "$set": {
                     name: req.body.name,
@@ -219,7 +246,7 @@ app.post("/api/deleteListing", function(req, res) {
     console.log("ID to be deleted: " + req.body.id)
     var model;
     if (req.body.appId == TokenponAppId) {
-        model = modelChainPage;
+        model = modelTokenpon;
     } else if (req.body.appId == ChainpostAppId) {
         model = modelChainPost;
     }
@@ -237,7 +264,7 @@ app.get("/api/getListings/:appId", function(req, res) {
     var model;
     var filter = {};
     if (req.params.appId == TokenponAppId) {
-        model = modelChainPage;
+        model = modelTokenpon;
     } else if (req.params.appId == ChainpostAppId) {
         model = modelChainPost;
         filter = { Narrative: 0 };
@@ -254,7 +281,7 @@ app.get("/api/getListings/:appId", function(req, res) {
 app.get("/api/getListingsByCat/:cat/:appId", function(req, res) {
     var model;
     if (req.params.appId == TokenponAppId) {
-        model = modelChainPage;
+        model = modelTokenpon;
         model.find({ businessMainCategory: req.params.cat }, function(err, data) {
             if (err) {
                 res.send(err);
@@ -278,7 +305,7 @@ app.get("/api/getListingsByCat/:cat/:appId", function(req, res) {
 app.get("/api/getListingsBySubcat/:subcat/:appId", function(req, res) {
     var model;
     if (req.params.appId == TokenponAppId) {
-        model = modelChainPage;
+        model = modelTokenpon;
     } else if (req.params.appId == ChainpostAppId) {
         model = modelChainPost;
     }
@@ -294,7 +321,7 @@ app.get("/api/getListingsBySubcat/:subcat/:appId", function(req, res) {
 app.get("/api/getListing/:id/:appId", function(req, res) {
     var model;
     if (req.params.appId == TokenponAppId) {
-        model = modelChainPage;
+        model = modelTokenpon;
     } else if (req.params.appId == ChainpostAppId) {
         model = modelChainPost;
     }
@@ -309,7 +336,7 @@ app.get("/api/getListing/:id/:appId", function(req, res) {
 app.get("/api/getViewCount/:id/:appId", function(req, res) {
     var model;
     if (req.params.appId == TokenponAppId) {
-        model = modelChainPage;
+        model = modelTokenpon;
     } else if (req.params.appId == ChainpostAppId) {
         model = modelChainPost;
     }
@@ -325,7 +352,7 @@ app.post("/api/incrementViewCount", function(req, res) {
     console.log("record id: " + req.body.id)
     var model;
     if (req.body.appId == TokenponAppId) {
-        model = modelChainPage;
+        model = modelTokenpon;
     } else if (req.body.appId == ChainpostAppId) {
         model = modelChainPost;
     }
@@ -346,7 +373,7 @@ app.post("/api/addComment", function(req, res) {
     console.log(req.body)
     var model;
     if (req.body.appId == TokenponAppId) {
-        model = modelChainPage;
+        model = modelTokenpon;
     } else if (req.body.appId == ChainpostAppId) {
         model = modelChainPost;
     }
@@ -368,7 +395,7 @@ app.post("/api/addComment", function(req, res) {
 app.post("/api/updateComment", function(req, res) {
     var model;
     if (req.body.appId == TokenponAppId) {
-        model = modelChainPage;
+        model = modelTokenpon;
     } else if (req.body.appId == ChainpostAppId) {
         model = modelChainPost;
     }
@@ -388,7 +415,7 @@ app.post("/api/updateComment", function(req, res) {
 app.post("/api/deleteComment", function(req, res) {
     var model;
     if (req.body.appId == TokenponAppId) {
-        model = modelChainPage;
+        model = modelTokenpon;
     } else if (req.body.appId == ChainpostAppId) {
         model = modelChainPost;
     }
@@ -409,7 +436,7 @@ app.post("/api/addVote", function(req, res) {
     console.log(req.body)
     var model;
     if (req.body.appId == TokenponAppId) {
-        model = modelChainPage;
+        model = modelTokenpon;
     } else if (req.body.appId == ChainpostAppId) {
         model = modelChainPost;
     }
@@ -430,7 +457,7 @@ app.post("/api/addVote", function(req, res) {
 app.post("/api/deleteVote", function(req, res) {
     var model;
     if (req.body.appId == TokenponAppId) {
-        model = modelChainPage;
+        model = modelTokenpon;
     } else if (req.body.appId == ChainpostAppId) {
         model = modelChainPost;
     }
@@ -452,7 +479,7 @@ app.get("/api/searchListings/:searchtext/:appId", function(req, res) {
     var model;
     console.log(req.params.searchtext + "" + req.params.appId)
     if (req.params.appId == TokenponAppId) {
-        model = modelChainPage;
+        model = modelTokenpon;
     } else if (req.params.appId == ChainpostAppId) {
         model = modelChainPost;
     }

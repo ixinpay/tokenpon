@@ -69,8 +69,9 @@ export class ProfileComponent implements OnInit {
     this.accountEmail = localStorage.getItem("currentUserEmail");
     this.route.queryParams.subscribe(params => {
       this.userName = params["user"];
+      this.getProfileData();
     });
-    this.getProfileData();
+
     this.profilePages = new Array("Account Information", "Business Profile", "Account Settings");
     this.selectedPage = this.profilePages[0];
     //get user data
@@ -80,24 +81,26 @@ export class ProfileComponent implements OnInit {
         console.log(this.model.local)
         console.log(this.model.local.region)
       });
-    this.oothService.getInfo()
-      .then(res => {
-        // console.log(res.supernodes);
-        this.supernodes = [];
-        for (let node of res.supernodes) {
-          for (let key in node) {
-            console.log("      key:", key, "value:", node[key]);
-            this.supernodes.push(new SupoerNode(key, node[key]));
-            //get region display string
-            if (this.model.local.region === key) {
-              this.regionDisplayName = node[key];
-            }
-          }
-        }
-        // this.supernodes.forEach(node => {
-        //   console.log(node.key + ":" + node.region);
-        // });
-      });
+      //get super node list
+    // this.oothService.getInfo()
+    //   .then(res => {
+    //     // console.log(res.supernodes);
+    //     this.supernodes = [];
+    //     for (let node of res.supernodes) {
+    //       for (let key in node) {
+    //         console.log("      key:", key, "value:", node[key]);
+    //         this.supernodes.push(new SupoerNode(key, node[key]));
+    //         //get region display string
+    //         if (this.model.local.region === key) {
+    //           this.regionDisplayName = node[key];
+    //         }
+    //       }
+    //     }
+    //     // this.supernodes.forEach(node => {
+    //     //   console.log(node.key + ":" + node.region);
+    //     // });
+    //   });
+
     // let balanceSession = localStorage.getItem('tokenBalance');
     //     if (balanceSession) {
     //       this.tokenBalance = Number.parseFloat(balanceSession);
@@ -131,26 +134,28 @@ export class ProfileComponent implements OnInit {
     this.mongoService.GetProfile(this.userName, this.globals.TokenponAppId)
       .subscribe(response => {
         if (response.status == 200) {
-          // console.log(response);
+          console.log(response);
           this.profileModel = response.json();
           console.log(this.profileModel);
 
 
         }
       });
-    this.swarmService.getFileUrls(this.profileModel.pictures)
-      .forEach(img => {
-        const src = img;
-        //const caption = 'Image caption here';
-        const thumb = img;
-        const album = {
-          src: src,
-          //caption: caption,
-          thumb: thumb
-        };
+    if (this.profileModel.pictures !== undefined) {
+      this.swarmService.getFileUrls(this.profileModel.pictures)
+        .forEach(img => {
+          const src = img;
+          //const caption = 'Image caption here';
+          const thumb = img;
+          const album = {
+            src: src,
+            //caption: caption,
+            thumb: thumb
+          };
 
-        this.albums.push(album);
-      });
+          this.albums.push(album);
+        });
+    }
   }
   togglePass() {
     this.showPassword = !this.showPassword;
@@ -206,21 +211,21 @@ export class ProfileComponent implements OnInit {
         this.tokenBalance = balance;
       });
 
-      //load picture carousel
-      this.carouselBanner = {
-        grid: { xs: 2, sm: 3, md: 4, lg: 4, all: 0 },
-        speed: 600,
-        slide: 1,
-        point: {
-          visible: true
-        },
-        load: 2,
-        // loop: true,
-        touch: true,
-        easing: 'ease',
-        animation: 'lazy'
-      }
-      this.carouselTileOneLoad();
+    //load picture carousel
+    this.carouselBanner = {
+      grid: { xs: 2, sm: 3, md: 4, lg: 4, all: 0 },
+      speed: 600,
+      slide: 1,
+      point: {
+        visible: true
+      },
+      load: 2,
+      // loop: true,
+      touch: true,
+      easing: 'ease',
+      animation: 'lazy'
+    }
+    this.carouselTileOneLoad();
   }
   public carouselTileOneLoad() {
     const len = this.carouselTileOneItems.length;
@@ -405,18 +410,18 @@ export class ProfileComponent implements OnInit {
     //this.profileModel.notification = this.toNotify;    
     console.log(this.profileModel.notification)
     // if (this.inBusinessEdit == true) {
-      // console.log(this.profileModel);
-      this.profileModel.appId = this.globals.TokenponAppId;
-      this.mongoService.updateProfile(this.profileModel)
-        .subscribe(response => {
-          // console.log(response);
-          this.toasterService.pop('success', 'Update successful');
-          // this.router.navigate(['/home/claim-detail'], { queryParams: { id: this.claimId } });
-        },
-          err => {
-            this.toasterService.pop("error", "fail to update listing");
-          }
-        );
+    // console.log(this.profileModel);
+    this.profileModel.appId = this.globals.TokenponAppId;
+    this.mongoService.updateProfile(this.profileModel)
+      .subscribe(response => {
+        // console.log(response);
+        this.toasterService.pop('success', 'Update successful');
+        // this.router.navigate(['/home/claim-detail'], { queryParams: { id: this.claimId } });
+      },
+        err => {
+          this.toasterService.pop("error", "fail to update listing");
+        }
+      );
     // }
     // else {
     //   //upload to mongodb
@@ -473,7 +478,7 @@ export class ProfileComponent implements OnInit {
   toggleBusinessEdit() {
     this.inBusinessEdit = !this.inBusinessEdit;
   }
-  cancelProfileUpdate(){
+  cancelProfileUpdate() {
     this.inBusinessEdit = false;
     console.log(this.inBusinessEdit);
   }
