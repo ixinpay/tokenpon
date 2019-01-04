@@ -44,6 +44,9 @@ export class ClaimComponent implements OnInit {
   claimId: string;
   isUpdate: boolean = false;
   maincategoryid: this;
+  private discountArray: Array<any> = [];
+  private newDiscount: any = {};
+
   constructor(
     private router: Router, private route: ActivatedRoute, private translate: TranslateService,
     private userService: UserService, private bigchaindbService: BigchanDbService,
@@ -119,6 +122,14 @@ export class ClaimComponent implements OnInit {
     //console.log(this.currentUser.username == user);
     return this.currentUser == user;
   }
+  addDiscount() {
+    this.discountArray.push(this.newDiscount)
+    this.newDiscount = {};
+}
+
+deleteDiscount(index) {
+    this.discountArray.splice(index, 1);
+}
   ngOnInit() {
     // this.loadAllClaims();
   }

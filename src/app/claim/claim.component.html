@@ -233,32 +233,52 @@
                     <label>4600 Park st Baltimore, MD 21223</label>
                 </div>
                 <div class="row col-10">
-                        <table class="table table-hover table-hover">
-                                <thead>
-                                  <tr>
-                                    <th style="width:30%">Amount Spend</th>
-                                    <th style="width:30%">Discount</th>
-                                    <th style="width:30%">Token Number</th>
-                                    <th style="width:10%">Action</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  <tr>
-                                    <td><input type="text" class="form-control"></td>
-                                    <td>
-                                        <select class="form-control">
-                                            <option>5%</option>
-                                            <option>10%</option>
-                                            <option>15%</option>
-                                        </select>
-                                    </td>
-                                    <td><input type="text" class="form-control"></td>
-                                    <td>
-                                        <button class="btn btn-default btn-sm" type="button">Add</button>
-                                    </td>
-                                  </tr>                                  
-                                </tbody>
-                              </table>
+                    <table class="table table-hover table-hover">
+                        <thead>
+                            <tr>
+                                <th style="width:30%">Amount Spend</th>
+                                <th style="width:30%">Discount</th>
+                                <th style="width:30%">Token Number</th>
+                                <th style="width:10%">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let field of discountArray; let i = index">
+                                <td>
+                                    <input [(ngModel)]="field.amount" class="form-control" type="text" name="{{field.amount}}" />
+                                </td>
+                                <td>
+                                    <input [(ngModel)]="field.discount" class="form-control" type="text" name="{{field.discount}}" />
+                                </td>
+                                <td>
+                                    <input [(ngModel)]="field.token" class="form-control" type="text" name="{{field.token}}" />
+                                </td>
+                                <td>
+                                    <button class="btn btn-default btn-sm" type="button" (click)="deleteDiscount(i)">Delete</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input class="form-control" type="number" id="newAttributeAmount" [(ngModel)]="newDiscount.amount"
+                                        name="newAttributeAmount" required />
+                                </td>
+                                <td>
+                                    <select class="form-control" id="newAttributeDiscount" [(ngModel)]="newDiscount.discount" name="newAttributeDiscount" required>
+                                        <option>5%</option>
+                                        <option>10%</option>
+                                        <option>15%</option>
+                                    </select>
+                                </td>
+                                <td>
+                                    <input class="form-control" type="number" id="newAttributeToken" [(ngModel)]="newDiscount.token"
+                                        name="newAttributeToken" required />
+                                </td>
+                                <td>
+                                    <button class="btn btn-default btn-sm" type="button" (click)="addDiscount()">Add</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
             <div class="row">
