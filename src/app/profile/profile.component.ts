@@ -9,6 +9,7 @@ import { Globals } from 'app/globals';
 import { Http, Response, RequestOptions, Headers } from '@angular/http';
 import { environment } from 'environments/environment';
 import { NguCarousel, NguCarouselStore } from '@ngu/carousel';
+import { Lightbox } from 'ngx-lightbox';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
@@ -59,7 +60,7 @@ export class ProfileComponent implements OnInit {
   //end claim page
   constructor(private oothService: OothService, private route: ActivatedRoute
     , private toasterService: ToasterService, private translate: TranslateService,
-    private router: Router,
+    private router: Router, private lightbox: Lightbox,
     private userService: UserService, private bigchaindbService: BigchanDbService,
     private globals: Globals, private mongoService: MongoService,
     private alertService: AlertService,
@@ -81,7 +82,7 @@ export class ProfileComponent implements OnInit {
         console.log(this.model.local)
         console.log(this.model.local.region)
       });
-      //get super node list
+    //get super node list
     // this.oothService.getInfo()
     //   .then(res => {
     //     // console.log(res.supernodes);
@@ -137,25 +138,29 @@ export class ProfileComponent implements OnInit {
           console.log(response);
           this.profileModel = response.json();
           console.log(this.profileModel);
+          this.onChange(this.profileModel.country);
+          this.MainCategoryDropDownChanged(this.profileModel.businessMainCategory);
+          if (this.profileModel.pictures !== undefined) {
+            this.swarmService.getFileUrls(this.profileModel.pictures)
+              .forEach(img => {
+                const src = img;
+                //const caption = 'Image caption here';
+                const thumb = img;
+                const album = {
+                  src: src,
+                  //caption: caption,
+                  thumb: thumb
+                };
 
-
+                this.albums.push(album);
+              });
+          }
         }
       });
-    if (this.profileModel.pictures !== undefined) {
-      this.swarmService.getFileUrls(this.profileModel.pictures)
-        .forEach(img => {
-          const src = img;
-          //const caption = 'Image caption here';
-          const thumb = img;
-          const album = {
-            src: src,
-            //caption: caption,
-            thumb: thumb
-          };
-
-          this.albums.push(album);
-        });
-    }
+  }
+  open(index: number): void {
+    // open lightbox
+    this.lightbox.open(this.albums, index);
   }
   togglePass() {
     this.showPassword = !this.showPassword;
@@ -407,6 +412,7 @@ export class ProfileComponent implements OnInit {
     // }
     this.profileModel.postedBy = this.currentUser;
     this.profileModel.postedTime = Date.now();
+    this.profileModel.accountAddress = this.accountNumber;
     //this.profileModel.notification = this.toNotify;    
     console.log(this.profileModel.notification)
     // if (this.inBusinessEdit == true) {
@@ -460,6 +466,7 @@ export class ProfileComponent implements OnInit {
       this.profileModel.pictures = [];
       this.uploadData();
     }
+    this.inBusinessEdit = false;
   }
   countryDropDownChanged(value: any) {
     if (value == "2") {
@@ -472,7 +479,7 @@ export class ProfileComponent implements OnInit {
   test() {
     this.profileModel = new Claim("John", "John Business", "123 abc st.", "DC", "DC", "20001",
       "USA", "test@test.com", "123-123-1234", "http://www.test.com", "Baby", "DC", "9-5",
-      "Food & Drink", "Group Purchase", this.globals.chainFormName, this.currentUser, Date.now()
+      "Food & Drink", "Group Purchase", this.globals.chainFormName, Date.now()
       , new Array<Comment>(), new Array<Vote>());
   }
   toggleBusinessEdit() {

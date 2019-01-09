@@ -456,6 +456,8 @@ export class ListingsComponent implements OnInit {
     this.subscription = this.mongoService.deleteListing(id, this.globals.TokenponAppId)
       .subscribe(response => {
         if (response.status == 200) {
+          //remove it from array
+          this.claimsPage = this.claimsPage.filter(element => element.id != id);
           this.toasterService.pop("success", "Listing deleted")
           this.router.navigate(['/home']);
         }

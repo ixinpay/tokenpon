@@ -1,7 +1,6 @@
 import { Vote } from "./vote";
-import { Tokenpon } from "./tokenpon";
 
-export class Claim {
+export class Tokenpon {
     constructor(
         public name: String,
         public businessName: String,
@@ -21,6 +20,16 @@ export class Claim {
         public postedBy: String ,
         public postedTime: Number ,
         public comments: Comment[],
-        public votes: Vote[]
+        public votes: Vote[],
+        public discounts: Discount[]
     ) {}
 }
+export class Discount {
+    constructor(
+        public amount: number,
+        public discount: number,
+        public token: number,
+        public address: string
+    ) {}
+}
+

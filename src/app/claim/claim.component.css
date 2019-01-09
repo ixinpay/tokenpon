@@ -50,3 +50,8 @@
     content: "*";
     color: red;
 }
+
+.comment-post {
+    /* width: 640px; */
+    width: 85%
+}

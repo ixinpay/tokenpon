@@ -63,6 +63,12 @@ var VoteSchema = new Schema({
     postedBy: { type: String },
     postedTime: { type: Number }
 });
+var DiscountSchema = new Schema({
+    amount: { type: Number },
+    discount: { type: Number },
+    token: { type: Number },
+    address: { type: String}
+})
 var TokenponSchema = new Schema({
     name: { type: String },
     businessName: { type: String },
@@ -79,17 +85,19 @@ var TokenponSchema = new Schema({
     businessHour: { type: String },
     businessMainCategory: { type: String },
     businessSubCategory: { type: String },
-    formType: { type: String },
     postedBy: { type: String },
     postedTime: { type: Number },
     comments: [CommentSchema],
     votes: [VoteSchema],
+    discounts: [DiscountSchema],
     pictures: [String],
     viewCount: { type: Number },
     region: { type: String },
-    notification: { type: Boolean}
+    notification: { type: Boolean},
+    productDescription: { type: String}
 });
 var TokenponProfileSchema = new Schema({
+    accountAddress: { type: String},
     name: { type: String },
     businessName: { type: String },
     street: { type: String },
@@ -105,13 +113,11 @@ var TokenponProfileSchema = new Schema({
     businessHour: { type: String },
     businessMainCategory: { type: String },
     businessSubCategory: { type: String },
-    formType: { type: String },
     postedBy: { type: String },
     postedTime: { type: Number },
     comments: [CommentSchema],
     votes: [VoteSchema],
     pictures: [String],
-    viewCount: { type: Number },
     region: { type: String },
     notification: { type: Boolean}
 });
@@ -202,11 +208,92 @@ app.post("/api/updateProfile", function(req, res) {
                     businessHour: req.body.businessHour,
                     businessMainCategory: req.body.businessMainCategory,
                     businessSubCategory: req.body.businessSubCategory,
+                    postedTime: req.body.postedTime,
+                    pictures: req.body.pictures,
+                    notification: req.body.notification
+                }
+            }, { upsert: true },
+            function(err) {
+                if (err) {
+                    res.send(err);
+                } else {
+                    res.send({ data: "Record has been updated..!!" });
+                }
+            });
+    } else if (req.body.appId == ChainpostAppId) {
+        model = modelChainPost;
+        model.update({ _id: req.body._id }, {
+                "$set": {
+                    Title: req.body.Title,
+                    Channel: req.body.Channel,
+                    Narrative: req.body.Narrative,
                     formType: req.body.formType,
+                    Tags: req.body.Tags,
                     postedBy: req.body.postedBy,
                     postedTime: req.body.postedTime,
                     pictures: req.body.pictures,
                     notification: req.body.notification
+                }
+            }, { upsert: true },
+            function(err) {
+                if (err) {
+                    res.send(err);
+                } else {
+                    res.send({ data: "Record has been updated..!!" });
+                }
+            });
+    }
+
+})
+app.post("/api/saveListing", function(req, res) {
+    //var mod = new modelChainPage(req.body);
+    var model;
+    console.log(req.body)
+    if (req.body.appId == TokenponAppId) {
+        model = new modelTokenpon(req.body);
+    } else if (req.body.appId == ChainpostAppId) {
+        model = new modelChainPost(req.body);
+        console.log("====model====:" + model);
+    }
+
+    model.save(function(err, data) {
+        if (err) {
+            res.send(err);
+        } else {
+            console.log(data._id)
+            res.send(data._id);
+        }
+    });
+})
+app.post("/api/updateListing", function(req, res) {
+    //var mod = new model(req.body);
+    // console.log(req.body._id)
+    var model;
+    if (req.body.appId == TokenponAppId) {
+        model = modelTokenpon;
+        model.update({ _id: req.body._id }, {
+                "$set": {
+                    name: req.body.name,
+                    businessName: req.body.businessName,
+                    street: req.body.street,
+                    city: req.body.city,
+                    state: req.body.state,
+                    zip: req.body.zip,
+                    country: req.body.country,
+                    email: req.body.email,
+                    phone: req.body.phone,
+                    webPage: req.body.webPage,
+                    service: req.body.service,
+                    servicingArea: req.body.servicingArea,
+                    businessHour: req.body.businessHour,
+                    businessMainCategory: req.body.businessMainCategory,
+                    businessSubCategory: req.body.businessSubCategory,
+                    postedBy: req.body.postedBy,
+                    postedTime: req.body.postedTime,
+                    pictures: req.body.pictures,
+                    notification: req.body.notification,
+                    discounts: req.body.discounts,
+                    productDescription: req.body.productDescription
                 }
             }, { upsert: true },
             function(err) {
@@ -250,7 +337,7 @@ app.post("/api/deleteListing", function(req, res) {
     } else if (req.body.appId == ChainpostAppId) {
         model = modelChainPost;
     }
-    model.remove({ _id: req.body.id }, function(err) {
+    model.deleteOne({ _id: req.body.id }, function(err) {
         if (err) {
             res.send(err);
         } else {
@@ -325,10 +412,12 @@ app.get("/api/getListing/:id/:appId", function(req, res) {
     } else if (req.params.appId == ChainpostAppId) {
         model = modelChainPost;
     }
+    console.log("id: " + req.params.id)
     model.findOne({ _id: req.params.id }, function(err, data) {
         if (err) {
             res.send(err);
         } else {
+            console.log(data)
             res.send(data);
         }
     });

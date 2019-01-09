@@ -61,6 +61,7 @@ export class ClaimDetailComponent implements OnInit {
   private account: string;
   private userId: string;
   private tokenBalance: number;
+  private discountArray: Array<any> = [];
 
   @ViewChild('AgmMap') agmMap: AgmMap;
   // map: google.maps.Map;
@@ -122,7 +123,9 @@ export class ClaimDetailComponent implements OnInit {
           // console.log(response);
           this.model = response.json();
           console.log(this.model);
-          
+          //get discounts
+          this.discountArray = this.model.discounts;
+          console.log("discount: " + this.discountArray);
           //get map geo
           this.googleGeoService.getGoogleGeoData(this.model.street, this.model.city, this.model.state, this.model.zip)
           .subscribe(response => {
@@ -154,7 +157,7 @@ export class ClaimDetailComponent implements OnInit {
             }
           });
           //set title
-          this.titleService.setTitle(this.model.name + "--" + this.model.businessName)
+          this.titleService.setTitle(this.model.businessName + " " + this.model.city + " " + (this.model.discounts[0].discount*100) + "% off");
           this.swarmService.getFileUrls(this.model.pictures)
             .forEach(img => {
               const src = img;

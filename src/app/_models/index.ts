@@ -5,3 +5,4 @@ export * from './vote';
 export * from './Post';
 export * from './supernode';
 export * from './marker';
+export * from './tokenpon';

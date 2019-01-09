@@ -34,6 +34,14 @@ export class MongoService {
         return this.http.get(this.API + 'getListings/' + appId)
         // .map((response: Response) => response.json())
     }
+    saveListing(listing) {
+        return this.http.post(this.API + 'saveListing/', listing)
+        // .map((response: Response) =>response.json())
+    }
+    updateListing(listing) {
+        return this.http.post(this.API + 'updateListing/', listing)
+        // .map((response: Response) =>response.json())
+    }
 
     GetListingsByCat(cat, appId) {
         // let params = new HttpParams().set('cat', cat);
