@@ -49,6 +49,7 @@ export class ClaimComponent implements OnInit {
   profileModel: any = {};
   private albums: any[] = [];
   productDescription: string;
+  finePrint: string;
 
   constructor(
     private router: Router, private route: ActivatedRoute, private translate: TranslateService,
@@ -64,6 +65,9 @@ export class ClaimComponent implements OnInit {
       this.claimId = params['id'];
       if (this.claimId) {
         this.getDetails(this.claimId);
+      }
+      else{
+        this.finePrint = this.globals.TokenponFineprint;
       }
     });
     this.getProfileData();
@@ -210,6 +214,10 @@ export class ClaimComponent implements OnInit {
         // console.log(response)
         this.model = response.json();
         this.discountArray = this.model.discounts;
+        this.discountArray.forEach(element =>{
+          element.discount = element.discount * 100;
+        });
+        this.finePrint = this.model.finePrint;
         console.log(this.model.notification);
         let id = -1;
         // this.swarmService.getFileUrls(this.model.pictures)
@@ -269,14 +277,15 @@ export class ClaimComponent implements OnInit {
     this.model.pictures = this.profileModel.pictures;
     this.model.notification = this.profileModel.notification;
     this.model.discounts = this.discountArray;
-    // this.model.productDescription = this.productDescription;
+    this.model.productDescription = this.productDescription;
+    this.model.finePrint = this.finePrint;
     //convert discount rate to %
     this.model.discounts.forEach(element => {
       element.discount = (element.discount / 100).toFixed(2);
     });
     this.model.postedTime = Date.now();
     //this.model.notification = this.toNotify;    
-    console.log(this.model.notification)
+    console.log(this.model)
     if (this.isUpdate == true) {
       // console.log(this.model);
       this.model.appId = this.globals.TokenponAppId;
@@ -293,7 +302,7 @@ export class ClaimComponent implements OnInit {
     }
     else {
       //upload to mongodb
-      // console.log(this.model);
+      console.log(this.model);
 
       this.mongoService.saveListing(this.model)
         .subscribe(

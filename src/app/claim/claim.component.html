@@ -248,7 +248,7 @@
                                     <label>{{field.amount}}</label>
                                 </td>
                                 <td>
-                                    <label>{{field.discount * 100}}%</label>
+                                    <label>{{field.discount}}%</label>
                                 </td>
                                 <td>
                                     <label>{{field.token}}</label>
@@ -300,26 +300,33 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="row col-10">
+                <div class="col-12">
                     <label for="productTextarea" translate>Product Description (min 10 characters):</label>
-                    <br>
-                    <textarea class="form-control comment-post" [(ngModel)]="model.productDescription" name="product"
-                        required minlength="10" maxlength="450" id="productTextarea" #productText="ngModel" [ngClass]="{ 'show-error-border': claimForm.submitted && !businessName.valid }"
-                        translate></textarea>
-                    <div class="col-sm-6">
-                        <small *ngIf="claimForm.submitted && !productText.valid" translate class="" [ngClass]="{ 'show-error': claimForm.submitted && !businessName.valid }">*
-                            This is required</small>
+                    <div>
+                        <textarea class="form-control comment-post" [ngModel]="model?.productDescription" name="product"
+                            required minlength="10" maxlength="450" id="productTextarea" #productText="ngModel" rows="5"
+                            [ngClass]="{ 'show-error-border': claimForm.submitted && !productText.valid }" translate></textarea>
+                        <div class="col-sm-6">
+                            <small *ngIf="claimForm.submitted && !productText.valid" translate class="" [ngClass]="{ 'show-error': claimForm.submitted && !productText.valid }">*
+                                This is required</small>
+                        </div>
                     </div>
                 </div>
-                <div class="row col-10">
+                <div class="col-12">
                     <label for="fineprintTextarea" translate>Fine Prints:</label>
-                    <!-- <br>
-                        <textarea class="form-control comment-post" [ngModel]="ownComment?.comment" name="fineprint" required
-                            minlength="10" id="fineprintTextarea" #fineprintText="ngModel"></textarea> -->
+                    <div>
+                        <textarea class="form-control comment-post" [ngModel]="finePrint" name="fineprint" rows="5"
+                            required minlength="10" id="fineprintTextarea" #fineprintText="ngModel" [ngClass]="{ 'show-error-border': claimForm.submitted && !fineprintText.valid }">
+                    </textarea>
+                        <div class="col-sm-6">
+                            <small *ngIf="claimForm.submitted && !fineprintText.valid" translate class="" [ngClass]="{ 'show-error': claimForm.submitted && !fineprintText.valid }">*
+                                This is required</small>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="row">
+            <div class="">
                 <div class="form-group col-sm-12">
                     <label for="image_uploads" translate>Choose images(<2MB) to upload (PNG, JPG)(coming soon) <span
                             class="btn btn-mdb-color btn-sm" translate>Browse</span>

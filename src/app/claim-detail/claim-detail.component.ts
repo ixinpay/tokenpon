@@ -79,7 +79,7 @@ export class ClaimDetailComponent implements OnInit {
     this.account = localStorage.getItem("currentUserAccount");
     this.page = 1;
     this.maxSize = 100;
-    this.pageSize = 20;
+    this.pageSize = 5;
     this.currentUser = localStorage.getItem("currentUser");
     this.currentUserEmail = localStorage.getItem("currentUserEmail");
     this.oothService.getTokenBalance(this.account)

@@ -281,3 +281,44 @@ a.carousel-control-next {
 a.carousel-control-next :hover {
     opacity: .8;
 } */
+div.darkTable {
+    text-align: center;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  .divTable.darkTable .divTableCell, .divTable.darkTable .divTableHead {
+    border: 0px solid #4A4A4A;
+    padding: 3px 2px;
+  }
+  .divTable.darkTable .divTableRow:nth-child(even) {
+    background: #888888;
+  }
+  .divTable.darkTable .divTableHeading {
+    background: #000000;
+    border-bottom: 3px solid #000000;
+  }
+  .divTable.darkTable .divTableHeading .divTableHead {
+    font-size: 15px;
+    font-weight: bold;
+    color: #E6E6E6;
+    text-align: center;
+    border-left: 2px solid #4A4A4A;
+  }
+  .divTable.darkTable .divTableHeading .divTableHead:first-child {
+    border-left: none;
+  }
+  
+  .darkTable .tableFootStyle {
+    font-size: 12px;
+  }
+  /* DivTable.com */
+  .divTable{ display: table; }
+  .divTableRow { display: table-row; }
+  .divTableHeading { display: table-header-group;}
+  .divTableCell, .divTableHead { display: table-cell;}
+  .divTableHeading { display: table-header-group;}
+  .divTableFoot { display: table-footer-group;}
+  .divTableBody { display: table-row-group;}
+  .tableBtn {position:absolute;
+    left:0;
+    width:100%; }

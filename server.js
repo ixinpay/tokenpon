@@ -94,7 +94,8 @@ var TokenponSchema = new Schema({
     viewCount: { type: Number },
     region: { type: String },
     notification: { type: Boolean},
-    productDescription: { type: String}
+    productDescription: { type: String},
+    finePrint: { type: String}
 });
 var TokenponProfileSchema = new Schema({
     accountAddress: { type: String},
@@ -293,7 +294,8 @@ app.post("/api/updateListing", function(req, res) {
                     pictures: req.body.pictures,
                     notification: req.body.notification,
                     discounts: req.body.discounts,
-                    productDescription: req.body.productDescription
+                    productDescription: req.body.productDescription,
+                    finePrint: req.body.finePrint
                 }
             }, { upsert: true },
             function(err) {

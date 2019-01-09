@@ -16,21 +16,41 @@
             <br>
             <a [href]="formatURL(model.webPage)" target="_blank">{{model.webPage}}</a> -->
             </div>
-            <br>
-            <div>
-                <h4 translate>Description</h4>
-                <hr align="left">
-                <div translate>{{model.service}}</div>
-
+            <br>            
+            <div class="divTable darkTable col-10">
+                <div class="divTableHeading">
+                    <div class="divTableRow">
+                        <div class="divTableHead">Amount Spend</div>
+                        <div class="divTableHead">Discount</div>
+                        <div class="divTableHead">Token Number</div>
+                    </div>
+                </div>
+                <div class="divTableBody" *ngFor="let field of discountArray; let i = index">
+                    <div class="divTableRow">
+                        <div class="divTableCell">{{field.amount}}</div>
+                        <div class="divTableCell">{{field.discount * 100}}%</div>
+                        <div class="divTableCell">{{field.token}}</div>
+                    </div>
+                    <div class="tableBtn">
+                        <button class="btn btn-primary btn-sm col-4" type="button">Buy</button>
+                    </div>
+                </div>
             </div>
-            <div class="text-center">
+            <div>
+                <div class="col-8 mt-5">
+                    <h4 translate>Highlights</h4>
+                    <hr align="left">
+                    <div translate>{{model.productDescription}}</div>
+                
+                </div>
+            </div>
+            <!-- <div class="text-center">                
                 <table class="table table-hover table-hover">
                     <thead>
                         <tr>
                             <th style="width:30%">Amount Spend</th>
                             <th style="width:30%">Discount</th>
                             <th style="width:30%">Token Number</th>
-                            <th style="width:10%"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -43,28 +63,32 @@
                             </td>
                             <td>
                                 <label>{{field.token}}</label>
-                            </td>
-                            <td>
+                            </td><br>
+                            <div class="row col-12">
                                 <button class="btn btn-success btn-sm" type="button">Buy</button>
-                            </td>
+                            </div>
                         </tr>
                     </tbody>
                 </table>
+            </div> -->
+            <div class="row mt-2">
+                <ngu-carousel #myCarousels1 [inputs]="carouselBanner" (carouselLoad)="carouselTileOneLoad()" (onMove)="onMoveData($event)"
+                    [reset]="rsts" (initData)="getCarouselData($event)">
+                    <ngu-tile NguCarouselItem *ngFor="let image of albums; let i=index">
+                        <img style="cursor: pointer;width: 100%;height: 100px;" [src]="image.thumb" (click)="open(i)"
+                            class="img-thumbnail hoverable" />
+                    </ngu-tile>
+                    <a NguCarouselPrev class="carousel-control-prev">
+                        <i class="fa fa-chevron-left fa-lg text-muted pt-5"></i>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a NguCarouselNext class="carousel-control-next text-faded">
+                        <i class="fa fa-chevron-right fa-lg text-muted pt-5"></i>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </ngu-carousel>
             </div>
-            <ngu-carousel #myCarousels1 [inputs]="carouselBanner" (carouselLoad)="carouselTileOneLoad()" (onMove)="onMoveData($event)"
-                [reset]="rsts" (initData)="getCarouselData($event)">
-                <ngu-tile NguCarouselItem *ngFor="let image of albums; let i=index">
-                    <img style="cursor: pointer;width: 100%;height: 100px;" [src]="image.thumb" (click)="open(i)" class="img-thumbnail hoverable" />
-                </ngu-tile>
-                <a NguCarouselPrev class="carousel-control-prev">
-                    <i class="fa fa-chevron-left fa-lg text-muted pt-5"></i>
-                    <span class="sr-only">Previous</span>
-                </a>
-                <a NguCarouselNext class="carousel-control-next text-faded">
-                    <i class="fa fa-chevron-right fa-lg text-muted pt-5"></i>
-                    <span class="sr-only">Next</span>
-                </a>
-            </ngu-carousel>
+
             <br>
             <div *ngIf="!currentUser">
                 <div>
@@ -107,14 +131,18 @@
                 </agm-map>
                 <ul>
                     <li>
-                        <i class="fas fa-map-marker-alt"></i><span style="padding-left:15px">{{model.city}},
-                            {{model.state}} {{model.zip}} {{model.country}}</span>
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span style="padding-left:10px">{{model.street}} {{model.city}},
+                            {{model.state}} {{model.zip}}</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-phone"></i><span style="padding-left:10px">{{model.phone}}</span>
                     </li>
                     <li>
                         <i class="fas fa-envelope"></i><span style="padding-left:10px">{{model.email}}</span>
                     </li>
                     <li>
-                        <i class="fas fa-globe"></i><span style="padding-left:13px"><a [href]=" formatURL(model.webPage) "
+                        <i class="fas fa-globe"></i><span style="padding-left:10px"><a [href]=" formatURL(model.webPage) "
                                 target="_blank ">{{model.webPage}}</a></span>
                     </li>
                 </ul>
@@ -135,10 +163,10 @@
                         minlength="10" id="commentTextarea" #commentText="ngModel"></textarea>
                     <br>
                     <div *ngIf="!ownComment">
-                        <button class="btn btn-primary" [disabled]="!commentForm.form.valid" translate>Submit</button>
+                        <button class="btn btn-primary btn-sm" [disabled]="!commentForm.form.valid" translate>Submit</button>
                     </div>
                     <div *ngIf="ownComment">
-                        <button class="btn btn-primary" [disabled]="!commentForm.form.valid || commentText.pristine"
+                        <button class="btn btn-primary btn-sm" [disabled]="!commentForm.form.valid || commentText.pristine"
                             translate>Update</button>
                     </div>
                 </form>
@@ -165,5 +193,17 @@
         </ul>
         <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [maxSize]="maxSize" [pageSize]="pageSize"
             [rotate]="true" (pageChange)="loadPage($event)"></ngb-pagination>
+    </div>
+    <div class="col-8">
+        <h4 translate>Fine Print</h4>
+        <hr align="left">
+        <div translate>{{model.finePrint}}</div>
+
+    </div>
+    <div class="col-8">
+        <h4 translate>About {{model.businessName}}</h4>
+        <hr align="left">
+        <div translate>{{model.service}}</div>
+
     </div>
 </div>
