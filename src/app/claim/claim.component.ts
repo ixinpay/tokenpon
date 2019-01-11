@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Claim, User, Vote } from '../_models/index'
+import { Claim, User, Vote, Tokenpon } from '../_models/index'
 import { UserService, AlertService, BigchanDbService, MongoService, SwarmService } from '../_services/index';
 import { Router, ActivatedRoute, Params, ParamMap } from '@angular/router';
 import { Http, Response, RequestOptions, Headers } from '@angular/http';
@@ -32,7 +32,7 @@ export class ClaimComponent implements OnInit {
   fileNames: any[] = [];
   currentUser: string;
   model: any = {};
-  claims: Claim[] = [];
+  claims: Tokenpon[] = [];
   submitted = false;
   categories: any[] = [];
   subcategories: any[] = [];
@@ -77,9 +77,9 @@ export class ClaimComponent implements OnInit {
     this.mongoService.GetProfile(this.currentUser, this.globals.TokenponAppId)
       .subscribe(response => {
         if (response.status == 200) {
-          console.log(response);
+          // console.log(response);
           this.profileModel = response.json();
-          console.log(this.profileModel);
+          // console.log(this.profileModel);
         }
       });
     if (this.profileModel.pictures !== undefined) {
@@ -218,7 +218,8 @@ export class ClaimComponent implements OnInit {
           element.discount = element.discount * 100;
         });
         this.finePrint = this.model.finePrint;
-        console.log(this.model.notification);
+        this.productDescription = this.model.productDescription;
+        // console.log(this.model.notification);
         let id = -1;
         // this.swarmService.getFileUrls(this.model.pictures)
         //   .forEach(url => {
@@ -241,7 +242,7 @@ export class ClaimComponent implements OnInit {
     //upload pictures first
     this.swarmService.uploadFiles(this.files)
       .subscribe(res => {
-        console.log(res);
+        // console.log(res);
         this.model.pictures = res
         // after uploading pictures, upload data
         this.uploadData();

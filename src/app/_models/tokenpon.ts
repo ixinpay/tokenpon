@@ -21,7 +21,9 @@ export class Tokenpon {
         public postedTime: Number ,
         public comments: Comment[],
         public votes: Vote[],
-        public discounts: Discount[]
+        public discounts: Discount[],
+        public productDescription: { type: String},
+        public finePrint: { type: String}
     ) {}
 }
 export class Discount {

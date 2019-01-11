@@ -34,7 +34,7 @@ process.argv.forEach(function(val, index, array) {
     //console.log(`dbServer = ${gDbServer}`)
 
 var db = mongo.connect(`mongodb://${gDbServer}:27017/ChainPage`, function(err, response) {
-    if (err) { console.log(err); } else { console.log('Connected to ' + db, ' + ', response); }
+    // if (err) { console.log(err); } else { console.log('Connected to ' + db, ' + ', response); }
 });
 
 
@@ -414,7 +414,7 @@ app.get("/api/getListing/:id/:appId", function(req, res) {
     } else if (req.params.appId == ChainpostAppId) {
         model = modelChainPost;
     }
-    console.log("id: " + req.params.id)
+    console.log("getListing id: " + req.params.id)
     model.findOne({ _id: req.params.id }, function(err, data) {
         if (err) {
             res.send(err);
