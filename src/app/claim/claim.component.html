@@ -4,10 +4,10 @@
         margin: 0 !important;
     }
 </style>
-<div class="container col-sm-18 col-md-12 col-lg-10">
+<div class="container col-sm-18 col-md-12 col-lg-10 offset-md-1">
     <form (ngSubmit)="onSubmit()" #claimForm="ngForm">
         <div class="form-group">
-            <div class="main-cat">
+            <!-- <div class="main-cat">
                 <div class="claim-head">
                     <h4 translate>General Info</h4>
                 </div>
@@ -224,86 +224,143 @@
             </div>
             <div>
                 <input type="checkbox" [(ngModel)]="model.notification" name="notification" #notification="ngModel"> <label translate>check here if you want to be notified when a new comment is posted</label>
-            </div>
+            </div> -->
             <div>
-                <div class="d-flex h-100">
-                    <div class="col-3"><img src="../../assets/LinkGear.png" style="height:100px"></div>
-                    <div class="row justify-content-center align-self-center">
-                        <h4>{{profileModel.businessName}}</h4>
+                <div class="row col-12 mt-3">
+                    <div class="col-xs-12 col-2"><img src="../../assets/LinkGear.png" style="height:50px"></div>
+                    <div class="col-xs-12 justify-content-center align-self-center">
+                        <h4 class="col-12">{{profileModel.businessName}}</h4>
                     </div>
                 </div>
-                <div class="form-group row col-10">
-                    <table class="table table-hover table-hover">
-                        <thead>
-                            <tr>
-                                <th style="width:30%">Amount Spend</th>
-                                <th style="width:30%">Discount</th>
-                                <th style="width:30%">Token Number</th>
-                                <th style="width:10%">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let field of discountArray; let i = index">
-                                <td>
-                                    <label>{{field.amount}}</label>
-                                </td>
-                                <td>
-                                    <label>{{field.discount}}%</label>
-                                </td>
-                                <td>
-                                    <label>{{field.token}}</label>
-                                </td>
-                                <td>
-                                    <button class="btn btn-danger btn-sm" type="button" (click)="deleteDiscount(i)">Delete</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <input class="form-control" type="number" min="1" id="newAttributeAmount"
-                                        [(ngModel)]="newDiscount.amount" name="newAttributeAmount" required />
-                                    <div *ngIf="!newDiscount.amount">
-                                        <small *ngIf="!newDiscount.amount" translate class="" [ngClass]="{ 'show-error': !newDiscount.amount }">*
-                                            This is required</small>
+                <div class="col-12 mt-3">
+                    <div class="col-xs-12 col-sm-12 col-md-10" *ngFor="let field of discountArray; let i = index">
+                        <div class="card">
+                            <div class="card-block addedCard">
+                                <div class="col-1 ml-auto">
+                                    <a (click)="deleteDiscount(i)">
+                                        <i class="fa fa-trash fa-2x" style="color: red" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-12 col-md-2">Title:</div>
+                                    <div class="col-xs-12 col-sm-12 col-md-10">
+                                        {{field.title}}
                                     </div>
-                                </td>
-                                <td>
-                                    <div class="input-group">
-                                        <select class="form-control" id="newAttributeDiscount" [(ngModel)]="newDiscount.discount"
-                                            name="newAttributeDiscount" #discount="ngModel" required>
-                                            <option>5</option>
-                                            <option>10</option>
-                                            <option>15</option>
-                                        </select>
-                                        <div class="input-group-append">
-                                            <span class="input-group-text" id="basic-addon2">%</span>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-12 col-md-2">Description:</div>
+                                    <div class="col-xs-12 col-sm-12 col-md-10">
+                                        {{field.description}}
+                                    </div>
+                                </div>
+                                <div class="divTable darkTable">
+                                    <div class="divTableHeading">
+                                        <div class="divTableHeadRow">
+                                            <div class="divTableHead">Amount Spend</div>
+                                            <div class="divTableHead">Discount</div>
+                                            <div class="divTableHead">Token Number</div>
                                         </div>
                                     </div>
-                                    <div *ngIf="!newDiscount.discount">
-                                        <small *ngIf="!newDiscount.discount" translate class="" [ngClass]="{ 'show-error': !newDiscount.discount }">*
-                                            This is required</small>
+                                    <div class="divTableBody">
+                                        <div class="divTableRow">
+                                            <div class="divTableCell">{{field.amount}}</div>
+                                            <div class="divTableCell">{{field.discount}}%</div>
+                                            <div class="divTableCell">{{field.token}}</div>
+                                        </div>
                                     </div>
-                                </td>
-                                <td>
-                                    <input class="form-control" type="number" min="1" id="newAttributeToken"
-                                        [(ngModel)]="newDiscount.token" name="newAttributeToken" #token="ngModel"
-                                        required />
-                                    <div *ngIf="!newDiscount.token">
-                                        <small *ngIf="!newDiscount.token" translate class="" [ngClass]="{ 'show-error': !newDiscount.token }">*
-                                            This is required</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-10 mt-3">
+                        <div class="card">
+                            <div class="card-block workingCard">
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-12 col-md-2">Title:</div>
+                                    <div class="col-xs-12 col-sm-12 col-md-10">
+                                        <input class="form-control" minlength="10" id="newAttributeTitle" [(ngModel)]="newDiscount.title"
+                                            name="newAttributeAmount" required />
+                                        <div *ngIf="!newDiscount.title">
+                                            <small *ngIf="!newDiscount.title" translate class="" [ngClass]="{ 'show-error': !newDiscount.title }">*
+                                                required</small>
+                                        </div>
                                     </div>
-                                </td>
-                                <td>
-                                    <button class="btn btn-default btn-sm" type="button" [disabled]="!newDiscount.amount || !newDiscount.discount || !newDiscount.token"
-                                        (click)="addDiscount()">Add</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-12 col-md-2">Description:</div>
+                                    <div class="col-xs-12 col-sm-12 col-md-10">
+                                        <input class="form-control" minlength="10" id="newAttributeDescription"
+                                            [(ngModel)]="newDiscount.description" name="newAttributeDescription"
+                                            required />
+                                        <div *ngIf="!newDiscount.description">
+                                            <small *ngIf="!newDiscount.description" translate class="" [ngClass]="{ 'show-error': !newDiscount.description }">*
+                                                required</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="divTable darkTable">
+                                    <div class="divTableHeading">
+                                        <div class="divTableHeadRow">
+                                            <div class="divTableHead">Amount Spend</div>
+                                            <div class="divTableHead">Discount</div>
+                                            <div class="divTableHead">Token Number</div>
+                                        </div>
+                                    </div>
+                                    <div class="divTableRow">
+                                        <div class="divTableCell">
+                                            <input class="form-control" type="number" min="1" id="newAttributeAmount"
+                                                [(ngModel)]="newDiscount.amount" name="newAttributeAmount" required />
+                                            <div *ngIf="!newDiscount.amount">
+                                                <small *ngIf="!newDiscount.amount" translate class="" [ngClass]="{ 'show-error': !newDiscount.amount }">*
+                                                    required</small>
+                                            </div>
+                                        </div>
+                                        <div class="divTableCell">
+                                            <div class="input-group">
+                                                <select class="form-control" id="newAttributeDiscount" [(ngModel)]="newDiscount.discount"
+                                                    name="newAttributeDiscount" #discount="ngModel" required>
+                                                    <option>5</option>
+                                                    <option>10</option>
+                                                    <option>15</option>
+                                                </select>
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text" id="basic-addon2">%</span>
+                                                </div>
+                                            </div>
+                                            <div *ngIf="!newDiscount.discount">
+                                                <small *ngIf="!newDiscount.discount" translate class="" [ngClass]="{ 'show-error': !newDiscount.discount }">*
+                                                    required</small>
+                                            </div>
+                                        </div>
+                                        <div class="divTableCell">
+                                            <input class="form-control" type="number" min="1" id="newAttributeToken"
+                                                [(ngModel)]="newDiscount.token" name="newAttributeToken" #token="ngModel"
+                                                required />
+                                            <div *ngIf="!newDiscount.token">
+                                                <small *ngIf="!newDiscount.token" translate class="" [ngClass]="{ 'show-error': !newDiscount.token }">*
+                                                    required</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-center">
+                                    <button *ngIf="!newDiscount.title || !newDiscount.description || !newDiscount.amount || !newDiscount.discount || !newDiscount.token"
+                                        disabled class="btn btn-light btn-sm">Add</button>
+                                    <button *ngIf="newDiscount.title && newDiscount.description && newDiscount.amount && newDiscount.discount && newDiscount.token"
+                                        class="btn btn-default btn-sm" (click)="addDiscount()">Add</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="form-group col-12">
-                    <label for="productTextarea" translate>Product Description (min 10 characters):</label>
-                    <div>
-                        <textarea class="form-control comment-post" [(ngModel)]="productDescription" name="product"
+
+                <div class="col-12 mt-3">
+                    <div class="col-xs-12 col-sm-12">
+                        <label for="productTextarea" translate>Product Description (min 10 characters):</label>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-12 col-md-10">
+                        <textarea class="form-control" [(ngModel)]="productDescription" name="product"
                             required minlength="10" maxlength="450" id="productTextarea" #productText="ngModel" rows="5"
                             [ngClass]="{ 'show-error-border': claimForm.submitted && !productText.valid }" translate></textarea>
                         <div class="col-sm-6">
@@ -312,10 +369,12 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group col-12">
-                    <label for="fineprintTextarea" translate>Fine Prints:</label>
-                    <div>
-                        <textarea class="form-control comment-post" [(ngModel)]="finePrint" name="fineprint" rows="5"
+                <div class="col-12 mt-2">
+                    <div class="col-xs-12 col-sm-12">
+                        <label for="fineprintTextarea" translate>Fine Prints:</label>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-10">
+                        <textarea class="form-control" [(ngModel)]="finePrint" name="fineprint" rows="5"
                             required minlength="10" id="fineprintTextarea" #fineprintText="ngModel" [ngClass]="{ 'show-error-border': claimForm.submitted && !fineprintText.valid }">
                     </textarea>
                         <div class="col-sm-6">
@@ -326,8 +385,8 @@
                 </div>
             </div>
 
-            <div class="">
-                <div class="form-group col-sm-12">
+            <div class="col-12 mt-3">
+                <div class="col-sm-12">
                     <label for="image_uploads" translate>Choose images(<2MB) to upload (PNG, JPG)(coming soon) <span
                             class="btn btn-mdb-color btn-sm" translate>Browse</span>
                     </label>
@@ -347,7 +406,7 @@
                 </div>
             </div>
 
-            <div class="submitBtn">
+            <div class="submitBtn mt-3 text-center">
                 <button type="submit" class="btn btn-success" translate>{{isUpdate? 'Update': 'Submit'}}</button>
                 <button *ngIf="isUpdate" class="btn btn-outline-danger  waves-effect" [routerLink]="['/home/claim-detail']"
                     [queryParams]="{id: claimId}" type="submit" translate>Cancel

@@ -239,7 +239,7 @@ export class ClaimComponent implements OnInit {
       });
   }
   uploadFiles() {
-    //upload pictures first
+    //upload pictures to Swarm server first
     this.swarmService.uploadFiles(this.files)
       .subscribe(res => {
         // console.log(res);
@@ -327,18 +327,22 @@ export class ClaimComponent implements OnInit {
   }
   async onSubmit() {
     this.submitted = true;
+    //upload pictures to Mongo
+    this.model.pictures = this.albums;
+    this.uploadData();
 
+    // update pictures to Swarm
     // if there are pictures to upload
-    if (this.files.length > 0) {
-      console.log("have pictures to upload")
-      this.uploadFiles();
-    }
-    else {
-      console.log("no pictures to upload")
-      //set pictures to empty
-      this.model.pictures = [];
-      this.uploadData();
-    }
+    // if (this.files.length > 0) {
+    //   console.log("have pictures to upload")
+    //   this.uploadFiles();
+    // }
+    // else {
+    //   console.log("no pictures to upload")
+    //   //set pictures to empty
+    //   this.model.pictures = [];
+    //   this.uploadData();
+    // }
   }
   isAuthor(user: string): boolean {
     //console.log(this.currentUser.username == user);

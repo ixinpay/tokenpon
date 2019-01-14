@@ -67,7 +67,9 @@ var DiscountSchema = new Schema({
     amount: { type: Number },
     discount: { type: Number },
     token: { type: Number },
-    address: { type: String}
+    address: { type: String},
+    title: { type: String},
+    description: { type: String}
 })
 var TokenponSchema = new Schema({
     name: { type: String },

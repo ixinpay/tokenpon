@@ -31,7 +31,9 @@ export class Discount {
         public amount: number,
         public discount: number,
         public token: number,
-        public address: string
+        public address: string,
+        public title: string,
+        public description: string
     ) {}
 }
 

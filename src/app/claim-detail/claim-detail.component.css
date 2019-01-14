@@ -60,10 +60,9 @@ hr {
     color: #707070!important;
 }
 
-.comment-post {
-    /* width: 640px; */
+/* .comment-post {
     width: 85%
-}
+} */
 .no-gutters {
     margin-right: 0 !important;
     margin-left: 0 !important;
@@ -294,8 +293,8 @@ div.darkTable {
     background: #888888;
   }
   .divTable.darkTable .divTableHeading {
-    background: #000000;
-    border-bottom: 3px solid #000000;
+    background: grey;
+    border-bottom: 3px solid grey;
   }
   .divTable.darkTable .divTableHeading .divTableHead {
     font-size: 15px;
@@ -313,7 +312,9 @@ div.darkTable {
   }
   /* DivTable.com */
   .divTable{ display: table; }
+  .divTableHeadRow { display: table-row; }
   .divTableRow { display: table-row; }
+  .divTableRow:hover { background-color: tan; }
   .divTableHeading { display: table-header-group;}
   .divTableCell, .divTableHead { display: table-cell;}
   .divTableHeading { display: table-header-group;}
