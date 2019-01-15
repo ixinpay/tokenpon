@@ -140,20 +140,40 @@ export class ProfileComponent implements OnInit {
           console.log(this.profileModel);
           this.onChange(this.profileModel.country);
           this.MainCategoryDropDownChanged(this.profileModel.businessMainCategory);
-          if (this.profileModel.pictures !== undefined) {
-            this.swarmService.getFileUrls(this.profileModel.pictures)
-              .forEach(img => {
-                const src = img;
-                //const caption = 'Image caption here';
-                const thumb = img;
-                const album = {
-                  src: src,
-                  //caption: caption,
-                  thumb: thumb
-                };
+          // retrieve pictures from SWARM
+          // if (this.profileModel.pictures !== undefined) {
+          //   this.swarmService.getFileUrls(this.profileModel.pictures)
+          //     .forEach(img => {
+          //       const src = img;
+          //       //const caption = 'Image caption here';
+          //       const thumb = img;
+          //       const album = {
+          //         src: src,
+          //         //caption: caption,
+          //         thumb: thumb
+          //       };
+          //       console.log(album);
+          //       this.albums.push(album);
+          //     });
+          // }
 
-                this.albums.push(album);
-              });
+          if (this.profileModel.pictures !== undefined) {
+            let id = -1;
+            this.profileModel.pictures.forEach(url => {
+              console.log("url: " + url);
+              const src = url;
+              //const caption = 'Image caption here';
+              const thumb = url;
+              const album = {
+                src: src,
+                //caption: caption,
+                thumb: thumb
+              };
+              this.albums.push(album)
+              this.urls.push({ "id": id, "url": url });
+              this.files.push({ "id": id, "file": url });
+              id--;
+            });
           }
         }
       });
@@ -310,7 +330,7 @@ export class ProfileComponent implements OnInit {
     if (filesToUpload) {
       for (let file of filesToUpload) {
         //reach max image allowed
-        if (this.files.length >= environment.chainPageImageMaxCount) {
+        if (this.files.length >= environment.BusinessProfileLogoMaxCount) {
           this.isOverTotal = true;
           return;
         }
@@ -329,6 +349,7 @@ export class ProfileComponent implements OnInit {
             this.fileNames.push({ "id": id, "filename": file.name });
             let reader = new FileReader();
             reader.onload = (e: any) => {
+              // console.log(e.target.result);
               this.urls.push({ "id": id, "url": e.target.result });
             }
             reader.readAsDataURL(file);
@@ -351,9 +372,9 @@ export class ProfileComponent implements OnInit {
         }
       }
     }
-    console.log(this.urls);
-    console.log(this.files);
-    console.log(this.fileNames);
+    // console.log(this.urls);
+    // console.log(this.files);
+    // console.log(this.fileNames);
   }
   fileAlreadyAdded(fileName: String): boolean {
     // console.log(fileName)
@@ -413,8 +434,9 @@ export class ProfileComponent implements OnInit {
     this.profileModel.postedBy = this.currentUser;
     this.profileModel.postedTime = Date.now();
     this.profileModel.accountAddress = this.accountNumber;
+    this.profileModel.pictures = this.urls.map(e => e.url);
     //this.profileModel.notification = this.toNotify;    
-    console.log(this.profileModel.notification)
+    console.log(this.profileModel.pictures)
     // if (this.inBusinessEdit == true) {
     // console.log(this.profileModel);
     this.profileModel.appId = this.globals.TokenponAppId;
@@ -455,17 +477,18 @@ export class ProfileComponent implements OnInit {
   }
   updateBusinessProfile() {
     this.submitted = true;
-    // if there are pictures to upload
-    if (this.files.length > 0) {
-      console.log("have pictures to upload")
-      this.uploadFiles();
-    }
-    else {
-      console.log("no pictures to upload")
-      //set pictures to empty
-      this.profileModel.pictures = [];
-      this.uploadData();
-    }
+    // if there are pictures to upload, upload to SWARM
+    // if (this.files.length > 0) {
+    //   console.log("have pictures to upload")
+    //   this.uploadFiles();
+    // }
+    // else {
+    //   console.log("no pictures to upload")
+    //   //set pictures to empty
+    //   this.profileModel.pictures = [];
+    //   this.uploadData();
+    // }
+    this.uploadData();
     this.inBusinessEdit = false;
   }
   countryDropDownChanged(value: any) {

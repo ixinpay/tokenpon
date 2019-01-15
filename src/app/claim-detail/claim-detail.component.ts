@@ -15,7 +15,7 @@ import { NguCarousel, NguCarouselStore } from '@ngu/carousel';
 import { Title } from '@angular/platform-browser';
 import { AgmCoreModule, MouseEvent, GoogleMapsAPIWrapper, AgmMap, LatLngBounds, LatLngBoundsLiteral } from '@agm/core';
 import { } from 'googlemaps';
-import {Marker} from '../_models/index'
+import { Marker } from '../_models/index'
 
 @Component({
   moduleId: module.id.toString(),
@@ -128,38 +128,54 @@ export class ClaimDetailComponent implements OnInit {
           console.log("discount: " + this.discountArray);
           //get map geo
           this.googleGeoService.getGoogleGeoData(this.model.street, this.model.city, this.model.state, this.model.zip)
-          .subscribe(response => {
-            if (response.status === 200) {
-              if (response.json().results[0] !== undefined) {
-                // console.log(response.json().results[0].geometry.location);
-                if(this.lat == undefined){
-                  this.lat = parseFloat(response.json().results[0].geometry.location.lat);
-                  this.lng = parseFloat(response.json().results[0].geometry.location.lng);
+            .subscribe(response => {
+              if (response.status === 200) {
+                if (response.json().results[0] !== undefined) {
+                  // console.log(response.json().results[0].geometry.location);
+                  if (this.lat == undefined) {
+                    this.lat = parseFloat(response.json().results[0].geometry.location.lat);
+                    this.lng = parseFloat(response.json().results[0].geometry.location.lng);
+                  }
+                  console.log("lat = " + this.lat + " lng = " + this.lng)
+                  // const bounds = new google.maps.LatLngBounds();
+                  // for (const mm of this.markers) {
+                  //   bounds.extend(new google.maps.LatLng(mm.lat, mm.lng));
+                  // }
+                  // // @ts-ignore
+                  // this.agmMap.fitBounds(bounds);
+
+                  let marker = {
+                    lat: parseFloat(response.json().results[0].geometry.location.lat),
+                    lng: parseFloat(response.json().results[0].geometry.location.lng),
+                    label: '',
+                    tooltip: '',
+                    draggable: false
+                  };
+                  this.markers.push(marker);
+                  console.log(this.markers);
                 }
-                console.log("lat = " + this.lat + " lng = " + this.lng)
-                // const bounds = new google.maps.LatLngBounds();
-                // for (const mm of this.markers) {
-                //   bounds.extend(new google.maps.LatLng(mm.lat, mm.lng));
-                // }
-                // // @ts-ignore
-                // this.agmMap.fitBounds(bounds);
-  
-                let marker = {
-                  lat: parseFloat(response.json().results[0].geometry.location.lat),
-                  lng: parseFloat(response.json().results[0].geometry.location.lng),
-                  label: '', 
-                  tooltip: '',
-                  draggable: false
-                };
-                this.markers.push(marker);
-                console.log(this.markers);
               }
-            }
-          });
+            });
           //set title
-          this.titleService.setTitle(this.model.businessName + " " + this.model.city + " " + (this.model.discounts[0].discount*100) + "% off");
-          this.swarmService.getFileUrls(this.model.pictures)
-            .forEach(img => {
+          this.titleService.setTitle(this.model.businessName + " " + this.model.city + " " + (this.model.discounts[0].discount * 100) + "% off");
+          //get pictures from SWARM
+          // this.swarmService.getFileUrls(this.model.pictures)
+          //   .forEach(img => {
+          //     const src = img;
+          //     //const caption = 'Image caption here';
+          //     const thumb = img;
+          //     const album = {
+          //       src: src,
+          //       //caption: caption,
+          //       thumb: thumb
+          //     };
+
+          //     this.albums.push(album);
+          //   });
+          //get pictures from Mongo
+          if (this.model.pictures !== undefined) {
+            console.log("pic count: " + this.model.pictures.length);
+            this.model.pictures.forEach(img => {
               const src = img;
               //const caption = 'Image caption here';
               const thumb = img;
@@ -171,6 +187,8 @@ export class ClaimDetailComponent implements OnInit {
 
               this.albums.push(album);
             });
+          }
+
           // console.log(this.urls)
           //check if current user is the author of the listing
           // console.log("current user: " + this.currentUser + " author: " + this.model.postedBy)
@@ -195,12 +213,12 @@ export class ClaimDetailComponent implements OnInit {
           //retrieve comments
           // console.log(this.model.comments)
           this.totalItems = this.model.comments.length;
-          this.model.comments = this.model.comments.sort(function(a,b){
+          this.model.comments = this.model.comments.sort(function (a, b) {
             // Turn your strings into dates, and then subtract them
             // to get a value that is either negative, positive, or zero.
             return b.postedTime - a.postedTime;
           });
-          
+
           this.model.comments.forEach(element => {
             if (element.postedBy == this.currentUser) {
               this.ownComment = element;

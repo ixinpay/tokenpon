@@ -50,6 +50,7 @@ export class ClaimComponent implements OnInit {
   private albums: any[] = [];
   productDescription: string;
   finePrint: string;
+  logoUrl: string;
 
   constructor(
     private router: Router, private route: ActivatedRoute, private translate: TranslateService,
@@ -66,7 +67,7 @@ export class ClaimComponent implements OnInit {
       if (this.claimId) {
         this.getDetails(this.claimId);
       }
-      else{
+      else {
         this.finePrint = this.globals.TokenponFineprint;
       }
     });
@@ -79,24 +80,27 @@ export class ClaimComponent implements OnInit {
         if (response.status == 200) {
           // console.log(response);
           this.profileModel = response.json();
-          // console.log(this.profileModel);
+          //get pictures from Mongo
+          this.logoUrl = this.profileModel.pictures[0];
         }
       });
-    if (this.profileModel.pictures !== undefined) {
-      this.swarmService.getFileUrls(this.profileModel.pictures)
-        .forEach(img => {
-          const src = img;
-          //const caption = 'Image caption here';
-          const thumb = img;
-          const album = {
-            src: src,
-            //caption: caption,
-            thumb: thumb
-          };
+    //get pictures from SWARM
+    // if (this.profileModel.pictures !== undefined) {
+    //   this.swarmService.getFileUrls(this.profileModel.pictures)
+    //     .forEach(img => {
+    //       const src = img;
+    //       //const caption = 'Image caption here';
+    //       const thumb = img;
+    //       const album = {
+    //         src: src,
+    //         //caption: caption,
+    //         thumb: thumb
+    //       };
 
-          this.albums.push(album);
-        });
-    }
+    //       this.albums.push(album);
+    //     });
+    // }
+
   }
   detectFiles(event) {
     // this.urls = [];
@@ -214,13 +218,14 @@ export class ClaimComponent implements OnInit {
         // console.log(response)
         this.model = response.json();
         this.discountArray = this.model.discounts;
-        this.discountArray.forEach(element =>{
+        this.discountArray.forEach(element => {
           element.discount = element.discount * 100;
         });
         this.finePrint = this.model.finePrint;
         this.productDescription = this.model.productDescription;
         // console.log(this.model.notification);
         let id = -1;
+        // get pictures from SWARM
         // this.swarmService.getFileUrls(this.model.pictures)
         //   .forEach(url => {
         //     console.log("url: " + url);
@@ -228,6 +233,13 @@ export class ClaimComponent implements OnInit {
         //     this.files.push({ "id": id, "file": url });
         //     id--;
         //   });
+        // get pictures from Mongo
+        this.model.pictures.forEach(url => {
+
+          this.urls.push({ "id": id, "url": url });
+          this.files.push({ "id": id, "file": url });
+          id--;
+        });
         this.isUpdate = true;
         // let claimData = JSON.parse(JSON.stringify(data));
         // this.model = claimData.asset.data;
@@ -275,7 +287,7 @@ export class ClaimComponent implements OnInit {
     this.model.businessMainCategory = this.profileModel.businessMainCategory;
     this.model.businessSubCategory = this.profileModel.businessSubCategory;
     this.model.postedBy = this.profileModel.postedBy;
-    this.model.pictures = this.profileModel.pictures;
+    this.model.pictures = this.urls.map(e => e.url);
     this.model.notification = this.profileModel.notification;
     this.model.discounts = this.discountArray;
     this.model.productDescription = this.productDescription;
@@ -328,7 +340,7 @@ export class ClaimComponent implements OnInit {
   async onSubmit() {
     this.submitted = true;
     //upload pictures to Mongo
-    this.model.pictures = this.albums;
+    
     this.uploadData();
 
     // update pictures to Swarm

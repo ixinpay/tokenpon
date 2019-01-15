@@ -101,8 +101,11 @@ div.darkTable {
     width:100%; }
 
 .addedCard {
-    background-color:#cbfccb;
+    background-color:#e1f8e1;
 }
 .workingCard {
-    background-color:#f6f7d3;
+    background-color:#f9fae9;
+}
+.offer-head {
+    color: #ff8f00
 }
