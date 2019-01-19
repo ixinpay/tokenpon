@@ -43,6 +43,7 @@ import { ActivationComponent } from './activation/activation.component';
 import { SafePipe } from './_helpers/safe.pipe';
 import { AgmCoreModule } from '@agm/core';
 import { AgmJsMarkerClustererModule } from '@agm/js-marker-clusterer';
+import {MegaMenuModule} from 'primeng/megamenu';
 // const SERVICES = [
 //   MetaCoinService,
 //   Web3Service,
@@ -78,7 +79,8 @@ import { AgmJsMarkerClustererModule } from '@agm/js-marker-clusterer';
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyA5IGhOP4Sk_MzGLLMtmmjdXNP1bN_3Y_g'
     }),
-    AgmJsMarkerClustererModule
+    AgmJsMarkerClustererModule,
+    MegaMenuModule
   ],
   declarations: [
     AppComponent,

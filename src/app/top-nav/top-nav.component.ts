@@ -10,6 +10,9 @@ import { ToasterModule, ToasterService, ToasterConfig } from 'angular2-toaster';
 import { EventEmitter } from 'events';
 import { getNames } from 'i18n-iso-countries';
 import { Select2OptionData } from 'ng2-select2';
+import { MenuItem } from 'primeng/components/common/menuitem';
+import {MenubarModule} from 'primeng/menubar';
+
 @Component({
   moduleId: module.id.toString(),
   selector: 'app-top-nav',
@@ -42,7 +45,8 @@ export class TopNavComponent implements OnInit {
 
   public myCountries: any[] = [];
 
-  
+  categories: any[] = [];
+  subcategories: any[] = [];
   currentUser: string = undefined;
   currentUserAccount: string = undefined;
   CurrentUserName: string = undefined;
@@ -52,6 +56,7 @@ export class TopNavComponent implements OnInit {
   language: any[] = [];
   elementType: 'url' | 'canvas' | 'img' = 'url';
   tokenBalance: number;
+  items: MenuItem[];
   // public languages: Array<Select2OptionData>;
 
   constructor(private http: Http, private alertService: AlertService, private toasterService: ToasterService,
@@ -60,7 +65,20 @@ export class TopNavComponent implements OnInit {
     private cdRef: ChangeDetectorRef,
     @Inject(LOCALE_ID) private localeId: string) {
 
-      let locale = 'en';
+    let locale = 'en';
+    //get main cat
+    this.http.get('/assets/cat.json')
+      .subscribe(data => {
+        this.categories = data.json();
+         for(let cat of this.categories){
+          cat.subcategories = [];
+          let param = cat.Category
+          this.http.get('/assets/subCat.json')
+          .subscribe(data => {
+            cat.subcategories = data.json().filter((item)=> item.Category == param);
+          })
+         }
+      });
 
     if (this.localeId.length > 2) {
       // convert Locale from ISO 3166-2 to ISO 3166 alpha2
@@ -112,7 +130,7 @@ export class TopNavComponent implements OnInit {
         this.language = data.json();
         this.language.forEach(element => {
           // console.log(element)
-          if(element.Short == "cn"){
+          if (element.Short == "cn") {
             this.selectedLanguage = element.Id;
             this.selectedFlag = element.src;
             // console.log(this.selectedFlag)
@@ -129,7 +147,8 @@ export class TopNavComponent implements OnInit {
   //   console.log(this.currentUser);
   //   return this.oothService.isLoggedIn;
   // }
-  Login(){
+  
+  Login() {
     console.log(this.router.url)
     this.router.navigate(['/login'], { queryParams: { returnUrl: this.router.url } });
   }
@@ -155,33 +174,77 @@ export class TopNavComponent implements OnInit {
   //   this.oothService.getTokenBalance(this.currentUserAccount).then(balance => this.tokenBalance = balance);
   // }
   ngOnInit() {
-    // this.languages = [
-    //   {
-    //     id: 'basic1',
-    //     text: 'Basic 1'
-    //   },
-    //   {
-    //     id: 'basic2',
-    //     disabled: true,
-    //     text: 'Basic 2'
-    //   },
-    //   {
-    //     id: 'basic3',
-    //     text: 'Basic 3'
-    //   },
-    //   {
-    //     id: 'basic4',
-    //     text: 'Basic 4'
-    //   }
-    // ];
+    this.items = [
+      {
+        label: 'TV', icon: 'fa fa-fw fa-check',
+        items: [
+          [
+            {
+              label: 'TV 1',
+              items: [{ label: 'TV 1.1' }, { label: 'TV 1.2' }]
+            },
+            {
+              label: 'TV 2',
+              items: [{ label: 'TV 2.1' }, { label: 'TV 2.2' }]
+            }
+          ],
+          [
+            {
+              label: 'TV 3',
+              items: [{ label: 'TV 3.1' }, { label: 'TV 3.2' }]
+            },
+            {
+              label: 'TV 4',
+              items: [{ label: 'TV 4.1' }, { label: 'TV 4.2' }]
+            }
+          ]
+        ]
+      },
+      {
+        label: 'Sports', icon: 'fa fa-fw fa-soccer-ball-o',
+        items: [
+          [
+            {
+              label: 'Sports 1',
+              items: [{ label: 'Sports 1.1' }, { label: 'Sports 1.2' }]
+            },
+            {
+              label: 'Sports 2',
+              items: [{ label: 'Sports 2.1' }, { label: 'Sports 2.2' }]
+            },
+
+          ],
+          [
+            {
+              label: 'Sports 3',
+              items: [{ label: 'Sports 3.1' }, { label: 'Sports 3.2' }]
+            },
+            {
+              label: 'Sports 4',
+              items: [{ label: 'Sports 4.1' }, { label: 'Sports 4.2' }]
+            }
+          ],
+          [
+            {
+              label: 'Sports 5',
+              items: [{ label: 'Sports 5.1' }, { label: 'Sports 5.2' }]
+            },
+            {
+              label: 'Sports 6',
+              items: [{ label: 'Sports 6.1' }, { label: 'Sports 6.2' }]
+            }
+          ]
+        ]
+      }
+    ];
   }
-private loadCountries(locale: string): void {
+  private loadCountries(locale: string): void {
     const iso3166 = getNames(locale);
 
     this.myCountries = [];
     // console.log(iso3166)
     for (const key of Object.keys(iso3166)) {
-      
+
       this.myCountries.push({ display: iso3166[key], value: key.toLowerCase() });
     }
     // sort

@@ -21,6 +21,7 @@ import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 import { MouseEvent, GoogleMapsAPIWrapper, AgmMap, LatLngBounds, LatLngBoundsLiteral } from '@agm/core';
 import { } from 'googlemaps';
 import {Marker} from '../_models/index'
+import {NgbModal, NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   moduleId: module.id.toString(),
@@ -59,6 +60,7 @@ export class ListingsComponent implements OnInit {
   numoflikes: number = 0;
   numofdislikes: number = 0;
   listView: boolean = true;
+  showModal: boolean = false;
 
   markers: Marker[] = []
   zoom: number = 10;
@@ -71,7 +73,7 @@ export class ListingsComponent implements OnInit {
     private router: Router, private globals: Globals, private mongoService: MongoService,
     private userService: UserService, private toasterService: ToasterService,
     private alertService: AlertService, private titleService: Title,
-    private http: Http, private translate: TranslateService
+    private http: Http, private translate: TranslateService, private modalService: NgbModal
   ) {
 
   }
@@ -148,7 +150,7 @@ export class ListingsComponent implements OnInit {
       // console.log(this.claims[j].pictures[0]);
       this.listings[j] = {
         imgUrl: isNullOrUndefined(this.claims[j].pictures[0]) || this.claims[j].pictures[0] == "" ?
-          "../../assets/linkGearGGold.png" : this.swarmService.getFileUrls(new Array(this.claims[j].pictures[0])),
+          "../../assets/linkGearGGold.png" : this.claims[j].pictures[0],
         _id: this.claims[j]._id,
         businessMainCategory: this.claims[j].businessMainCategory,
         businessName: this.claims[j].businessName,
@@ -581,5 +583,36 @@ export class ListingsComponent implements OnInit {
   }
   protected mapReady(map) {
     this.map = map;
+  }
+
+  displayModal(content) {
+    this.modalService.open(content).result.then((result) => {
+      // this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      // this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  addListing(content){
+    this.getProfileData()
+    .subscribe(response => {
+      if (response.status == 200) {
+        console.log(response);
+        let profileModel = response.json();
+        if (profileModel.accountType == undefined || profileModel.accountType.trim() == ""
+          || profileModel.accountType == this.globals.TokenponAccountType[0]) {
+            
+            this.showModal = true;
+            this.displayModal(content);
+        }
+        else {
+          this.router.navigate(['/home/claim']);          
+        }
+      }
+    });
+  }
+  getProfileData() {
+    let userName = localStorage.getItem("currentUser");
+    return this.mongoService.GetProfile(userName, this.globals.TokenponAppId);      
   }
 }

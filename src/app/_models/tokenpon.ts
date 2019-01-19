@@ -3,6 +3,7 @@ import { Vote } from "./vote";
 export class Tokenpon {
     constructor(
         public name: String,
+        public merchantId: String,
         public businessName: String,
         public street: String,
         public city: String ,

@@ -34,12 +34,12 @@ hr {
     margin-top: 0
 }
 
-.btn {
+.defaultbtn {
     background-color: #FF8F00 !important;
     box-shadow: none!important;
 }
 
-.btn:hover {
+.defaultbtn:hover {
     background-color: #FF6600 !important;
 }
 
@@ -290,7 +290,8 @@ div.darkTable {
     padding: 3px 2px;
   }
   .divTable.darkTable .divTableRow:nth-child(even) {
-    background: #888888;
+    /* background: #888888; */
+    background: #d3ccb741;
   }
   .divTable.darkTable .divTableHeading {
     background: grey;
@@ -314,7 +315,7 @@ div.darkTable {
   .divTable{ display: table; }
   .divTableHeadRow { display: table-row; }
   .divTableRow { display: table-row; }
-  .divTableRow:hover { background-color: tan; }
+  /* .divTableRow:hover { background-color: tan; } */
   .divTableHeading { display: table-header-group;}
   .divTableCell, .divTableHead { display: table-cell;}
   .divTableHeading { display: table-header-group;}

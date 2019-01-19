@@ -17,5 +17,7 @@ export class Globals {
   readonly ChainPostNewCommentSubject = "New comment posted";
   readonly ChainPostNewCommentMessageToAuthor = "A new comment has been posted for your post<br/>";
   readonly ChainPostNewCommentMessageToProvider = "Thank you for your comment on<br/>";
+  readonly TokenponDiscountList = [5, 10, 15, 20] ;
+  readonly TokenponAccountType = ["Regular", "Merchant"];
   readonly TokenponFineprint = "Promotional value expires 30 days after purchase. After the expiration day, refund will be made, there will be 20% refund charge. Limit 1 per visit. Merchant is solely responsible to purchasers for the care and quality of the advertised goods and services.";
 }

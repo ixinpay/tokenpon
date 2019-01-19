@@ -68,10 +68,22 @@
                             <button *ngIf="!inBusinessEdit" class="btn btn-blue-grey btn-sm float-right" (click)="toggleBusinessEdit()"
                                 translate>Edit</button>
                             <!-- <h4>Update Profile</h4> -->
-                            <form *ngIf="!inBusinessEdit" (ngSubmit)="claimForm.form.valid && updateBusinessProfile()"
-                                name="claimForm" #claimForm="ngForm">
+                            <form *ngIf="!inBusinessEdit">
                                 <div class="form-group">
-                                    <div class="row">
+                                    <div class="main-cat">
+                                        <div class="claim-head">
+                                            <h4 translate>Account Type</h4>
+                                        </div>
+                                        <div>
+                                            <div class="row">
+                                                <div class="form-group col-sm-6">
+                                                    <label translate>{{profileModel.accountType}}</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- show the following only for non-regular account -->
+                                    <div *ngIf="!isRegularAccount" class="row">
                                         <div class="col-12">
                                             <div class="main-cat">
                                                 <div class="claim-head">
@@ -130,7 +142,8 @@
                                                         <label>{{profileModel.street}}</label>
                                                     </div>
                                                     <div>
-                                                        <label>{{profileModel.city}}, {{profileModel.state}} {{profileModel.zip}}</label>
+                                                        <label>{{profileModel.city}}, {{profileModel.state}}
+                                                            {{profileModel.zip}}</label>
                                                     </div>
                                                 </div>
                                                 <!-- <div class="row">
@@ -229,7 +242,28 @@
                             <form *ngIf="inBusinessEdit" (ngSubmit)="claimForm.form.valid && updateBusinessProfile()"
                                 name="claimForm" #claimForm="ngForm">
                                 <div class="form-group">
-                                    <div class="row">
+                                    <div class="main-cat">
+                                        <div class="claim-head">
+                                            <h4 translate>Account Type</h4>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group col-sm-6">
+                                                <label for="accountType" class="required" [ngClass]="{ 'has-error': claimForm.submitted && !businessSubCategory.valid }"
+                                                    translate>Account Type</label>
+                                                <select class="form-control" id="accountType" required [(ngModel)]="profileModel.accountType"
+                                                    [ngClass]="{ 'show-error-border': claimForm.submitted && !accountType.valid }"
+                                                    name="accountType" #accountType="ngModel" (change)="accountDropDownChanged($event.target.value)">
+                                                    <option *ngFor="let type of accountTypeList" [value]="type">{{type}}</option>
+                                                </select>
+                                                <div class="col-sm-6">
+                                                    <small *ngIf="claimForm.submitted && !accountType.valid" translate
+                                                        class="" [ngClass]="{ 'show-error': claimForm.submitted && !accountType.valid }">*
+                                                        This is required</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div *ngIf="!isRegularAccount" class="row">
                                         <div class="col-12">
                                             <div class="main-cat">
                                                 <div class="claim-head">
@@ -295,11 +329,12 @@
                                                             <label for="businessName" class="required" [ngClass]="{ 'has-error': claimForm.submitted && !businessName.valid }"
                                                                 translate>Business Name</label>
                                                             <input type="text" class="form-control" id="businessName"
-                                                                required [(ngModel)]="profileModel.businessName" [ngClass]="{ 'show-error-border': claimForm.submitted && !businessName.valid }"
+                                                                required [(ngModel)]="profileModel.businessName"
+                                                                [ngClass]="{ 'show-error-border': claimForm.submitted && !businessName.valid }"
                                                                 name="businessName" #businessName="ngModel">
                                                             <div class="col-sm-6">
-                                                                <small *ngIf="claimForm.submitted && !businessName.valid"
-                                                                    translate class="" [ngClass]="{ 'show-error': claimForm.submitted && !businessName.valid }">*
+                                                                <small *ngIf="!businessName.valid"
+                                                                    translate class="" [ngClass]="{ 'show-error': !businessName.valid }">*
                                                                     This is required</small>
                                                             </div>
                                                         </div>
@@ -393,7 +428,8 @@
                                                         <div [ngClass]="{ 'has-error': claimForm.submitted && !phone.valid }">
                                                             <label for="phone" class="required" translate>Phone</label>
                                                             <input type="text" mask="(000)000-0000" class="form-control"
-                                                                id="phone" required [(ngModel)]="profileModel.phone" [ngClass]="{ 'show-error-border': claimForm.submitted && !phone.valid }"
+                                                                id="phone" required [(ngModel)]="profileModel.phone"
+                                                                [ngClass]="{ 'show-error-border': claimForm.submitted && !phone.valid }"
                                                                 name="phone" #phone="ngModel">
                                                             <div class="col-sm-6">
                                                                 <small *ngIf="claimForm.submitted && !phone.valid"
@@ -493,7 +529,8 @@
                                                 <div class="row" *ngIf="false">
                                                     <div class="col-sm-12">
                                                         <input type="text" readonly class="form-control" id="formType"
-                                                            [(ngModel)]="profileModel.formType" name="formType" #formType="ngModel">
+                                                            [(ngModel)]="profileModel.formType" name="formType"
+                                                            #formType="ngModel">
                                                         <input type="text" readonly class="form-control" id="publishDate"
                                                             [(ngModel)]="profileModel.publishDate" name="publishDate"
                                                             #publishDate="ngModel">
@@ -546,19 +583,19 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="submitBtn">
-                                            <button type="submit" class="btn btn-success" translate>{{isUpdate?
-                                                'Update': 'Submit'}}</button>
-                                            <button *ngIf="isUpdate" class="btn btn-outline-danger  waves-effect"
-                                                [routerLink]="" [queryParams]="{id: claimId}" type="submit" translate>Cancel
-                                                <i class="fa fa-ban ml-2"></i>
-                                            </button>
-                                            <button type="button" class="btn btn-outline-danger  waves-effect" (click)="cancelProfileUpdate()"
-                                                translate>Cancel
-                                                <i class="fa fa-ban ml-2"></i>
-                                            </button>
-                                            <button type="button" (click)="test()">test</button>
-                                        </div>
+                                    </div>
+                                    <div class="submitBtn">
+                                        <button type="submit" class="btn btn-success" translate>{{isUpdate?
+                                            'Update': 'Submit'}}</button>
+                                        <button *ngIf="isUpdate" class="btn btn-outline-danger  waves-effect"
+                                            [routerLink]="" [queryParams]="{id: claimId}" type="submit" translate>Cancel
+                                            <i class="fa fa-ban ml-2"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-outline-danger  waves-effect" (click)="cancelProfileUpdate();"
+                                            translate>Cancel
+                                            <i class="fa fa-ban ml-2"></i>
+                                        </button>
+                                        <button type="button" (click)="test()">test</button>
                                     </div>
                                 </div>
                             </form>

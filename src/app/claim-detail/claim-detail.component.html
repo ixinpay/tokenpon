@@ -4,7 +4,7 @@
             <label for="businessCategory" translate>{{model.businessMainCategory}}</label> >
             <label for="businessCategory" class="inline" translate>{{model.businessSubCategory}}</label>
             <div>
-                <button class="btn btn-primary btn-md" [hidden]="!isAuthor" translate [routerLink]="['/home/claim']"
+                <button class="btn defaultbtn btn-md" [hidden]="!isAuthor" translate [routerLink]="['/home/claim']"
                     [queryParams]="{id: claimId}">Edit</button>
                 <h5>{{model.businessName}} - {{model.city}}</h5>
                 <div>
@@ -18,7 +18,51 @@
             </div>
 
             <br>
-            <div class="divTable darkTable col-10">
+            <div class="col-12 mb-2" *ngFor="let field of discountArray; let i = index">
+                <div class="card">
+                    <div class="col-12">
+                    <div class="card-block">
+                        <div class="row">
+                            <div class="col-8">
+                                <h4 class="offer-head">OFFER {{i+1}}</h4>
+                            </div>
+                            <div class="col-4 text-center">
+                                <button type="button" class="btn defaultbtn" data-toggle="modal" data-target="#buyModal" (click)="buyCoupon(i)">BUY</button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 col-md-2">Title:</div>
+                            <div class="col-xs-12 col-sm-12 col-md-10">
+                                {{field.title}}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 col-md-2">Description:</div>
+                            <div class="col-xs-12 col-sm-12 col-md-10">
+                                {{field.description}}
+                            </div>
+                        </div>
+                        <div class="divTable darkTable">
+                            <div class="divTableHeading">
+                                <div class="divTableHeadRow">
+                                    <div class="divTableHead">Amount Spend</div>
+                                    <div class="divTableHead">Discount</div>
+                                    <div class="divTableHead">Token Number</div>
+                                </div>
+                            </div>
+                            <div class="divTableBody">
+                                <div class="divTableRow">
+                                    <div class="divTableCell">{{field.amount}}</div>
+                                    <div class="divTableCell">{{field.discount * 100}}%</div>
+                                    <div class="divTableCell">{{field.token}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+            </div>
+            <!-- <div class="divTable darkTable col-10">
                 <div class="divTableHeading">
                     <div class="divTableHeadRow">
                         <div class="divTableHead">Amount Spend</div>
@@ -27,13 +71,29 @@
                     </div>
                 </div>
                 <a class="divTableBody" *ngFor="let field of discountArray; let i = index">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-2">Title:</div>
+                        <div class="col-xs-12 col-sm-12 col-md-10">
+                            {{field.title}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-2">Description:</div>
+                        <div class="col-xs-12 col-sm-12 col-md-10">
+                            {{field.description}}
+                        </div>
+                    </div>
                     <div class="divTableRow">
                         <div class="divTableCell">{{field.amount}}</div>
                         <div class="divTableCell">{{field.discount * 100}}%</div>
                         <div class="divTableCell">{{field.token}}</div>
+                        <div class="divTableCell">
+                            <button class="btn btn-primary btn-sm">BUY</button>
+                        </div>
                     </div>
                 </a>
-            </div>
+            </div> -->
+
             <div class="row mt-2">
                 <ngu-carousel #myCarousels1 [inputs]="carouselBanner" (carouselLoad)="carouselTileOneLoad()" (onMove)="onMoveData($event)"
                     [reset]="rsts" (initData)="getCarouselData($event)">
@@ -212,13 +272,13 @@
                 </button>
             </div>
             <div class="modal-body">
-                <p translate>You will send iXin "" to . Your purchase will be shown on Your
+                <p translate>You will send iXin {{discountTokenCost}} to . Your purchase will be shown on Your
                     iXin Pay Mobile App.
                 </p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary">Confirm</button>
+                <button type="button" class="btn defaultbtn">Confirm</button>
             </div>
         </div>
     </div>

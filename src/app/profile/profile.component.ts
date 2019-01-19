@@ -23,7 +23,7 @@ export class ProfileComponent implements OnInit {
 
   regionDisplayName: string = null;
   inBusinessEdit = false;
-  model: any = {};
+  model: any = {};  
   showPassword = false;
   userName: string;
   tokenBalance: number;
@@ -56,7 +56,8 @@ export class ProfileComponent implements OnInit {
   // isUpdate: boolean = false;
   maincategoryid: this;
   private albums: any[] = [];
-
+  private isRegularAccount: boolean = true;
+  private accountTypeList: any[];
   //end claim page
   constructor(private oothService: OothService, private route: ActivatedRoute
     , private toasterService: ToasterService, private translate: TranslateService,
@@ -68,12 +69,14 @@ export class ProfileComponent implements OnInit {
 
     this.accountNumber = localStorage.getItem("currentUserAccount");
     this.accountEmail = localStorage.getItem("currentUserEmail");
+    this.accountTypeList = this.globals.TokenponAccountType;
+
     this.route.queryParams.subscribe(params => {
       this.userName = params["user"];
       this.getProfileData();
     });
 
-    this.profilePages = new Array("Account Information", "Business Profile", "Account Settings");
+    this.profilePages = new Array("Account Information", "Account Profile", "Account Settings");
     this.selectedPage = this.profilePages[0];
     //get user data
     this.oothService.getUser()
@@ -137,6 +140,13 @@ export class ProfileComponent implements OnInit {
         if (response.status == 200) {
           console.log(response);
           this.profileModel = response.json();
+          if (this.profileModel.accountType == undefined || this.profileModel.accountType.trim() == ""
+            || this.profileModel.accountType == this.globals.TokenponAccountType[0]) {
+            this.isRegularAccount = true;
+          }
+          else {
+            this.isRegularAccount = false;
+          }
           console.log(this.profileModel);
           this.onChange(this.profileModel.country);
           this.MainCategoryDropDownChanged(this.profileModel.businessMainCategory);
@@ -499,6 +509,14 @@ export class ProfileComponent implements OnInit {
       this.state_province = this.states;
     }
   }
+  accountDropDownChanged(value: any) {
+    if (value == undefined || value.trim() == "" || value == this.globals.TokenponAccountType[0]) {
+      this.isRegularAccount = true;
+    }
+    else {
+      this.isRegularAccount = false;
+    }
+  }
   test() {
     this.profileModel = new Claim("John", "John Business", "123 abc st.", "DC", "DC", "20001",
       "USA", "test@test.com", "123-123-1234", "http://www.test.com", "Baby", "DC", "9-5",
@@ -510,6 +528,7 @@ export class ProfileComponent implements OnInit {
   }
   cancelProfileUpdate() {
     this.inBusinessEdit = false;
+    
     console.log(this.inBusinessEdit);
   }
   //end of update merchant profile

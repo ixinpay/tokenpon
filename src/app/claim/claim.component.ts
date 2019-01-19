@@ -49,9 +49,11 @@ export class ClaimComponent implements OnInit {
   profileModel: any = {};
   private albums: any[] = [];
   productDescription: string;
+  overallTitle: string;
   finePrint: string;
   logoUrl: string;
-
+  private showNewOfferUI: boolean = true;
+  private discountValueList: any[];
   constructor(
     private router: Router, private route: ActivatedRoute, private translate: TranslateService,
     private userService: UserService, private bigchaindbService: BigchanDbService,
@@ -61,6 +63,7 @@ export class ClaimComponent implements OnInit {
   ) {
     this.currentUser = localStorage.getItem('currentUser');
     this.model.submitBy = this.currentUser;
+    this.discountValueList = this.globals.TokenponDiscountList;
     this.route.queryParams.subscribe(params => {
       // console.log(params['id']);
       this.claimId = params['id'];
@@ -221,8 +224,15 @@ export class ClaimComponent implements OnInit {
         this.discountArray.forEach(element => {
           element.discount = element.discount * 100;
         });
+        if(this.discountArray.length > 0){
+          this.showNewOfferUI = false;
+        }
+        else{
+          this.showNewOfferUI = true;
+        }
         this.finePrint = this.model.finePrint;
         this.productDescription = this.model.productDescription;
+        this.overallTitle = this.model.overallTitle;
         // console.log(this.model.notification);
         let id = -1;
         // get pictures from SWARM
@@ -272,6 +282,7 @@ export class ClaimComponent implements OnInit {
     //   this.model.id = "NA";
     // }
     this.model.appId = this.globals.TokenponAppId;
+    this.model.merchantId = this.profileModel._id;
     this.model.businessName = this.profileModel.businessName;
     this.model.street = this.profileModel.street;
     this.model.city = this.profileModel.city;
@@ -291,6 +302,7 @@ export class ClaimComponent implements OnInit {
     this.model.notification = this.profileModel.notification;
     this.model.discounts = this.discountArray;
     this.model.productDescription = this.productDescription;
+    this.model.overallTitle = this.overallTitle;
     this.model.finePrint = this.finePrint;
     //convert discount rate to %
     this.model.discounts.forEach(element => {
@@ -361,12 +373,27 @@ export class ClaimComponent implements OnInit {
     return this.currentUser == user;
   }
   addDiscount() {
-    this.discountArray.push(this.newDiscount)
+    this.discountArray.push(this.newDiscount);
+    if(this.discountArray.length > 0){
+      this.showNewOfferUI = false;
+    }
+    else{
+      this.showNewOfferUI = true;
+    }
     this.newDiscount = {};
   }
 
   deleteDiscount(index) {
     this.discountArray.splice(index, 1);
+    if(this.discountArray.length > 0){
+      this.showNewOfferUI = false;
+    }
+    else{
+      this.showNewOfferUI = true;
+    }
+  }
+  showOfferUI(){
+    this.showNewOfferUI = true;
   }
   ngOnInit() {
     // this.loadAllClaims();

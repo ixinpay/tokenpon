@@ -62,7 +62,7 @@ export class ClaimDetailComponent implements OnInit {
   private userId: string;
   private tokenBalance: number;
   private discountArray: Array<any> = [];
-
+  private discountTokenCost: number;
   @ViewChild('AgmMap') agmMap: AgmMap;
   // map: google.maps.Map;
   protected map: any;
@@ -822,7 +822,10 @@ export class ClaimDetailComponent implements OnInit {
   onmoveFn(data: NguCarouselStore) {
     console.log(data);
   }
-
+  buyCoupon(index: number){
+    this.discountTokenCost = this.discountArray[index].token;
+    // $("#buyModal").modal('show');
+  }
   clickedMarker(label: string, index: number) {
     console.log(`clicked the marker: ${label || index}`)
   }

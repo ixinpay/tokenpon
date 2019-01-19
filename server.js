@@ -73,6 +73,7 @@ var DiscountSchema = new Schema({
 })
 var TokenponSchema = new Schema({
     name: { type: String },
+    merchantId: { type: String },
     businessName: { type: String },
     street: { type: String },
     city: { type: String },
@@ -96,11 +97,13 @@ var TokenponSchema = new Schema({
     viewCount: { type: Number },
     region: { type: String },
     notification: { type: Boolean},
+    overallTitle: { type: String},
     productDescription: { type: String},
     finePrint: { type: String}
 });
 var TokenponProfileSchema = new Schema({
     accountAddress: { type: String},
+    accountType: { type: String},
     name: { type: String },
     businessName: { type: String },
     street: { type: String },
@@ -197,6 +200,7 @@ app.post("/api/updateProfile", function(req, res) {
         model.update({ _id: req.body._id }, {
                 "$set": {
                     name: req.body.name,
+                    accountType: req.body.accountType,
                     businessName: req.body.businessName,
                     street: req.body.street,
                     city: req.body.city,
@@ -297,6 +301,7 @@ app.post("/api/updateListing", function(req, res) {
                     notification: req.body.notification,
                     discounts: req.body.discounts,
                     productDescription: req.body.productDescription,
+                    overallTitle: releaseEvents.body.overallTitle,
                     finePrint: req.body.finePrint
                 }
             }, { upsert: true },
