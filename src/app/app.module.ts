@@ -44,6 +44,7 @@ import { SafePipe } from './_helpers/safe.pipe';
 import { AgmCoreModule } from '@agm/core';
 import { AgmJsMarkerClustererModule } from '@agm/js-marker-clusterer';
 import {MegaMenuModule} from 'primeng/megamenu';
+import { InternationalPhoneNumberModule } from 'ngx-international-phone-number';
 // const SERVICES = [
 //   MetaCoinService,
 //   Web3Service,
@@ -80,7 +81,8 @@ import {MegaMenuModule} from 'primeng/megamenu';
       apiKey: 'AIzaSyA5IGhOP4Sk_MzGLLMtmmjdXNP1bN_3Y_g'
     }),
     AgmJsMarkerClustererModule,
-    MegaMenuModule
+    MegaMenuModule,
+    InternationalPhoneNumberModule
   ],
   declarations: [
     AppComponent,

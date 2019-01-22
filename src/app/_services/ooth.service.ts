@@ -68,9 +68,13 @@ export class OothService {
         //await this.loginWithEmailPassword(email, password);
     }
 
-    async Login(username: string, password: string) {
+    async Login(username: string, password: string, isPhone: boolean) {
         // console.log(username + " " + password);
-        const res = await fetch(this.API_PATH + 'local/m.login', {
+        let method: string = "local/m.login";
+        if(!isPhone){
+            method = "local/login";
+        }
+        const res = await fetch(this.API_PATH + method, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

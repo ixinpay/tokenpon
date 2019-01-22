@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { AuthenticationService, OothService } from '../_services/index';
 import { Globals } from '../globals'
 import { ToasterModule, ToasterService, ToasterConfig } from 'angular2-toaster';
+import { InternationalPhoneNumberModule } from 'ngx-international-phone-number';
 @Component({
     moduleId: module.id.toString(),
     templateUrl: 'login.component.html'
@@ -13,6 +14,7 @@ export class LoginComponent implements OnInit {
     model: any = {};
     loading = false;
     returnUrl: string;
+    phoneLogin: boolean = true; // true = phone number, false = username/email
 
     constructor(
         private globals: Globals, private oothService: OothService,
@@ -28,10 +30,19 @@ export class LoginComponent implements OnInit {
         // get return url from route parameters or default to '/'
         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
     }
-
+    toggleLogin(){
+        this.phoneLogin = !this.phoneLogin;
+    }
     login() {
         this.oothService.Logout();
-        this.oothService.Login(this.model.email, this.model.password)
+        let userid = "";
+        if(!this.phoneLogin){
+            userid = this.model.email
+        }
+        else{
+            userid = this.model.phone.substring(1);
+        }
+        this.oothService.Login(userid, this.model.password, this.phoneLogin)
             .then(res => {//console.log(this.model.email + " " + this.model.password)
                 console.log(res)
                 if (res.status === 'error') {
