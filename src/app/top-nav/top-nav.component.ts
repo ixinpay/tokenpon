@@ -155,7 +155,7 @@ export class TopNavComponent implements OnInit {
   LogOut() {
     // reset login status
     this.oothService.Logout()
-      .then(() => this.toasterService.pop('success', 'Logout successful'));
+      // .then(() => this.toasterService.pop('success', 'Logout successful'));
     // .then(() => this.alertService.success('Logout successful', true));
     //this.globals.isLoggedIn = false;
     this.currentUser = undefined;
@@ -176,67 +176,80 @@ export class TopNavComponent implements OnInit {
   ngOnInit() {
     this.items = [
       {
-        label: 'TV', icon: 'fa fa-fw fa-check',
-        items: [
-          [
-            {
-              label: 'TV 1',
-              items: [{ label: 'TV 1.1' }, { label: 'TV 1.2' }]
-            },
-            {
-              label: 'TV 2',
-              items: [{ label: 'TV 2.1' }, { label: 'TV 2.2' }]
-            }
-          ],
-          [
-            {
-              label: 'TV 3',
-              items: [{ label: 'TV 3.1' }, { label: 'TV 3.2' }]
-            },
-            {
-              label: 'TV 4',
-              items: [{ label: 'TV 4.1' }, { label: 'TV 4.2' }]
-            }
+          label: 'File',
+          icon: 'pi pi-fw pi-file',
+          items: [{
+                  label: 'New', 
+                  icon: 'pi pi-fw pi-plus',
+                  items: [
+                      {label: 'Project'},
+                      {label: 'Other'},
+                  ]
+              },
+              {label: 'Open'},
+              {separator:true},
+              {label: 'Quit'}
           ]
-        ]
       },
       {
-        label: 'Sports', icon: 'fa fa-fw fa-soccer-ball-o',
-        items: [
-          [
-            {
-              label: 'Sports 1',
-              items: [{ label: 'Sports 1.1' }, { label: 'Sports 1.2' }]
-            },
-            {
-              label: 'Sports 2',
-              items: [{ label: 'Sports 2.1' }, { label: 'Sports 2.2' }]
-            },
-
-          ],
-          [
-            {
-              label: 'Sports 3',
-              items: [{ label: 'Sports 3.1' }, { label: 'Sports 3.2' }]
-            },
-            {
-              label: 'Sports 4',
-              items: [{ label: 'Sports 4.1' }, { label: 'Sports 4.2' }]
-            }
-          ],
-          [
-            {
-              label: 'Sports 5',
-              items: [{ label: 'Sports 5.1' }, { label: 'Sports 5.2' }]
-            },
-            {
-              label: 'Sports 6',
-              items: [{ label: 'Sports 6.1' }, { label: 'Sports 6.2' }]
-            }
+          label: 'Edit',
+          icon: 'pi pi-fw pi-pencil',
+          items: [
+              {label: 'Delete', icon: 'pi pi-fw pi-trash'},
+              {label: 'Refresh', icon: 'pi pi-fw pi-refresh'}
           ]
-        ]
+      },
+      {
+          label: 'Help',
+          icon: 'pi pi-fw pi-question',
+          items: [
+              {
+                  label: 'Contents'
+              },
+              {
+                  label: 'Search', 
+                  icon: 'pi pi-fw pi-search', 
+                  items: [
+                      {
+                          label: 'Text', 
+                          items: [
+                              {
+                                  label: 'Workspace'
+                              }
+                          ]
+                      },
+                      {
+                          label: 'File'
+                      }
+              ]}
+          ]
+      },
+      {
+          label: 'Actions',
+          icon: 'pi pi-fw pi-cog',
+          items: [
+              {
+                  label: 'Edit',
+                  icon: 'pi pi-fw pi-pencil',
+                  items: [
+                      {label: 'Save', icon: 'pi pi-fw pi-save'},
+                      {label: 'Update', icon: 'pi pi-fw pi-save'},
+                  ]
+              },
+              {
+                  label: 'Other',
+                  icon: 'pi pi-fw pi-tags',
+                  items: [
+                      {label: 'Delete', icon: 'pi pi-fw pi-minus'}
+                  ]
+              }
+          ]
+      },
+      {separator:true},
+      {
+          label: 'Quit', icon: 'pi pi-fw pi-times'
       }
-    ];
+  ];
   }
   private loadCountries(locale: string): void {
     const iso3166 = getNames(locale);

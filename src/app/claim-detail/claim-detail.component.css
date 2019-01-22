@@ -60,9 +60,6 @@ hr {
     color: #707070!important;
 }
 
-/* .comment-post {
-    width: 85%
-} */
 .no-gutters {
     margin-right: 0 !important;
     margin-left: 0 !important;
@@ -71,215 +68,6 @@ agm-map {
     height: 150px;
     width: 250px;
   }
-/* ul {
-    list-style-type: none;
-    width: 100%;
-    padding: 0 !important;
-    margin: 0 !important;
-}
-
-h3 {
-    font: bold 20px/1.5 Helvetica, Verdana, sans-serif;
-}
-
-li img {
-    float: left;
-    margin: 0 15px 0 0;
-}
-
-li p {
-    font: 200 12px/1.5 Georgia, Times New Roman, serif;
-}
-
-li {
-    padding: 10px;
-    overflow: auto;
-}
-
-li:hover {
-    background: #eee;
-}
-
-.far {
-    cursor: pointer;
-    user-select: none;
-}
-
-.fa-thumbs-up-clicked {
-    color: lightgreen;
-}
-
-.fa-thumbs-down-clicked {
-    color: red;
-}
-
-.thumbnail {
-    padding: 0px;
-}
-
-.panel {
-    position: relative;
-}
-
-.panel>.panel-heading:after,
-.panel>.panel-heading:before {
-    position: absolute;
-    top: 11px;
-    left: -16px;
-    right: 100%;
-    width: 0;
-    height: 0;
-    display: block;
-    content: " ";
-    border-color: transparent;
-    border-style: solid solid outset;
-    pointer-events: none;
-}
-
-.panel>.panel-heading:after {
-    border-width: 7px;
-    border-right-color: #f7f7f7;
-    margin-top: 1px;
-    margin-left: 2px;
-}
-
-.panel>.panel-heading:before {
-    border-right-color: #ddd;
-    border-width: 8px;
-}
-
-.tile {
-    min-height: 200px;
-    background-color: #ccc;
-    background-size: cover !important;
-}
-
-.tile h1 {
-    text-align: center;
-    line-height: 200px;
-    background: rgba(0, 0, 0, 0.32);
-    color: white;
-    margin: 0;
-}
-
-h4 {
-    margin: 0;
-    padding: 10px 15px;
-    text-align: center;
-}
-
-p {
-    margin: 0;
-    padding: 0 15px 10px;
-    text-align: center;
-}
-
-.wBg {
-    background: white;
-}
-
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-nav {
-    border-bottom: 1px solid #ccc;
-    position: fixed;
-    width: 100%;
-    top: 0;
-    background: white;
-    z-index: 12;
-}
-
-nav h1 {
-    margin: 0;
-    padding: 10px;
-    text-align: center;
-}
-
-.carBtn {
-    position: absolute;
-    margin: auto;
-    top: 0;
-    bottom: 0;
-    width: 50px;
-    height: 50px;
-    box-shadow: 1px 2px 10px -1px rgba(0, 0, 0, 0.3);
-    border-radius: 999px;
-}
-
-.leftRs {
-    position: absolute;
-    margin: auto;
-    top: 0;
-    bottom: 0;
-    width: 50px;
-    height: 50px;
-    box-shadow: 1px 2px 10px -1px rgba(0, 0, 0, 0.3);
-    border-radius: 999px;
-    left: 0;
-}
-
-.rightRs {
-    position: absolute;
-    margin: auto;
-    top: 0;
-    bottom: 0;
-    width: 50px;
-    height: 50px;
-    box-shadow: 1px 2px 10px -1px rgba(0, 0, 0, 0.3);
-    border-radius: 999px;
-    right: 0;
-}
-
-.leftRs1 {
-    position: absolute;
-    margin: auto;
-    top: 0;
-    bottom: 0;
-    width: 50px;
-    height: 50px;
-    box-shadow: 1px 2px 10px -1px rgba(0, 0, 0, 0.3);
-    border-radius: 999px;
-    right: 0;
-}
-
-.rightRs1 {
-    position: absolute;
-    margin: auto;
-    top: 0;
-    bottom: 0;
-    width: 50px;
-    height: 50px;
-    box-shadow: 1px 2px 10px -1px rgba(0, 0, 0, 0.3);
-    border-radius: 999px;
-    left: 0;
-}
-
-.carouselHoved {
-    opacity: 0.9;
-}
-
-a.carousel-control-prev {
-    width: 5%;
-    height: 120px;
-    margin-left: -1em;
-}
-
-a.carousel-control-prev :hover {
-    opacity: .8;
-}
-
-a.carousel-control-next {
-    width: 5%;
-    height: 120px;
-    margin-right: -1em;
-}
-
-a.carousel-control-next :hover {
-    opacity: .8;
-} */
 div.darkTable {
     text-align: center;
     border-collapse: collapse;
@@ -324,3 +112,26 @@ div.darkTable {
   .tableBtn {position:absolute;
     left:0;
     width:100%; }
+
+    /* image carousel */
+    #myCarousel .list-inline {
+        white-space:nowrap;
+        overflow-x:auto;
+    }
+    
+    #myCarousel .carousel-indicators {
+        position: static;
+        left: initial;
+        width: initial;
+        margin-left: initial;
+    }
+    
+    #myCarousel .carousel-indicators > li {
+        width: initial;
+        height: initial;
+        text-indent: initial;
+    }
+    
+    #myCarousel .carousel-indicators > li.active img {
+        opacity: 0.7;
+    }

@@ -152,6 +152,8 @@ export class ListingsComponent implements OnInit {
         imgUrl: isNullOrUndefined(this.claims[j].pictures[0]) || this.claims[j].pictures[0] == "" ?
           "../../assets/linkGearGGold.png" : this.claims[j].pictures[0],
         _id: this.claims[j]._id,
+        overallTitle: this.claims[j].overallTitle,
+        productDescription: this.claims[j].productDescription,
         businessMainCategory: this.claims[j].businessMainCategory,
         businessName: this.claims[j].businessName,
         service: this.claims[j].service,
@@ -209,15 +211,24 @@ export class ListingsComponent implements OnInit {
           this.listings = [];
           //  console.log(this.listings);
           for (var j = 0; j < this.claims.length; j++) {
-            //console.log(thi);
             this.listings[j] = {
+              imgUrl: isNullOrUndefined(this.claims[j].pictures[0]) || this.claims[j].pictures[0] == "" ?
+                "../../assets/linkGearGGold.png" : this.claims[j].pictures[0],
               _id: this.claims[j]._id,
+              overallTitle: this.claims[j].overallTitle,
+              productDescription: this.claims[j].productDescription,
               businessMainCategory: this.claims[j].businessMainCategory,
               businessName: this.claims[j].businessName,
               service: this.claims[j].service,
               phone: this.claims[j].phone,
+              street: this.claims[j].street,
+              city: this.claims[j].city,
+              state: this.claims[j].state,
+              zip: this.claims[j].zip,
               likes: this.votes[j].likes,
-              dislikes: this.votes[j].dislikes
+              dislikes: this.votes[j].dislikes,
+              viewCount: this.claims[j].viewCount == null || this.claims[j].viewCount == undefined ? 0 : this.claims[j].viewCount,
+              comments: this.claims[j].comments.length
             };
           }
           // console.log(this.listings);
@@ -260,15 +271,24 @@ export class ListingsComponent implements OnInit {
 
             this.listings = [];
             for (var j = 0; j < this.claims.length; j++) {
-              //console.log(thi);
               this.listings[j] = {
+                imgUrl: isNullOrUndefined(this.claims[j].pictures[0]) || this.claims[j].pictures[0] == "" ?
+                  "../../assets/linkGearGGold.png" : this.claims[j].pictures[0],
                 _id: this.claims[j]._id,
+                overallTitle: this.claims[j].overallTitle,
+                productDescription: this.claims[j].productDescription,
                 businessMainCategory: this.claims[j].businessMainCategory,
                 businessName: this.claims[j].businessName,
                 service: this.claims[j].service,
                 phone: this.claims[j].phone,
+                street: this.claims[j].street,
+                city: this.claims[j].city,
+                state: this.claims[j].state,
+                zip: this.claims[j].zip,
                 likes: this.votes[j].likes,
-                dislikes: this.votes[j].dislikes
+                dislikes: this.votes[j].dislikes,
+                viewCount: this.claims[j].viewCount == null || this.claims[j].viewCount == undefined ? 0 : this.claims[j].viewCount,
+                comments: this.claims[j].comments.length
               };
             }
             this.claimsPage = this.listings.slice(0, this.pageSize);
@@ -362,7 +382,7 @@ export class ListingsComponent implements OnInit {
     //get query param
     this.page = 1;
     this.maxSize = 10;
-    this.pageSize = 20;
+    this.pageSize = 8;
     this.subscription = this.route.queryParams.subscribe(params => {
       //console.log(params['cat']);
       this.catParam = params['cat'];
@@ -614,5 +634,8 @@ export class ListingsComponent implements OnInit {
   getProfileData() {
     let userName = localStorage.getItem("currentUser");
     return this.mongoService.GetProfile(userName, this.globals.TokenponAppId);      
+  }
+  selectOffer(id: string){
+    this.router.navigate(['/home/claim-detail'], { queryParams: { id: id } });
   }
 }

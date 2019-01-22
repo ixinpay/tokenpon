@@ -12,11 +12,12 @@ function getApiPath() {
     var host = "";
     // for a local run, use qa Idp
     if (location.hostname === 'localhost')
-        host = '34.238.58.243';
+        // host = '34.238.58.243';
+        return environment.IxinAPI;
     else
         host = location.hostname;
     //readonly API_PATH = 'http://linkcryptocoin.com:8091/auth/';
-    return location.protocol + '//' + host + ':8091/auth/';
+    return location.protocol + '//' + host + ':8061/auth/';
 }
 @Injectable()
 export class OothService {
@@ -69,13 +70,13 @@ export class OothService {
 
     async Login(username: string, password: string) {
         // console.log(username + " " + password);
-        const res = await fetch(this.API_PATH + 'local/login', {
+        const res = await fetch(this.API_PATH + 'local/m.login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                username,
+                mobile: username,
                 password,
             }),
             credentials: 'include',

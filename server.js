@@ -301,7 +301,7 @@ app.post("/api/updateListing", function(req, res) {
                     notification: req.body.notification,
                     discounts: req.body.discounts,
                     productDescription: req.body.productDescription,
-                    overallTitle: releaseEvents.body.overallTitle,
+                    overallTitle: req.body.overallTitle,
                     finePrint: req.body.finePrint
                 }
             }, { upsert: true },
