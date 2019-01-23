@@ -59,29 +59,29 @@
                 <a href="{{'#' + cat.Category + 'Submenu'}}" data-toggle="collapse" aria-expanded="false" translate>{{cat.Description}}</a>
             </li>
         </ul>
-        <div class="nav-item active ml-auto">
+        <!-- <div class="nav-item active ml-auto">
                 <form class="form-inline">
                     <input class="form-control" type="search" placeholder="Search" aria-label="Search">
                     <a>
                         <i class="fa fa-search" aria-hidden="true"></i>
                     </a>
                 </form>
-            </div>
-            <div class="nav-item dropdown nav-profile" *ngIf="currentUser != undefined">
-                <a class="" id="dropdownMenuProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{currentUser}}</a>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuProfile">
-                    <a class="dropdown-item" [routerLink]="['/profile']" [queryParams]="{user: currentUser}">
-                        <i class="fa fa-cog" aria-hidden="true"></i>Settings
-                    </a>
-                    <a class="dropdown-item" (click)="LogOut()">
-                        <i class="fa fa-sign-out" aria-hidden="true"></i>Logout
-                    </a>
-                </div>
-            </div>
-            <div class="nav-item dropdown nav-profile" *ngIf="currentUser == undefined">
-                <a class="dropdown-item" [routerLink]="['/login']" translate>
-                    <i class="fa fa-sign-in" aria-hidden="true"></i>Login
+            </div> -->
+        <div class="nav-item dropdown nav-profile mr-3" *ngIf="currentUser != undefined">
+            <a class="" id="dropdownMenuProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{currentUser}}</a>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuProfile">
+                <a class="dropdown-item" [routerLink]="['/profile']" [queryParams]="{user: currentUser}">
+                    <i class="fa fa-cog" aria-hidden="true"></i>Settings
+                </a>
+                <a class="dropdown-item" (click)="LogOut()">
+                    <i class="fa fa-sign-out" aria-hidden="true"></i>Logout
                 </a>
             </div>
+        </div>
+        <div class="nav-item dropdown nav-profile" *ngIf="currentUser == undefined">
+            <a class="dropdown-item" [routerLink]="['/login']" translate>
+                <i class="fa fa-sign-in" aria-hidden="true"></i>Login
+            </a>
+        </div>
     </div>
 </nav>
