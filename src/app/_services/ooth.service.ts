@@ -103,6 +103,8 @@ export class OothService {
             localStorage.setItem("currentUserId", body.user._id);
             localStorage.setItem('currentUserEmail', body.user.local.email);
             localStorage.setItem('currentUserAccount', body.user.local.account);
+            localStorage.setItem("accountType", body.user.local.accountType);
+            localStorage.setItem("phoneNumber", body.user.local.mobile);
         }
         else {
             return { status: "error", message: body };
@@ -136,6 +138,8 @@ export class OothService {
         localStorage.removeItem("oothtoken");
         localStorage.removeItem("currentUserAccount");
         localStorage.removeItem("tokenBalance");
+        localStorage.removeItem("accountType");
+        localStorage.removeItem("phoneNumber");
         return body;
     }
     // GenerateV Verification Token
@@ -348,6 +352,26 @@ export class OothService {
             credentials: 'include',
         })
         const body = await res.json()
+    }
+    // update user accountType
+    async updateAccountType(userId: string, accountType: string) {
+        const res = await fetch('/auth/local/t-updateUser', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                  userId,
+                  accountType,
+            }),
+            credentials: 'include',
+        })
+        const body = await res.json()
+        if (body.status !== 'error') {
+            localStorage.setItem("accountType", accountType);
+            return true
+        }
+        return false;
     }
     // Activate a user profile
     async onActivateUser(user: string, action: string) {

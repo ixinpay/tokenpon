@@ -53,7 +53,7 @@ export class ClaimComponent implements OnInit {
   finePrint: string;
   logoUrl: string;
   private showNewOfferUI: boolean = true;
-  private discountValueList: any[];
+  private discountValueList: number[];
   constructor(
     private router: Router, private route: ActivatedRoute, private translate: TranslateService,
     private userService: UserService, private bigchaindbService: BigchanDbService,
@@ -63,7 +63,7 @@ export class ClaimComponent implements OnInit {
   ) {
     this.currentUser = localStorage.getItem('currentUser');
     this.model.submitBy = this.currentUser;
-    this.discountValueList = this.globals.TokenponDiscountList;
+    this.discountValueList = Array.from(new Array(100),(val,index)=>index+1);
     this.route.queryParams.subscribe(params => {
       // console.log(params['id']);
       this.claimId = params['id'];
@@ -84,7 +84,7 @@ export class ClaimComponent implements OnInit {
           // console.log(response);
           this.profileModel = response.json();
           //get pictures from Mongo
-          this.logoUrl = this.profileModel.pictures[0];
+          this.logoUrl = this.profileModel.pictures[0] == undefined ? "" : this.profileModel.pictures[0];
         }
       });
     //get pictures from SWARM
@@ -394,6 +394,9 @@ export class ClaimComponent implements OnInit {
   }
   showOfferUI(){
     this.showNewOfferUI = true;
+  }
+  hideOfferUI(){
+    this.showNewOfferUI = false;
   }
   ngOnInit() {
     // this.loadAllClaims();

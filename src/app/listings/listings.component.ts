@@ -61,6 +61,7 @@ export class ListingsComponent implements OnInit {
   numofdislikes: number = 0;
   listView: boolean = true;
   showModal: boolean = false;
+  accountType: string;
 
   markers: Marker[] = []
   zoom: number = 10;
@@ -75,7 +76,7 @@ export class ListingsComponent implements OnInit {
     private alertService: AlertService, private titleService: Title,
     private http: Http, private translate: TranslateService, private modalService: NgbModal
   ) {
-
+    this.accountType = localStorage.getItem("accountType");
   }
   public getLikeCount(claim: any): number {
     let likeCount = 0;
@@ -149,8 +150,9 @@ export class ListingsComponent implements OnInit {
     for (var j = 0; j < this.claims.length; j++) {
       // console.log(this.claims[j].pictures[0]);
       this.listings[j] = {
-        imgUrl: isNullOrUndefined(this.claims[j].pictures[0]) || this.claims[j].pictures[0] == "" ?
-          "../../assets/linkGearGGold.png" : this.claims[j].pictures[0],
+        // imgUrl: imgUrl: this.claims[j].pictures[0],(this.claims[j].pictures[0]) || this.claims[j].pictures[0] == "" ?
+        //   "../../assets/linkGearGGold.png" : this.claims[j].pictures[0],
+        imgUrl: isNullOrUndefined(this.claims[j].pictures[0]) ? "" : this.claims[j].pictures[0],
         _id: this.claims[j]._id,
         overallTitle: this.claims[j].overallTitle,
         productDescription: this.claims[j].productDescription,
@@ -212,8 +214,9 @@ export class ListingsComponent implements OnInit {
           //  console.log(this.listings);
           for (var j = 0; j < this.claims.length; j++) {
             this.listings[j] = {
-              imgUrl: isNullOrUndefined(this.claims[j].pictures[0]) || this.claims[j].pictures[0] == "" ?
-                "../../assets/linkGearGGold.png" : this.claims[j].pictures[0],
+              // imgUrl: isNullOrUndefined(this.claims[j].pictures[0]) || this.claims[j].pictures[0] == "" ?
+              //   "../../assets/linkGearGGold.png" : this.claims[j].pictures[0],
+              imgUrl: isNullOrUndefined(this.claims[j].pictures[0]) ? "" : this.claims[j].pictures[0],
               _id: this.claims[j]._id,
               overallTitle: this.claims[j].overallTitle,
               productDescription: this.claims[j].productDescription,
@@ -272,8 +275,9 @@ export class ListingsComponent implements OnInit {
             this.listings = [];
             for (var j = 0; j < this.claims.length; j++) {
               this.listings[j] = {
-                imgUrl: isNullOrUndefined(this.claims[j].pictures[0]) || this.claims[j].pictures[0] == "" ?
-                  "../../assets/linkGearGGold.png" : this.claims[j].pictures[0],
+                // imgUrl: isNullOrUndefined(this.claims[j].pictures[0]) || this.claims[j].pictures[0] == "" ?
+                //   "../../assets/linkGearGGold.png" : this.claims[j].pictures[0],
+                imgUrl: isNullOrUndefined(this.claims[j].pictures[0]) ? "" : this.claims[j].pictures[0],
                 _id: this.claims[j]._id,
                 overallTitle: this.claims[j].overallTitle,
                 productDescription: this.claims[j].productDescription,
@@ -619,8 +623,8 @@ export class ListingsComponent implements OnInit {
       if (response.status == 200) {
         console.log(response);
         let profileModel = response.json();
-        if (profileModel.accountType == undefined || profileModel.accountType.trim() == ""
-          || profileModel.accountType == this.globals.TokenponAccountType[0]) {
+        if (this.accountType == undefined || this.accountType.trim() == ""
+          || this.accountType == this.globals.TokenponAccountType[0]) {
             
             this.showModal = true;
             this.displayModal(content);

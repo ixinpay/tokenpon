@@ -58,6 +58,7 @@ export class ProfileComponent implements OnInit {
   private albums: any[] = [];
   private isRegularAccount: boolean = true;
   private accountTypeList: any[];
+  private accountType: string;
   //end claim page
   constructor(private oothService: OothService, private route: ActivatedRoute
     , private toasterService: ToasterService, private translate: TranslateService,
@@ -69,6 +70,8 @@ export class ProfileComponent implements OnInit {
 
     this.accountNumber = localStorage.getItem("currentUserAccount");
     this.accountEmail = localStorage.getItem("currentUserEmail");
+    console.log(localStorage.getItem("accountType"));
+    this.accountType = localStorage.getItem("accountType");
     this.accountTypeList = this.globals.TokenponAccountType;
 
     this.route.queryParams.subscribe(params => {
@@ -140,8 +143,8 @@ export class ProfileComponent implements OnInit {
         if (response.status == 200) {
           console.log(response);
           this.profileModel = response.json();
-          if (this.profileModel.accountType == undefined || this.profileModel.accountType.trim() == ""
-            || this.profileModel.accountType == this.globals.TokenponAccountType[0]) {
+          if (this.accountType == undefined || this.accountType.trim() == ""
+            || this.accountType == this.globals.TokenponAccountType[0]) {
             this.isRegularAccount = true;
           }
           else {
@@ -287,7 +290,7 @@ export class ProfileComponent implements OnInit {
   onmoveFn(data: NguCarouselStore) {
     console.log(data);
   }
-  //update merchant profile
+  
   MainCategoryDropDownChanged(newValue: string) {
     // console.log(newValue);
 
@@ -450,8 +453,9 @@ export class ProfileComponent implements OnInit {
     // if (this.inBusinessEdit == true) {
     // console.log(this.profileModel);
     this.profileModel.appId = this.globals.TokenponAppId;
-    this.mongoService.updateProfile(this.profileModel)
-      .subscribe(response => {
+    // this.mongoService.updateProfile(this.profileModel)
+    this.oothService.updateAccountType(localStorage.getItem("currentUserId"), this.accountType)
+      .then(response => {
         // console.log(response);
         this.toasterService.pop('success', 'Update successful');
         // this.router.navigate(['/home/claim-detail'], { queryParams: { id: this.claimId } });
