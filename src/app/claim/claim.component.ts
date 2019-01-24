@@ -281,6 +281,7 @@ export class ClaimComponent implements OnInit {
     // if (this.model.id === undefined) {
     //   this.model.id = "NA";
     // }
+    this.model.merchantAccountAddress = this.profileModel.accountAddress;
     this.model.appId = this.globals.TokenponAppId;
     this.model.merchantId = this.profileModel._id;
     this.model.businessName = this.profileModel.businessName;

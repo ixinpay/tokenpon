@@ -16,6 +16,7 @@ import { Title } from '@angular/platform-browser';
 import { AgmCoreModule, MouseEvent, GoogleMapsAPIWrapper, AgmMap, LatLngBounds, LatLngBoundsLiteral } from '@agm/core';
 import { } from 'googlemaps';
 import { Marker } from '../_models/index'
+import {NgbModal, NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   moduleId: module.id.toString(),
@@ -71,10 +72,11 @@ export class ClaimDetailComponent implements OnInit {
   // initial center position for the map
   lat: number;
   lng: number;
+  showModal: boolean = false;
 
   constructor(private http: Http, private route: ActivatedRoute, private globals: Globals, private oothService: OothService,
     private lightbox: Lightbox, private toasterService: ToasterService, private titleService: Title, private googleGeoService: GoogleGeoService,
-    private router: Router, private mongoService: MongoService, private swarmService: SwarmService) {
+    private router: Router, private mongoService: MongoService, private swarmService: SwarmService, private modalService: NgbModal) {
 
     this.account = localStorage.getItem("currentUserAccount");
     this.page = 1;
@@ -117,6 +119,7 @@ export class ClaimDetailComponent implements OnInit {
     this.dislikes = 0;
     this.comments = [];
     this.ownComment = "";
+    this.albums = [];
     this.mongoService.GetListing(this.claimId, this.globals.TokenponAppId)
       .subscribe(response => {
         if (response.status == 200) {
@@ -848,5 +851,33 @@ export class ClaimDetailComponent implements OnInit {
 
   protected mapReady(map) {
     this.map = map;
+  }
+
+  purchaseCoupon(content, i){
+    // this.getProfileData()
+    // .subscribe(response => {
+    //   if (response.status == 200) {
+    //     console.log(response);
+    //     let profileModel = response.json();
+    //     if (this.accountType == undefined || this.accountType.trim() == ""
+    //       || this.accountType == this.globals.TokenponAccountType[0]) {
+            
+    //         this.showModal = true;
+    //         this.displayModal(content);
+    //     }
+    //     else {
+    //       this.router.navigate(['/home/claim']);          
+    //     }
+    //   }
+    // });
+    
+    // this.modalService.close()
+  }
+  displayBuyModal(content, i) {
+    this.modalService.open(content).result.then((result) => {
+      // this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      // this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
   }
 }

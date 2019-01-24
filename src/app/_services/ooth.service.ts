@@ -388,6 +388,22 @@ export class OothService {
         })
         const body = await res.json()
     }
+
+    // Coupon Purchase
+    async onCouponPurchase(_merchant: string, _user: string, _couponID: string, _tokenNumber: string) {
+        const res = await fetch(this.API_PATH  + '/local/coupon-purchase', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                _merchant, _user, _couponID, _tokenNumber,
+            }),
+            credentials: 'include',
+        })
+        const body = await res.json();
+    }
+
     // deduct token from current account
     // async deductToken(account: string, amount: number) {
     //     const res = await fetch(this.API_PATH + 'local/t-deductRewards', {

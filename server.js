@@ -73,6 +73,7 @@ var DiscountSchema = new Schema({
 })
 var TokenponSchema = new Schema({
     name: { type: String },
+    merchantAccountAddress: { type: String},
     merchantId: { type: String },
     businessName: { type: String },
     street: { type: String },
