@@ -355,7 +355,7 @@ export class OothService {
     }
     // update user accountType
     async updateAccountType(userId: string, accountType: string) {
-        const res = await fetch('/auth/local/t-updateUser', {
+        const res = await fetch(this.API_PATH  + '/local/t-updateUser', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

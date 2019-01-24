@@ -44,7 +44,7 @@ export class TopNavComponent implements OnInit {
   public iso3166Alpha2Change = new EventEmitter();
 
   public myCountries: any[] = [];
-
+  menuItems: any[] = [];
   categories: any[] = [];
   subcategories: any[] = [];
   currentUser: string = undefined;
@@ -76,6 +76,7 @@ export class TopNavComponent implements OnInit {
           this.http.get('/assets/subCat.json')
           .subscribe(data => {
             cat.subcategories = data.json().filter((item)=> item.Category == param);
+            this.menuItems.push(cat);
           })
          }
       });

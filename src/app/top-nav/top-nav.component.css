@@ -17,13 +17,23 @@
     padding-right: 10px;
     padding-top: 15px;
 }
-.nav-item a{
+.nav-item >a{
     font-size: 15px;
     font-weight: bold;
     color: rgb(196, 184, 82);
 }
-.nav-item a:hover{
+.nav-item >a:hover{
     color: #FFFFFF;
+}
+
+.nav-item a.dropdown-item{
+    font-size: 14px;
+    font-weight: bold;
+    color: rgba(138, 37, 19, 0.815);
+}
+.nav-item a.dropdown-item:hover{
+    color:#FFFFFF;
+    background-color: #707070;
 }
 
 .nav-link,

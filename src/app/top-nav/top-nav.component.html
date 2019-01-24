@@ -55,19 +55,17 @@
                     </li>
                 </ul>
             </li> -->
-            <li *ngFor="let cat of categories" class="nav-item active dropdown mr-2">
-                <a href="{{'#' + cat.Category + 'Submenu'}}" data-toggle="collapse" aria-expanded="false" translate>{{cat.Description}}</a>
+            <li *ngFor="let cat of menuItems" class="nav-item active dropdown mr-2">
+                <a href="{{'#' + cat.Category + 'Submenu'}}" data-toggle="dropdown" aria-expanded="false" translate>{{cat.Description}}</a>
+                <div class="dropdown-menu" id="{{cat.Category + 'Submenu'}}">
+                    <a class="dropdown-item" *ngFor="let subcat of cat.subcategories" [routerLink]="['/home']"
+                        [queryParams]="{subcat: subcat.Description}" translate>
+                        {{subcat.Description}}
+                    </a>
+                </div>
             </li>
         </ul>
-        <!-- <div class="nav-item active ml-auto">
-                <form class="form-inline">
-                    <input class="form-control" type="search" placeholder="Search" aria-label="Search">
-                    <a>
-                        <i class="fa fa-search" aria-hidden="true"></i>
-                    </a>
-                </form>
-            </div> -->
-        <div class="nav-item dropdown nav-profile mr-3" *ngIf="currentUser != undefined">
+        <div class="dropdown nav-profile mr-3" *ngIf="currentUser != undefined">
             <a class="" id="dropdownMenuProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{currentUser}}</a>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuProfile">
                 <a class="dropdown-item" [routerLink]="['/profile']" [queryParams]="{user: currentUser}">

@@ -457,13 +457,20 @@ export class ProfileComponent implements OnInit {
     this.oothService.updateAccountType(localStorage.getItem("currentUserId"), this.accountType)
       .then(response => {
         // console.log(response);
-        this.toasterService.pop('success', 'Update successful');
+        this.mongoService.updateProfile(this.profileModel)
+          .subscribe(res => {
+            this.toasterService.pop('success', 'Update successful');
+          },
+          err => {
+            this.toasterService.pop("error", "fail to update listing");
+          }
+        );        
         // this.router.navigate(['/home/claim-detail'], { queryParams: { id: this.claimId } });
-      },
-        err => {
-          this.toasterService.pop("error", "fail to update listing");
-        }
-      );
+      })
+      .catch(err =>{
+        console.log(err);
+        this.toasterService.pop("error", err.message);
+      });
     // }
     // else {
     //   //upload to mongodb
