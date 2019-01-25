@@ -77,6 +77,16 @@ export class ListingsComponent implements OnInit {
     private http: Http, private translate: TranslateService, private modalService: NgbModal
   ) {
     this.accountType = localStorage.getItem("accountType");
+    this.route.queryParams.subscribe(params => {
+      // console.log(params['id']);
+      let searchText = params['search']
+      if (searchText) {
+        this.Search(searchText);
+      }
+    });
+  }
+  goSearch(text){
+    this.router.navigate(['/home'], { queryParams: { search: text } });
   }
   public getLikeCount(claim: any): number {
     let likeCount = 0;
@@ -178,6 +188,7 @@ export class ListingsComponent implements OnInit {
   Search(searchTxt: string) {
     // console.log("Search text: " + searchTxt);
     // this.catParam = undefined;
+    searchTxt = encodeURI(searchTxt);
     if (searchTxt) {
       this.mongoService.searchListings(searchTxt, this.globals.TokenponAppId)
         .subscribe(response => {

@@ -402,6 +402,7 @@ export class OothService {
             credentials: 'include',
         })
         const body = await res.json();
+        return body;
     }
 
     // deduct token from current account

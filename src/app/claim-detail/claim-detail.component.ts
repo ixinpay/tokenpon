@@ -16,7 +16,7 @@ import { Title } from '@angular/platform-browser';
 import { AgmCoreModule, MouseEvent, GoogleMapsAPIWrapper, AgmMap, LatLngBounds, LatLngBoundsLiteral } from '@agm/core';
 import { } from 'googlemaps';
 import { Marker } from '../_models/index'
-import {NgbModal, NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModal, NgbActiveModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   moduleId: module.id.toString(),
@@ -72,7 +72,9 @@ export class ClaimDetailComponent implements OnInit {
   // initial center position for the map
   lat: number;
   lng: number;
-  showModal: boolean = false;
+  modalSuccess: boolean = false;
+  failMessage: string = "There was an error. iXin coin was not deducted from your account. Sorry for the inconvenience.";
+  closeResult: string;
 
   constructor(private http: Http, private route: ActivatedRoute, private globals: Globals, private oothService: OothService,
     private lightbox: Lightbox, private toasterService: ToasterService, private titleService: Title, private googleGeoService: GoogleGeoService,
@@ -825,10 +827,7 @@ export class ClaimDetailComponent implements OnInit {
   onmoveFn(data: NguCarouselStore) {
     console.log(data);
   }
-  buyCoupon(index: number){
-    this.discountTokenCost = this.discountArray[index].token;
-    // $("#buyModal").modal('show');
-  }
+
   clickedMarker(label: string, index: number) {
     console.log(`clicked the marker: ${label || index}`)
   }
@@ -853,31 +852,45 @@ export class ClaimDetailComponent implements OnInit {
     this.map = map;
   }
 
-  purchaseCoupon(content, i){
-    // this.getProfileData()
-    // .subscribe(response => {
-    //   if (response.status == 200) {
-    //     console.log(response);
-    //     let profileModel = response.json();
-    //     if (this.accountType == undefined || this.accountType.trim() == ""
-    //       || this.accountType == this.globals.TokenponAccountType[0]) {
-            
-    //         this.showModal = true;
-    //         this.displayModal(content);
-    //     }
-    //     else {
-    //       this.router.navigate(['/home/claim']);          
-    //     }
-    //   }
-    // });
+  purchaseCoupon(i, finalConfirm){    
+    this.oothService.onCouponPurchase(this.model.merchantAccountAddress, this.account, this.discountArray[i]._id, this.discountArray[i].token)
+    .then(response => {
+      if (response.status == 200) {
+        console.log(response);
+        this.modalSuccess = true;
+        this.modalService.open(finalConfirm);
+      }
+      if(response.status === 'error'){
+        console.log(response.message);
+        this.modalSuccess = false;
+        this.failMessage = response.message;
+        this.modalService.open(finalConfirm);
+      }
+    })
+    .catch(error => {
+      console.log(error);
+      this.modalSuccess = false;      
+      this.modalService.open(finalConfirm);
+    });
     
-    // this.modalService.close()
   }
-  displayBuyModal(content, i) {
+  displayBuyModal(content, i, finalConfirm) {
+    this.discountTokenCost = this.discountArray[i].token;
     this.modalService.open(content).result.then((result) => {
-      // this.closeResult = `Closed with: ${result}`;
+      this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
-      // this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      this.closeResult = `Dismissed ${this.getDismissReason(reason, i, finalConfirm)}`;
     });
   }
+  private getDismissReason(reason: any, i: number, finalConfirm): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else if(reason === 'Confirm'){
+      // call purchase coupon API
+      this.purchaseCoupon(i, finalConfirm);
+    }
+  }
+
 }
