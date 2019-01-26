@@ -6,14 +6,17 @@ const https = require('https')
 const fs = require('fs')
 const TokenponAppId = 1
 const ChainpostAppId = 2
+// Read our configure file
+const config = JSON.parse(fs.readFileSync('.configure.json'));  
+
     // The chain page url
     //var gChainPageUrl = "http://localhost:4200";
-var gChainPageUrl = "http://linkgear.net:8092";
+var gChainPageUrl = config.tokenpon.pageUrl;
 // Change the port in "mongo.service.ts" under src/app/_services
 // rebuild $ng serve
-var gPort = 8080;
+var gPort = config.tokenpon.serverPort;
 var gDbServer = 'localhost';
-var httpsRun = false;
+var httpsRun = config.tokenpon.httpsRun;
 
 var prearg = "";
 process.argv.forEach(function(val, index, array) {
