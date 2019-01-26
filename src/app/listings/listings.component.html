@@ -3,7 +3,7 @@
     <div class="nopadding col-sm-12 col-md-10 col-lg-10 row">
         <div class="input-group searchBox align-middle col-xs-12 col-sm-4 col-md-4">
             <input type="text" id="search" #searchTxt class="form-control">
-            <a class="text-primary ml-1 mt-1" (click)="goSearch(searchTxt.value)">
+            <a class="text-primary ml-1 mt-1" (click)="Search(searchTxt.value)">
                 <i class="fa fa-search" aria-hidden="true"></i>
             </a>
             <!-- <span class="input-group-btn">
@@ -15,7 +15,7 @@
         </div>
         <div class="col-xs-12 col-sm-6 col-md-6">
             <button class="btn btn-info  btn-md" [routerLink]="[ '/home'] " translate>All Listing</button>
-            <button class="btn btn-info  btn-md" (click)="addListing(content);" translate>New Listing</button>
+            <button *ngIf="currentUser" class="btn btn-info  btn-md" (click)="addListing(content);" translate>New Listing</button>
         </div>
     </div>
     <!-- <div id="btnContainer">
@@ -36,10 +36,13 @@
                         <h3>{{claim.businessName}}</h3>
                     </div>
                     <div class="caption card-body">
-                        <h4 class="group card-title inner list-group-item-heading">
-                            {{claim.overallTitle}}</h4>
-                        <p class="group inner list-group-item-text">
-                            {{claim.productDescription}}</p>
+                        <p class="group card-title inner list-group-item-heading">
+                            {{claim.overallTitle}}</p>
+                        <h4 class="group inner list-group-item-text">
+                            {{claim.productDescription}}</h4>
+                        <!-- <p>
+                            {{claim.isOwner}}
+                        </p> -->
                     </div>
                 </div>
             </div>

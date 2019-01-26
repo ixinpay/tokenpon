@@ -56,12 +56,19 @@
                 </ul>
             </li> -->
             <li *ngFor="let cat of menuItems" class="nav-item active dropdown mr-2">
-                <a href="{{'#' + cat.Category + 'Submenu'}}" data-toggle="dropdown" aria-expanded="false" translate>{{cat.Description}}</a>
-                <div class="dropdown-menu" id="{{cat.Category + 'Submenu'}}">
-                    <a class="dropdown-item" *ngFor="let subcat of cat.subcategories" [routerLink]="['/home']"
-                        [queryParams]="{subcat: subcat.Description}" translate>
-                        {{subcat.Description}}
-                    </a>
+                <!-- if there is a submenu -->
+                <div *ngIf="cat.subcategories.length > 0">
+                    <a href="{{'#' + cat.Category + 'Submenu'}}" data-toggle="dropdown" aria-expanded="false" translate>{{cat.Description}}</a>
+                    <div class="dropdown-menu" id="{{cat.Category + 'Submenu'}}">
+                        <a class="dropdown-item" *ngFor="let subcat of cat.subcategories" [routerLink]="['/home']"
+                            [queryParams]="{subcat: subcat.Description}" translate>
+                            {{subcat.Description}}
+                        </a>
+                    </div>
+                </div>
+                <!-- if there is NO submenu -->
+                <div *ngIf="cat.subcategories.length == 0">
+                    <a [routerLink]="['/home']" [queryParams]="{cat: cat.Description}" translate>{{cat.Description}}</a>
                 </div>
             </li>
         </ul>
@@ -77,7 +84,7 @@
             </div>
         </div>
         <div class="nav-item dropdown nav-profile" *ngIf="currentUser == undefined">
-            <a class="dropdown-item" [routerLink]="['/login']" translate>
+            <a [routerLink]="['/login']" translate>
                 <i class="fa fa-sign-in" aria-hidden="true"></i>Login
             </a>
         </div>
