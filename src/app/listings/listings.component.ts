@@ -184,7 +184,7 @@ export class ListingsComponent implements OnInit {
     this.claimsPage = this.listings.slice(0, this.pageSize);
     // console.log(this.claimsPage)
     //get coordinates
-    this.getCoordinates();
+    // this.getCoordinates();
   }
   Search(searchTxt: string) {
     // console.log("Search text: " + searchTxt);
