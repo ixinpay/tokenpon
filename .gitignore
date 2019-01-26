@@ -42,7 +42,8 @@ testem.log
 Thumbs.db
 /package-lock.json
 team-extension.log
-
+.configure.*
+test*.js
 #protocol
 /keys
 /wallet
