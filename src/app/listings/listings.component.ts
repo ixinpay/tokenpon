@@ -372,7 +372,7 @@ export class ListingsComponent implements OnInit {
 
   ngOnInit() {
     //set title
-    this.titleService.setTitle("ChainPage");
+    this.titleService.setTitle("Tokenpon");
     // translate.onLangChange.subscribe((event: LangChangeEvent) => {
     //   console.log("lang changed")
     //   translate.get('page_title').subscribe((res: string) => {
