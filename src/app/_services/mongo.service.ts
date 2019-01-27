@@ -11,7 +11,8 @@ import { environment } from 'environments/environment';
 export class MongoService {
     //private readonly API = 'http://linkcryptocoin.com:8080/api/';
     //private readonly API = location.protocol + '//' + location.hostname + ':8080/api/';
-    private readonly API = location.protocol + '//' + location.hostname + ':6060/api/';
+    // private readonly API = location.protocol + '//' + location.hostname + ':6060/api/';
+    private readonly API = environment.MongoAPI;
     constructor(private http: Http) { }
 
     GetProfile(username, appId) {
