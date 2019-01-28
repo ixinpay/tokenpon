@@ -866,6 +866,11 @@ export class ClaimDetailComponent implements OnInit {
         this.failMessage = response.message;
         this.modalService.open(finalConfirm);
       }
+      else{
+        console.log(response);
+        this.modalSuccess = true;
+        this.modalService.open(finalConfirm);
+      }
     })
     .catch(error => {
       console.log(error);

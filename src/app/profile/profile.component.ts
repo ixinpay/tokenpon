@@ -444,6 +444,7 @@ export class ProfileComponent implements OnInit {
     // if (this.profileModel.id === undefined) {
     //   this.profileModel.id = "NA";
     // }
+    this.profileModel.accountType = this.accountType;
     this.profileModel.postedBy = this.currentUser;
     this.profileModel.postedTime = Date.now();
     this.profileModel.accountAddress = this.accountNumber;
@@ -457,7 +458,7 @@ export class ProfileComponent implements OnInit {
     this.oothService.updateAccountType(localStorage.getItem("currentUserId"), this.accountType)
       .then(response => {
         // console.log(response);
-        this.mongoService.updateProfile(this.profileModel)
+        this.mongoService.saveProfile(this.profileModel)
           .subscribe(res => {
             this.toasterService.pop('success', 'Update successful');
           },

@@ -197,13 +197,14 @@ app.post("/api/saveProfile", function(req, res) {
 
 app.post("/api/updateProfile", function(req, res) {
     //var mod = new model(req.body);
-    // console.log(req.body._id)
+    console.log("update address: " + req.body.accountAddress)
     var model;
     if (req.body.appId == TokenponAppId) {
         model = modelTokenponProfile;
         model.update({ _id: req.body._id }, {
                 "$set": {
                     name: req.body.name,
+                    accountAddress: req.body.accountAddress,
                     accountType: req.body.accountType,
                     businessName: req.body.businessName,
                     street: req.body.street,
@@ -227,7 +228,9 @@ app.post("/api/updateProfile", function(req, res) {
             function(err) {
                 if (err) {
                     res.send(err);
+                    console.log(err);
                 } else {
+                    // console.log(data)
                     res.send({ data: "Record has been updated..!!" });
                 }
             });

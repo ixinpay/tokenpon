@@ -72,16 +72,21 @@
                 </div>
             </li>
         </ul>
-        <div class="dropdown nav-profile mr-3" *ngIf="currentUser != undefined">
-            <a class="" id="dropdownMenuProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{currentUser}}</a>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuProfile">
+        <div class="dropdown nav-profile" *ngIf="currentUser != undefined">
+            <a class="mr-1" id="dropdownMenuProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                [routerLink]="['/profile']" [queryParams]="{user: currentUser}">{{currentUser}}
+            </a>
+            <a class="nav-item dropdown nav-profile" (click)="LogOut()">
+                <i class="fa fa-sign-out" aria-hidden="true">Logout</i>
+            </a>
+            <!-- <div class="dropdown-menu" aria-labelledby="dropdownMenuProfile">
                 <a class="dropdown-item" [routerLink]="['/profile']" [queryParams]="{user: currentUser}">
                     <i class="fa fa-cog" aria-hidden="true"></i>Settings
                 </a>
                 <a class="dropdown-item" (click)="LogOut()">
                     <i class="fa fa-sign-out" aria-hidden="true"></i>Logout
                 </a>
-            </div>
+            </div> -->
         </div>
         <div class="nav-item dropdown nav-profile" *ngIf="currentUser == undefined">
             <a [routerLink]="['/login']" translate>
