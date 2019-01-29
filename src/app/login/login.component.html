@@ -1,18 +1,23 @@
-﻿
+﻿<style>
+.dropbtn{
+    height: 35px !important;
+}
+</style>
 <div class="p-5 col-xs-12 col-sm-6 col-md-5 col-lg-4">
-    <h2 translate>Login</h2>
     <form name="form" (ngSubmit)="f.form.valid && login()" #f="ngForm" novalidate>
         <div *ngIf="phoneLogin" class="form-group" [ngClass]="{ 'has-error': f.submitted && !phone.valid }">
             <label for="phone" translate>Phone Number</label>
-            <international-phone-number id="intPhone" [(ngModel)]="model.phone" placeholder="Enter phone number" [maxlength]="20" [defaultCountry]="'us'" [required]="true" #phone="ngModel" name="phone" ></international-phone-number>
             <a class="ml-3 text-primary" (click)="toggleLogin(); f.resetForm();"><small translate>or use Username/Email</small></a>
+            <international-phone-number id="intPhone" [(ngModel)]="model.phone" placeholder="Enter phone number" [maxlength]="20" [defaultCountry]="'us'" [required]="true" #phone="ngModel" name="phone" ></international-phone-number>
+            
             <!-- <input type="small" class="form-control" name="phone" [(ngModel)]="model.phone" #phone="ngModel" required /> -->
             <div *ngIf="f.submitted && phoneLogin && !phone.valid" class="alert alert-danger" translate>Phone is required</div>
         </div>
         <div *ngIf="!phoneLogin" class="form-group" [ngClass]="{ 'has-error': f.submitted && !email.valid }">
             <label for="email" translate>Username/Email</label>            
-            <input type="text" class="form-control" name="email" [(ngModel)]="model.email" #email="ngModel" required />
             <a class="ml-3 text-primary" (click)="toggleLogin(); f.resetForm();"><small translate>or use Phone Number</small></a>
+            <input type="text" class="form-control" name="email" [(ngModel)]="model.email" #email="ngModel" required />
+           
             <div *ngIf="f.submitted && !email.valid" class="alert alert-danger" translate>Email is required</div>
         </div>
         <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !password.valid }">
