@@ -36,7 +36,8 @@ process.argv.forEach(function(val, index, array) {
     //console.log(`port = ${gPort}`)
     //console.log(`dbServer = ${gDbServer}`)
 
-var db = mongo.connect(`mongodb://${gDbServer}:27017/ChainPage`, function(err, response) {
+//var db = mongo.connect(`mongodb://${gDbServer}:27017/ChainPage`, function(err, response) {
+var db = mongo.connect(`mongodb://${gDbServer}:27017/ixinpay`, function(err, response) {
     // if (err) { console.log(err); } else { console.log('Connected to ' + db, ' + ', response); }
 });
 
