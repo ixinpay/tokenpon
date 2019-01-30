@@ -52,6 +52,7 @@ export class ClaimComponent implements OnInit {
   overallTitle: string;
   finePrint: string;
   logoUrl: string;
+  expireDays: number[];
   private showNewOfferUI: boolean = true;
   private discountValueList: number[];
   constructor(
@@ -61,6 +62,7 @@ export class ClaimComponent implements OnInit {
     private alertService: AlertService, private toasterService: ToasterService,
     private http: Http, private swarmService: SwarmService
   ) {
+    this.expireDays = Array.from(new Array(90),(val,index)=>index+30);
     this.currentUser = localStorage.getItem('currentUser');
     this.model.submitBy = this.currentUser;
     this.discountValueList = Array.from(new Array(100),(val,index)=>index+1);
