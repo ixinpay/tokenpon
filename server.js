@@ -288,6 +288,7 @@ app.post("/api/updateListing", function(req, res) {
         model.update({ _id: req.body._id }, {
                 "$set": {
                     name: req.body.name,
+                    merchantAccountAddress: req.body.merchantAccountAddress,
                     businessName: req.body.businessName,
                     street: req.body.street,
                     city: req.body.city,

@@ -16,7 +16,7 @@ import { Title } from '@angular/platform-browser';
 import { AgmCoreModule, MouseEvent, GoogleMapsAPIWrapper, AgmMap, LatLngBounds, LatLngBoundsLiteral } from '@agm/core';
 import { } from 'googlemaps';
 import { Marker } from '../_models/index'
-import {NgbModal, NgbActiveModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbActiveModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   moduleId: module.id.toString(),
@@ -393,7 +393,7 @@ export class ClaimDetailComponent implements OnInit {
         this.mongoService.deleteVote(data)
           .subscribe(response => {
             if (response.status == 200) {
-              this.toasterService.pop('success', 'Vote deleted successfully');
+              // this.toasterService.pop('success', 'Vote deleted successfully');
               this.submitted = true;
               // this.likes--;
               // console.log("user id: " + localStorage.getItem("currentUserId"));
@@ -425,7 +425,7 @@ export class ClaimDetailComponent implements OnInit {
           this.mongoService.addVote(data)
             .subscribe(response => {
               if (response.status == 200) {
-                this.toasterService.pop('success', 'Vote submitted successfully');
+                // this.toasterService.pop('success', 'Vote submitted successfully');
                 this.submitted = true;
                 // this.likes++;
                 console.log("user id: " + localStorage.getItem("currentUserId"));
@@ -464,7 +464,7 @@ export class ClaimDetailComponent implements OnInit {
         this.mongoService.deleteVote(data)
           .subscribe(response => {
             if (response.status == 200) {
-              this.toasterService.pop('success', 'Vote deleted successfully');
+              // this.toasterService.pop('success', 'Vote deleted successfully');
               this.submitted = true;
               // this.likes--;
               // console.log("account: " + this.account);
@@ -495,7 +495,7 @@ export class ClaimDetailComponent implements OnInit {
           this.mongoService.addVote(data)
             .subscribe(response => {
               if (response.status == 200) {
-                this.toasterService.pop('success', 'Vote submitted successfully');
+                // this.toasterService.pop('success', 'Vote submitted successfully');
                 this.submitted = true;
                 // this.likes++;
                 // console.log("account: " + this.account);
@@ -852,32 +852,32 @@ export class ClaimDetailComponent implements OnInit {
     this.map = map;
   }
 
-  purchaseCoupon(i, finalConfirm){    
+  purchaseCoupon(i, finalConfirm) {
     this.oothService.onCouponPurchase(this.model.merchantAccountAddress, this.account, this.discountArray[i]._id, this.discountArray[i].token)
-    .then(response => {
-      if (response.status == 200) {
-        console.log(response);
-        this.modalSuccess = true;
-        this.modalService.open(finalConfirm);
-      }
-      if(response.status === 'error'){
-        console.log(response.message);
+      .then(response => {
+        if (response.status == 200) {
+          console.log(response);
+          this.modalSuccess = true;
+          this.modalService.open(finalConfirm);
+        }
+        if (response.status === 'error') {
+          console.log(response.message);
+          this.modalSuccess = false;
+          this.failMessage = response.message;
+          this.modalService.open(finalConfirm);
+        }
+        else {
+          console.log(response);
+          this.modalSuccess = true;
+          this.modalService.open(finalConfirm);
+        }
+      })
+      .catch(error => {
+        console.log(error);
         this.modalSuccess = false;
-        this.failMessage = response.message;
         this.modalService.open(finalConfirm);
-      }
-      else{
-        console.log(response);
-        this.modalSuccess = true;
-        this.modalService.open(finalConfirm);
-      }
-    })
-    .catch(error => {
-      console.log(error);
-      this.modalSuccess = false;      
-      this.modalService.open(finalConfirm);
-    });
-    
+      });
+
   }
   displayBuyModal(content, i, finalConfirm) {
     this.discountTokenCost = this.discountArray[i].token;
@@ -892,10 +892,28 @@ export class ClaimDetailComponent implements OnInit {
       return 'by pressing ESC';
     } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
       return 'by clicking on a backdrop';
-    } else if(reason === 'Confirm'){
+    } else if (reason === 'Confirm') {
       // call purchase coupon API
       this.purchaseCoupon(i, finalConfirm);
     }
   }
 
+  Remove_Listing(id, deleteConfirmation) {
+    this.modalService.open(deleteConfirmation).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      if (reason === "Yes") {
+        this.subscription = this.mongoService.deleteListing(id, this.globals.TokenponAppId)
+          .subscribe(response => {
+            if (response.status == 200) {
+              this.toasterService.pop("success", "Listing deleted")
+              this.router.navigate(['/home']);
+            }
+            else {
+              this.toasterService.pop("error", response.statusText)
+            }
+          });
+      }
+    });
+  }
 }
