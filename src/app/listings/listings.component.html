@@ -15,7 +15,8 @@
         </div>
         <div class="col-xs-12 col-sm-6 col-md-6">
             <button class="btn btn-info  btn-md" [routerLink]="[ '/home'] " translate>All Listing</button>
-            <button *ngIf="currentUser" class="btn btn-info  btn-md" (click)="addListing(content);" translate>New Listing</button>
+            <button *ngIf="currentUser" class="btn btn-info  btn-md" (click)="addListing(content);" translate>New
+                Listing</button>
         </div>
     </div>
     <!-- <div id="btnContainer">
@@ -31,19 +32,20 @@
             <div class="card card-padding item col-xs-12 col-sm-6 col-md-3 col-lg-3" (click)="selectOffer(claim._id)"
                 *ngFor="let claim of claimsPage">
                 <div class="thumbnail clearfix text-center">
-                    <img *ngIf="claim.imgUrl != ''" class="card-img-top img-fluid" src="{{claim.imgUrl}}" alt="" />
-                    <div *ngIf="claim.imgUrl == ''" class="mt-5">
+                    <img *ngIf="claim.imgUrl != ''" class="card-img-top img-fluid cusHeight" src="{{claim.imgUrl}}" alt="" />
+                    <div *ngIf="claim.imgUrl == ''" class="mt-5 mb-5 cusHeight">
                         <h3>{{claim.businessName}}</h3>
                     </div>
-                    <div class="caption card-body">
+                    <div *ngFor="let discount of claim.offers" class="caption card-body">
+                        <h5 class="group card-title inner list-group-item-heading">
+                            {{discount.title}}</h5>
+                    </div>
+                    <!-- <div class="caption card-body">
                         <p class="group card-title inner list-group-item-heading">
                             {{claim.overallTitle}}</p>
                         <h4 class="group inner list-group-item-text">
                             {{claim.productDescription}}</h4>
-                        <!-- <p>
-                            {{claim.isOwner}}
-                        </p> -->
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
