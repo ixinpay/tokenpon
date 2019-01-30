@@ -8,8 +8,8 @@ MongoDB is used to store data. You can download it from https://www.mongodb.com/
 
 run the following commands
 
-1. `git clone https://github.com/linkcryptocoin/ChainPage.git`
-2. `cd ChainPage`
+1. `git clone https://github.com/ixinpay/tokenpon.git`
+2. `cd tokenpon`
 3. `npm install`
 4. `npm install --save alasql`
 5. `npm install --save mongoose`
