@@ -59,7 +59,7 @@
                 <!-- if there is a submenu -->
                 <div *ngIf="cat.subcategories.length > 0">
                     <a href="{{'#' + cat.Category + 'Submenu'}}" data-toggle="dropdown" aria-expanded="false" translate>{{cat.Description}}</a>
-                    <div class="dropdown-menu" id="{{cat.Category + 'Submenu'}}">
+                    <div class="dropdown-menu" id="{{'Submenu' + cat.Category}}">
                         <a class="dropdown-item" *ngFor="let subcat of cat.subcategories" [routerLink]="['/home']"
                             [queryParams]="{subcat: subcat.Description}" translate>
                             {{subcat.Description}}

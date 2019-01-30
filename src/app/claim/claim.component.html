@@ -314,9 +314,9 @@
                             <div class="card workingCard">
                                 <div class="card-block">
                                     <div class="row mt-1">
-                                        <div class="col-xs-12 col-sm-12 col-md-2">Title:</div>
-                                        <div class="col-xs-12 col-sm-12 col-md-8">
-                                            <input class="form-control" minlength="10" id="newAttributeTitle"
+                                        <div class="col-xs-12 col-sm-12 col-md-3">Title <small>(Max 50 characters)</small>:</div>
+                                        <div class="col-xs-12 col-sm-12 col-md-7">
+                                            <input class="form-control" maxlength="50" id="newAttributeTitle"
                                                 [(ngModel)]="newDiscount.title" name="newAttributeAmount" required />
                                         </div>
                                         <div *ngIf="!newDiscount.title" class="col-xs-12 col-sm-12 col-md-2">
@@ -325,9 +325,9 @@
                                         </div>
                                     </div>
                                     <div class="row mt-1">
-                                        <div class="col-xs-12 col-sm-12 col-md-2">Description:</div>
-                                        <div class="col-xs-12 col-sm-12 col-md-8">
-                                            <input class="form-control" minlength="10" id="newAttributeDescription"
+                                        <div class="col-xs-12 col-sm-12 col-md-3">Description <small>(Max 100 characters)</small>:</div>
+                                        <div class="col-xs-12 col-sm-12 col-md-7">
+                                            <input class="form-control" maxlength="100" id="newAttributeDescription"
                                                 [(ngModel)]="newDiscount.description" name="newAttributeDescription"
                                                 required />
                                         </div>
@@ -471,7 +471,7 @@
                                                     required</small>
                                             </div>
                                         </div>
-                                        <div class="row mt-1">
+                                        <!-- <div class="row mt-1">
                                                 <div class="col-xs-12 col-sm-12 col-md-3">Offer Expires in </div>
                                                 <div class="col-xs-12 col-sm-12 col-md-7">
                                                     <select class="form-control" type="number" id="newAttributeExpireDays"
@@ -484,7 +484,7 @@
                                                     <small *ngIf="!newDiscount.expireDays" translate class="" [ngClass]="{ 'show-error': !newDiscount.expireDays }">*
                                                         required</small>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                         <div class="divTable darkTable mt-1">
                                             <div class="divTableHeading">
                                                 <div class="divTableHeadRow">
