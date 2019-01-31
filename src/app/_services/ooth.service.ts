@@ -79,7 +79,11 @@ export class OothService {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
+            body: !isPhone? 
+            JSON.stringify({
+                username,
+                password,
+            }): JSON.stringify({
                 mobile: username,
                 password,
             }),
@@ -333,26 +337,26 @@ export class OothService {
         return info;
     }
     // Update user profile
-    async onUpdateUser(newRegion: string) {
-        const user = await this.getUser()
-        const userId = user._id;
-        const type = user.local.type;
-        const region = newRegion;
+    // async onUpdateUser(newRegion: string) {
+    //     const user = await this.getUser()
+    //     const userId = user._id;
+    //     const type = user.local.type;
+    //     const region = newRegion;
 
-        const res = await fetch(this.API_PATH + 'local/updateUser', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                userId,
-                type,
-                region
-            }),
-            credentials: 'include',
-        })
-        const body = await res.json()
-    }
+    //     const res = await fetch(this.API_PATH + 'local/updateUser', {
+    //         method: 'POST',
+    //         headers: {
+    //             'Content-Type': 'application/json'
+    //         },
+    //         body: JSON.stringify({
+    //             userId,
+    //             type,
+    //             region
+    //         }),
+    //         credentials: 'include',
+    //     })
+    //     const body = await res.json()
+    // }
     // update user accountType
     async updateAccountType(userId: string, accountType: string) {
         const res = await fetch(this.API_PATH  + '/local/t-updateUser', {

@@ -112,6 +112,6 @@
     cursor: pointer;
   }
   .cusHeight{
-      min-height: 100px;
+      min-height: 120px;
       max-height: 200px;
   }

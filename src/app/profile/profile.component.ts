@@ -31,6 +31,7 @@ export class ProfileComponent implements OnInit {
   profilePages: string[];
   selectedPage: string;
   accountEmail: string;
+  phoneNumber: string;
   toAddress: string;
   token: number;
   supernodes: SupoerNode[];
@@ -68,8 +69,8 @@ export class ProfileComponent implements OnInit {
     private alertService: AlertService,
     private http: Http, private swarmService: SwarmService) {
 
-    this.accountNumber = localStorage.getItem("currentUserAccount");
-    this.accountEmail = localStorage.getItem("currentUserEmail");
+    this.accountNumber = localStorage.getItem("currentUserAccount");    
+    this.phoneNumber = localStorage.getItem("phoneNumber");
     console.log(localStorage.getItem("accountType"));
     this.accountType = localStorage.getItem("accountType");
     this.accountTypeList = this.globals.TokenponAccountType;

@@ -31,7 +31,7 @@
         <div id="products" class="row nopadding">
             <div class="card card-padding item col-xs-12 col-sm-6 col-md-3 col-lg-3" (click)="selectOffer(claim._id)"
                 *ngFor="let claim of claimsPage">
-                <div class="thumbnail clearfix text-center">
+                <div class="thumbnail clearfix text-center nopadding">
                     <img *ngIf="claim.imgUrl != ''" class="card-img-top img-fluid cusHeight" src="{{claim.imgUrl}}" alt="" />
                     <div *ngIf="claim.imgUrl == ''" class="mt-5 mb-5 cusHeight">
                         <h3>{{claim.businessName}}</h3>
