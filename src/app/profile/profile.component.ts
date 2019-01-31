@@ -459,6 +459,7 @@ export class ProfileComponent implements OnInit {
     this.oothService.updateAccountType(localStorage.getItem("currentUserId"), this.accountType)
       .then(response => {
         // console.log(response);
+        if(response.status !== "error"){
         this.mongoService.updateProfile(this.profileModel)
           .subscribe(res => {
             this.toasterService.pop('success', 'Update successful');
@@ -466,7 +467,11 @@ export class ProfileComponent implements OnInit {
           err => {
             this.toasterService.pop("error", "fail to update profile");
           }
-        );        
+        ); 
+        }
+        else{
+          this.toasterService.pop("error", "fail to update profile");
+        }       
         // this.router.navigate(['/home/claim-detail'], { queryParams: { id: this.claimId } });
       })
       .catch(err =>{

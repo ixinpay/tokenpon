@@ -373,9 +373,8 @@ export class OothService {
         const body = await res.json()
         if (body.status !== 'error') {
             localStorage.setItem("accountType", accountType);
-            return true
         }
-        return false;
+        return body;
     }
     // Activate a user profile
     async onActivateUser(user: string, action: string) {
