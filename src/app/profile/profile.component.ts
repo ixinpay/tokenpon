@@ -23,7 +23,7 @@ export class ProfileComponent implements OnInit {
 
   regionDisplayName: string = null;
   inBusinessEdit = false;
-  model: any = {};  
+  model: any = {};
   showPassword = false;
   userName: string;
   tokenBalance: number;
@@ -69,7 +69,7 @@ export class ProfileComponent implements OnInit {
     private alertService: AlertService,
     private http: Http, private swarmService: SwarmService) {
 
-    this.accountNumber = localStorage.getItem("currentUserAccount");    
+    this.accountNumber = localStorage.getItem("currentUserAccount");
     this.phoneNumber = localStorage.getItem("phoneNumber");
     console.log(localStorage.getItem("accountType"));
     this.accountType = localStorage.getItem("accountType");
@@ -291,7 +291,7 @@ export class ProfileComponent implements OnInit {
   onmoveFn(data: NguCarouselStore) {
     console.log(data);
   }
-  
+
   MainCategoryDropDownChanged(newValue: string) {
     // console.log(newValue);
 
@@ -459,22 +459,24 @@ export class ProfileComponent implements OnInit {
     this.oothService.updateAccountType(localStorage.getItem("currentUserId"), this.accountType)
       .then(response => {
         // console.log(response);
-        if(response.status !== "error"){
-        this.mongoService.updateProfile(this.profileModel)
-          .subscribe(res => {
-            this.toasterService.pop('success', 'Update successful');
-          },
-          err => {
-            this.toasterService.pop("error", "fail to update profile");
-          }
-        ); 
+        if (response.status !== "error") {
+          //update cached accountType
+          localStorage.setItem("accountType", this.accountType);
+          this.mongoService.updateProfile(this.profileModel)
+            .subscribe(res => {
+              this.toasterService.pop('success', 'Update successful');
+            },
+              err => {
+                this.toasterService.pop("error", "fail to update profile");
+              }
+            );
         }
-        else{
+        else {
           this.toasterService.pop("error", "fail to update profile");
-        }       
+        }
         // this.router.navigate(['/home/claim-detail'], { queryParams: { id: this.claimId } });
       })
-      .catch(err =>{
+      .catch(err => {
         console.log(err);
         this.toasterService.pop("error", err.message);
       });
@@ -546,7 +548,7 @@ export class ProfileComponent implements OnInit {
   }
   cancelProfileUpdate() {
     this.inBusinessEdit = false;
-    
+
     console.log(this.inBusinessEdit);
   }
   //end of update merchant profile

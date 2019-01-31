@@ -20,8 +20,8 @@ import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
 // import { AgmCoreModule } from '@agm/core';
 import { MouseEvent, GoogleMapsAPIWrapper, AgmMap, LatLngBounds, LatLngBoundsLiteral } from '@agm/core';
 import { } from 'googlemaps';
-import {Marker} from '../_models/index'
-import {NgbModal, NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import { Marker } from '../_models/index'
+import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   moduleId: module.id.toString(),
@@ -61,7 +61,7 @@ export class ListingsComponent implements OnInit {
   numofdislikes: number = 0;
   listView: boolean = true;
   showModal: boolean = false;
-  accountType: string;
+  // accountType: string;
 
   markers: Marker[] = []
   zoom: number = 10;
@@ -76,7 +76,7 @@ export class ListingsComponent implements OnInit {
     private alertService: AlertService, private titleService: Title,
     private http: Http, private translate: TranslateService, private modalService: NgbModal
   ) {
-    this.accountType = localStorage.getItem("accountType");
+    // this.accountType = localStorage.getItem("accountType");
     this.route.queryParams.subscribe(params => {
       // console.log(params['id']);
       let searchText = params['search']
@@ -85,7 +85,7 @@ export class ListingsComponent implements OnInit {
       }
     });
   }
-  goSearch(text){
+  goSearch(text) {
     this.router.navigate(['/home'], { queryParams: { search: text } });
   }
   public getLikeCount(claim: any): number {
@@ -592,7 +592,7 @@ export class ListingsComponent implements OnInit {
           if (response.status === 200) {
             if (response.json().results[0] !== undefined) {
               // console.log(response.json().results[0].geometry.location);
-              if(this.lat == undefined){
+              if (this.lat == undefined) {
                 this.lat = parseFloat(response.json().results[0].geometry.location.lat);
                 this.lng = parseFloat(response.json().results[0].geometry.location.lng);
               }
@@ -606,7 +606,7 @@ export class ListingsComponent implements OnInit {
               let mk: Marker = {
                 lat: parseFloat(response.json().results[0].geometry.location.lat),
                 lng: parseFloat(response.json().results[0].geometry.location.lng),
-                label: index.toString(), 
+                label: index.toString(),
                 tooltip: tooltip,
                 draggable: false
               };
@@ -615,7 +615,7 @@ export class ListingsComponent implements OnInit {
               console.log(mk);
             }
           }
-        });      
+        });
     });
   }
   protected mapReady(map) {
@@ -630,29 +630,38 @@ export class ListingsComponent implements OnInit {
     });
   }
 
-  addListing(content){
-    this.getProfileData()
-    .subscribe(response => {
-      if (response.status == 200) {
-        console.log(response);
-        let profileModel = response.json();
-        if (this.accountType == undefined || this.accountType.trim() == ""
-          || this.accountType == this.globals.TokenponAccountType[0]) {
-            
-            this.showModal = true;
-            this.displayModal(content);
-        }
-        else {
-          this.router.navigate(['/home/claim']);          
-        }
-      }
-    });
+  addListing(content) {
+    if (localStorage.getItem("accountType") == undefined || localStorage.getItem("accountType").trim() == ""
+      || localStorage.getItem("accountType") == this.globals.TokenponAccountType[0]) {
+
+      this.showModal = true;
+      this.displayModal(content);
+    }
+    else {
+      this.router.navigate(['/home/claim']);
+    }
+    // this.getProfileData()
+    // .subscribe(response => {
+    //   if (response.status == 200) {
+    //     console.log(response);
+    //     let profileModel = response.json();
+    //     if (this.accountType == undefined || this.accountType.trim() == ""
+    //       || this.accountType == this.globals.TokenponAccountType[0]) {
+
+    //         this.showModal = true;
+    //         this.displayModal(content);
+    //     }
+    //     else {
+    //       this.router.navigate(['/home/claim']);          
+    //     }
+    //   }
+    // });
   }
   getProfileData() {
     let userName = localStorage.getItem("currentUser");
-    return this.mongoService.GetProfile(userName, this.globals.TokenponAppId);      
+    return this.mongoService.GetProfile(userName, this.globals.TokenponAppId);
   }
-  selectOffer(id: string){
+  selectOffer(id: string) {
     this.router.navigate(['/home/claim-detail'], { queryParams: { id: id } });
   }
 }
