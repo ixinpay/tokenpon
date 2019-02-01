@@ -596,7 +596,7 @@
                                             [routerLink]="" [queryParams]="{id: claimId}" type="submit" translate>Cancel
                                             <i class="fa fa-ban ml-2"></i>
                                         </button>
-                                        <button type="button" class="btn btn-outline-danger  waves-effect" (click)="cancelProfileUpdate();"
+                                        <button type="button" class="btn btn-outline-danger  waves-effect" (click)="profileForm.reset(); cancelProfileUpdate();"
                                             translate>Cancel
                                             <i class="fa fa-ban ml-2"></i>
                                         </button>

@@ -287,11 +287,11 @@ export class ClaimDetailComponent implements OnInit {
       // console.log("calling onSubmit()");
       // console.log(localStorage.getItem("oothtoken"));
       // this.VerifyToken();
-      let user = await this.oothService.getUser();
+      //let user = await this.oothService.getUser();
       // console.log(user.local.email);
       // add new comment
-      if (!this.ownComment) {
-        if (this.tokenBalance >= this.globals.tokenDeductAmmount_ChainpageComment) {
+      // if (!this.ownComment) {
+        if (this.tokenBalance >= this.globals.tokenDeductAmmount_TokenponComment) {
           let data = {
             _id: this.claimId,
             appId: this.globals.TokenponAppId,
@@ -306,28 +306,28 @@ export class ClaimDetailComponent implements OnInit {
             .subscribe(response => {
               console.log(response);
               if (response.status == 200) {
-                this.toasterService.pop('success', 'Comment submitted successfully');
+                this.toasterService.pop('success', 'Thanks for you comment!');
                 this.submitted = true;
                 console.log("account: " + this.account);
                 //email author about new comment if allowed
-                if (this.model.notification) {
-                  console.log("sending email to author ...");
-                  this.oothService.sendEmail(this.model.postedBy, this.globals.ChainPageNewCommentSubject
-                    , this.globals.ChainPageNewCommentMessageToAuthor + window.location + '<br/><br/>New Comment by ' + this.currentUser + ':<br/>' + commentText);
+                // if (this.model.notification) {
+                //   console.log("sending email to author ...");
+                //   this.oothService.sendEmail(this.model.postedBy, this.globals.ChainPageNewCommentSubject
+                //     , this.globals.ChainPageNewCommentMessageToAuthor + window.location + '<br/><br/>New Comment by ' + this.currentUser + ':<br/>' + commentText);
 
-                }
+                // }
                 //send email to comment provider if he is not the author
-                if (this.model.postedBy !== this.currentUser) {
-                  console.log("sending email to commenter ...");
-                  this.oothService.sendEmail(this.currentUser, this.globals.ChainPostNewCommentSubject
-                    , this.globals.ChainPageNewCommentMessageToProvider + window.location);
-                }
+                // if (this.model.postedBy !== this.currentUser) {
+                //   console.log("sending email to commenter ...");
+                //   this.oothService.sendEmail(this.currentUser, this.globals.ChainPostNewCommentSubject
+                //     , this.globals.ChainPageNewCommentMessageToProvider + window.location);
+                // }
                 //deduct token
-                if (!this.ownComment) {
-                  console.log("deduct new comment token from " + localStorage.getItem("currentUserId"));
-                  // this.oothService.deductToken(localStorage.getItem("currentUserId"), this.globals.tokenDeductAmmount_ChainpageComment);
-                  this.oothService.onUserAction(this.globals.TokenponAppId, this.globals.action.comment);
-                }
+                // if (!this.ownComment) {
+                //   console.log("deduct new comment token from " + localStorage.getItem("currentUserId"));
+                //   // this.oothService.deductToken(localStorage.getItem("currentUserId"), this.globals.tokenDeductAmmount_ChainpageComment);
+                //   this.oothService.onUserAction(this.globals.TokenponAppId, this.globals.action.comment);
+                // }
                 //reload comments
                 this.getDetails();
                 return true;
@@ -340,38 +340,38 @@ export class ClaimDetailComponent implements OnInit {
         else {
           this.toasterService.pop("error", "You don't have enough tokens");
         }
-      }
+      // }
       // update comment
-      else {
-        let data = {
-          _id: this.claimId,
-          appId: this.globals.TokenponAppId,
-          comment: {
-            _id: this.ownComment._id,
-            comment: commentText,
-            postedTime: Date.now()
-          }
-        };
-        this.mongoService.updateComment(data)
-          .subscribe(response => {
-            if (response.status == 200) {
-              this.toasterService.pop('success', 'Comment submitted successfully');
-              this.submitted = true;
-              // console.log("account: " + this.account);
-              //deduct token
-              // if (!this.ownComment) {
-              //   console.log("deduct new comment token from " + this.account);
-              //   this.oothService.deductToken(this.account, this.globals.tokenDeductAmmount_ChainpageComment);
-              // }
-              //reload comments
-              this.getDetails();
-              return true;
-            }
-            else {
-              this.toasterService.pop("error", response.statusText);
-            }
-          })
-      }
+      // else {
+      //   let data = {
+      //     _id: this.claimId,
+      //     appId: this.globals.TokenponAppId,
+      //     comment: {
+      //       _id: this.ownComment._id,
+      //       comment: commentText,
+      //       postedTime: Date.now()
+      //     }
+      //   };
+      //   this.mongoService.updateComment(data)
+      //     .subscribe(response => {
+      //       if (response.status == 200) {
+      //         this.toasterService.pop('success', 'Comment submitted successfully');
+      //         this.submitted = true;
+      //         // console.log("account: " + this.account);
+      //         //deduct token
+      //         // if (!this.ownComment) {
+      //         //   console.log("deduct new comment token from " + this.account);
+      //         //   this.oothService.deductToken(this.account, this.globals.tokenDeductAmmount_ChainpageComment);
+      //         // }
+      //         //reload comments
+      //         this.getDetails();
+      //         return true;
+      //       }
+      //       else {
+      //         this.toasterService.pop("error", response.statusText);
+      //       }
+      //     })
+      // }
       // console.log(result);
     }
     else {
@@ -411,7 +411,7 @@ export class ClaimDetailComponent implements OnInit {
       }
       else {
         console.log("token balance: " + this.tokenBalance)
-        if (this.tokenBalance >= this.globals.tokenDeductAmmount_ChainpageUpVote) {
+        if (this.tokenBalance >= this.globals.tokenDeductAmmount_TokenponUpVote) {
           // console.log("not yet liked: " + this.alreadyLiked)
           let data = {
             _id: this.claimId,
@@ -481,7 +481,7 @@ export class ClaimDetailComponent implements OnInit {
           })
       }
       else {
-        if (this.tokenBalance >= this.globals.tokenDeductAmmount_ChainpageDownVote) {
+        if (this.tokenBalance >= this.globals.tokenDeductAmmount_TokenponDownVote) {
           // console.log(this.alreadyDisliked);
           let data = {
             _id: this.claimId,

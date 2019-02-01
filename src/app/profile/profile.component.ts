@@ -44,6 +44,7 @@ export class ProfileComponent implements OnInit {
   fileNames: any[] = [];
   currentUser: string;
   profileModel: any = {};
+  profileModelOriginal: any = {};
   claims: Claim[] = [];
   submitted = false;
   categories: any[] = [];
@@ -60,6 +61,8 @@ export class ProfileComponent implements OnInit {
   private isRegularAccount: boolean = true;
   private accountTypeList: any[];
   private accountType: string;
+  private accountTypeOriginal: string;
+
   //end claim page
   constructor(private oothService: OothService, private route: ActivatedRoute
     , private toasterService: ToasterService, private translate: TranslateService,
@@ -69,16 +72,20 @@ export class ProfileComponent implements OnInit {
     private alertService: AlertService,
     private http: Http, private swarmService: SwarmService) {
 
+    this.checkIsRegularAccount();
     this.accountNumber = localStorage.getItem("currentUserAccount");
     this.phoneNumber = localStorage.getItem("phoneNumber");
     console.log(localStorage.getItem("accountType"));
     this.accountType = localStorage.getItem("accountType");
+    this.accountTypeOriginal = this.accountType;
     this.accountTypeList = this.globals.TokenponAccountType;
 
-    this.route.queryParams.subscribe(params => {
-      this.userName = params["user"];
-      this.getProfileData();
-    });
+    // this.route.queryParams.subscribe(params => {
+    //   this.userName = params["user"];
+    //   this.getProfileData();
+    // });
+    this.userName = localStorage.getItem("currentUser");
+    this.getProfileData();
 
     this.profilePages = new Array("Account Information", "Account Profile", "Account Settings");
     this.selectedPage = this.profilePages[0];
@@ -137,6 +144,16 @@ export class ProfileComponent implements OnInit {
         //console.log(data);
       });
   }
+  //set isRegularAccount
+  checkIsRegularAccount() {
+    if (localStorage.getItem("accountType") == undefined || localStorage.getItem("accountType").trim() == ""
+      || localStorage.getItem("accountType") == this.globals.TokenponAccountType[0]) {
+      this.isRegularAccount = true;
+    }
+    else {
+      this.isRegularAccount = false;
+    }
+  }
   //get user profile data
   getProfileData() {
     this.mongoService.GetProfile(this.userName, this.globals.TokenponAppId)
@@ -144,13 +161,7 @@ export class ProfileComponent implements OnInit {
         if (response.status == 200) {
           console.log(response);
           this.profileModel = response.json();
-          if (this.accountType == undefined || this.accountType.trim() == ""
-            || this.accountType == this.globals.TokenponAccountType[0]) {
-            this.isRegularAccount = true;
-          }
-          else {
-            this.isRegularAccount = false;
-          }
+          this.profileModelOriginal = response.json();
           console.log(this.profileModel);
           this.onChange(this.profileModel.country);
           this.MainCategoryDropDownChanged(this.profileModel.businessMainCategory);
@@ -313,24 +324,26 @@ export class ProfileComponent implements OnInit {
 
   }
   onChange(newValue: string) {
-    if (newValue.toLowerCase() == "usa") {
-      // console.log(newValue);
-      this.http.get('/assets/us_states.json')
-        .subscribe(data => {
-          this.states = data.json();
-          this.state_province = this.states;
-          //console.log(data);
+    if (newValue !== null) {
+      if (newValue.toLowerCase() == "usa") {
+        // console.log(newValue);
+        this.http.get('/assets/us_states.json')
+          .subscribe(data => {
+            this.states = data.json();
+            this.state_province = this.states;
+            //console.log(data);
 
-        });
-    }
-    else if (newValue.toLowerCase() == "canada") {
-      // console.log(newValue);
-      this.http.get('/assets/canada_provinces.json')
-        .subscribe(data => {
-          this.provinces = data.json();
-          this.state_province = this.provinces;
-          //console.log(data);
-        });
+          });
+      }
+      else if (newValue.toLowerCase() == "canada") {
+        // console.log(newValue);
+        this.http.get('/assets/canada_provinces.json')
+          .subscribe(data => {
+            this.provinces = data.json();
+            this.state_province = this.provinces;
+            //console.log(data);
+          });
+      }
     }
   }
   detectFiles(event) {
@@ -462,9 +475,15 @@ export class ProfileComponent implements OnInit {
         if (response.status !== "error") {
           //update cached accountType
           localStorage.setItem("accountType", this.accountType);
+          this.checkIsRegularAccount();
           this.mongoService.updateProfile(this.profileModel)
             .subscribe(res => {
-              this.toasterService.pop('success', 'Update successful');
+              if (res.status === 200) {
+                this.toasterService.pop('success', 'Update successful');
+              }
+              else {
+                this.toasterService.pop("error", res.statusText);
+              }
             },
               err => {
                 this.toasterService.pop("error", "fail to update profile");
@@ -548,7 +567,15 @@ export class ProfileComponent implements OnInit {
   }
   cancelProfileUpdate() {
     this.inBusinessEdit = false;
-
+    //reset form to original state
+    this.accountType = this.accountTypeOriginal;
+    if (this.accountType == undefined || this.accountType.trim() == "" || this.accountType == this.globals.TokenponAccountType[0]) {
+      this.isRegularAccount = true;
+    }
+    else {
+      this.isRegularAccount = false;
+    }
+    this.profileModel = this.profileModelOriginal;
     console.log(this.inBusinessEdit);
   }
   //end of update merchant profile

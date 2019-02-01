@@ -234,7 +234,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-12 mt-3">
+                <!-- <div class="col-12 mt-3">
                         <div class="col-xs-12 col-sm-12">
                             <label for="productTextarea" translate>Title of Discount Offering:</label>
                         </div>
@@ -248,7 +248,7 @@
                             </div>
                         </div>
                     </div>
-                <div class="col-12 mt-3">
+                 <div class="col-12 mt-3">
                         <div class="col-xs-12 col-sm-12">
                             <label for="productTextarea" translate>Highlights (min 10 characters):</label>
                         </div>
@@ -262,7 +262,7 @@
                                     required</small>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 <div *ngIf="!isUpdate" class="col-12 mt-3">
                     <div class="col-xs-12 col-sm-12 col-md-11 mb-1" *ngFor="let field of discountArray; let i = index">
                         <div class="card addedCard">
@@ -563,7 +563,7 @@
             <div class="col-12">
                 <div class="form-group col-sm-12">
                     <div class="col-12">
-                        <label for="image_uploads" translate>Choose images(<2MB) to upload (PNG, JPG)
+                        <label for="image_uploads" translate>Choose images(<2MB, up to 5 images) to upload (PNG, JPG)
                                 <span class="btn btn-mdb-color btn-sm" translate>Browse</span>
                         </label>
                         <input style="display: none;" type="file" id="image_uploads" accept=".jpg, .jpeg, .png"
@@ -585,9 +585,9 @@
             </div>
 
             <div class="col-12 text-center submitBtn mt-3">
-                <button type="submit" [disabled]="!productText.valid || !fineprintText.valid || discountArray?.length == 0"
-                    class="btn" [ngClass]="{'btn-light': !productText.valid || !fineprintText.valid || discountArray?.length == 0,
-                        'btn-success': productText.valid && fineprintText.valid && discountArray?.length > 0}"
+                <button type="submit" [disabled]="!fineprintText.valid || discountArray?.length == 0"
+                    class="btn" [ngClass]="{'btn-light': !fineprintText.valid || discountArray?.length == 0,
+                        'btn-success': fineprintText.valid && discountArray?.length > 0}"
                     translate>{{isUpdate? 'Update': 'Submit'}}</button>
                 <button *ngIf="isUpdate" class="btn btn-outline-danger  waves-effect" [routerLink]="['/home/claim-detail']"
                     [queryParams]="{id: claimId}" type="submit" translate>Cancel

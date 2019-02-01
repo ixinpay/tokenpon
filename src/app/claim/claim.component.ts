@@ -51,7 +51,7 @@ export class ClaimComponent implements OnInit {
   productDescription: string;
   overallTitle: string;
   finePrint: string;
-  logoUrl: string;
+  logoUrl: string = "";
   expireDays: number[];
   private showNewOfferUI: boolean = true;
   private discountValueList: number[];
@@ -84,7 +84,13 @@ export class ClaimComponent implements OnInit {
       .subscribe(response => {
         if (response.status == 200) {
           // console.log(response);
+          try{
           this.profileModel = response.json();
+          }
+          catch(e){
+            this.toasterService.pop("error", "Please complete your 'Account Profile' before posting a new deal!");
+            this.router.navigate(["/profile"]);
+          }
           //get pictures from Mongo
           this.logoUrl = this.profileModel.pictures[0] == undefined ? "" : this.profileModel.pictures[0];
         }
@@ -300,7 +306,7 @@ export class ClaimComponent implements OnInit {
     this.model.businessHour = this.profileModel.businessHour;
     this.model.businessMainCategory = this.profileModel.businessMainCategory;
     this.model.businessSubCategory = this.profileModel.businessSubCategory;
-    this.model.postedBy = this.profileModel.postedBy;
+    this.model.postedBy = this.currentUser;
     this.model.pictures = this.urls.map(e => e.url);
     this.model.notification = this.profileModel.notification;
     this.model.discounts = this.discountArray;
