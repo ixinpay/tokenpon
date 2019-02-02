@@ -224,18 +224,19 @@ export class ClaimDetailComponent implements OnInit {
             return b.postedTime - a.postedTime;
           });
 
-          this.model.comments.forEach(element => {
-            if (element.postedBy == this.currentUser) {
-              this.ownComment = element;
-              // console.log("ownComment: " + this.ownComment)
-            }
-            else {
-              // console.log(element)
-              this.comments.push(element);
-            }
-          });
+          // this.model.comments.forEach(element => {
+          //   if (element.postedBy == this.currentUser) {
+          //     this.ownComment = element;
+          //     // console.log("ownComment: " + this.ownComment)
+          //   }
+          //   else {
+          //     // console.log(element)
+          //     this.comments.push(element);
+          //   }
+          // });
           this.model.commentsNum = this.model.comments.length;
-          this.commentsPage = this.comments.slice(0, this.pageSize);
+          // this.commentsPage = this.comments.slice(0, this.pageSize);
+          this.commentsPage = this.model.comments.slice(0, this.pageSize);
           // console.log("comments: " + this.commentsPage);
           //retrieve votes
           this.model.votes.forEach(element => {
@@ -324,9 +325,9 @@ export class ClaimDetailComponent implements OnInit {
                 // }
                 //deduct token
                 // if (!this.ownComment) {
-                //   console.log("deduct new comment token from " + localStorage.getItem("currentUserId"));
-                //   // this.oothService.deductToken(localStorage.getItem("currentUserId"), this.globals.tokenDeductAmmount_ChainpageComment);
-                //   this.oothService.onUserAction(this.globals.TokenponAppId, this.globals.action.comment);
+                  // console.log("deduct new comment token from " + localStorage.getItem("currentUserId"));
+                  // this.oothService.deductToken(localStorage.getItem("currentUserId"), this.globals.tokenDeductAmmount_ChainpageComment);
+                  this.oothService.onUserAction(this.globals.TokenponAppId, this.globals.action.comment);
                 // }
                 //reload comments
                 this.getDetails();
