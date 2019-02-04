@@ -789,7 +789,7 @@ export class ClaimDetailComponent implements OnInit {
   }
   ngOnInit() {
     this.carouselBanner = {
-      grid: { xs: 2, sm: 3, md: 4, lg: 4, all: 0 },
+      grid: { xs: 1, sm: 2, md: 3, lg: 4, all: 0 },
       speed: 600,
       slide: 1,
       point: {

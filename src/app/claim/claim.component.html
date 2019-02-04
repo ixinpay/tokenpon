@@ -5,226 +5,8 @@
     }
 </style>
 <div class="container col-sm-18 col-md-12 col-lg-10 offset-md-1">
-    <form (ngSubmit)="onSubmit()" #claimForm="ngForm">
+    <form (ngSubmit)="onSubmit()" #tokenponForm="ngForm">
         <div class="form-group">
-            <!-- <div class="main-cat">
-                <div class="claim-head">
-                    <h4 translate>General Info</h4>
-                </div>
-                <div [ngClass]="{ 'has-error': claimForm.submitted && !country.valid }">
-                    <div class="row">
-                        <div class="form-group col-sm-6">
-                            <label for="country" class="required" translate>Country</label>
-                            <select (change)="countryDropDownChanged($event.target.value)" (ngModelChange)="onChange($event)" [ngClass]="{ 'show-error-border': claimForm.submitted && !country.valid }" class="form-control" id="country" required [(ngModel)]="model.country" [ngClass]="{ 'show-error-border': claimForm.submitted && !country.valid }"
-                                name="country" #country="ngModel">
-                                    <option *ngFor="let c of countries" [value]="c.Country">{{c.Country}}</option>
-                            </select>
-                            <div class="col-sm-6">
-                                <small *ngIf="claimForm.submitted && !country.valid" translate class="" [ngClass]="{ 'show-error': claimForm.submitted && !country.valid }">* This is required</small>
-                            </div>
-
-                        </div>
-                        <div class="form-group col-sm-6">
-                            <label for="region" class="required" [ngClass]="{ 'has-error': claimForm.submitted && !name.valid }" translate>Region</label>
-                            <select class="form-control" name="region" id="region" [ngClass]="{ 'show-error-border': claimForm.submitted && !region.valid }" [(ngModel)]="model.region" #region="ngModel" required>
-                                    <option value="Chicago">{{"Greater Chicago Area"| translate}}</option>
-                                    <option value="Baltimore">{{"Maryland Area" | translate}}</option>
-                                    <option value="NYC">{{"Greater New York Area" | translate}}</option>
-                                    <option value="Toronto">{{"Greater Toronto Area" | translate}}</option>  
-                                    <option selected="selected" value="WashingtonDC">{{"Greater Washington DC Area" | translate}}</option>              
-                                    <option value="Others">{{"Other Area" | translate}}</option>
-                                </select>
-                            <div class="col-sm-6">
-                                <small *ngIf="claimForm.submitted && !region.valid" translate class="" [ngClass]="{ 'show-error': claimForm.submitted && !region.valid }">* This is required</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="form-group col-sm-6">
-                            <label for="name" class="required" [ngClass]="{ 'has-error': claimForm.submitted && !name.valid }" translate>Contact Person</label>
-                            <input type="text" class="form-control" id="name" required [(ngModel)]="model.name" [ngClass]="{ 'show-error-border': claimForm.submitted && !name.valid }" name="name" #name="ngModel">
-                            <div class="col-sm-6">
-                                <small *ngIf="claimForm.submitted && !name.valid" translate class="" [ngClass]="{ 'show-error': claimForm.submitted && !name.valid }">* This is required</small>
-                            </div>
-                        </div>
-                        <div class="form-group col-sm-6">
-                            <label for="businessName" class="required" [ngClass]="{ 'has-error': claimForm.submitted && !businessName.valid }" translate>Business Name</label>
-                            <input type="text" class="form-control" id="businessName" required [(ngModel)]="model.businessName" [ngClass]="{ 'show-error-border': claimForm.submitted && !businessName.valid }" name="businessName" #businessName="ngModel">
-                            <div class="col-sm-6">
-                                <small *ngIf="claimForm.submitted && !businessName.valid" translate class="" [ngClass]="{ 'show-error': claimForm.submitted && !businessName.valid }">* This is required</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="main-cat">
-                <div class="claim-head">
-                    <h4 translate>Address</h4>
-                </div>
-                <div class="row">
-                    <div class="form-group col-sm-4">
-                        <label for="street" class="required" [ngClass]="{ 'has-error': claimForm.submitted && !street.valid }" translate>Street</label>
-                        <input type="text" class="form-control" id="street" required [(ngModel)]="model.street" [ngClass]="{ 'show-error-border': claimForm.submitted && !street.valid }" name="street" #street="ngModel">
-                        <div class="col-sm-8">
-                            <small *ngIf="claimForm.submitted && !street.valid" translate class="" [ngClass]="{ 'show-error': claimForm.submitted && !street.valid }">* This is required</small>
-                        </div>
-                    </div>
-                    <div class="form-group col-sm-4">
-                        <div [ngClass]="{ 'has-error': claimForm.submitted && !city.valid }">
-                            <label for="city" class="required" translate>City</label>
-                            <input type="text" class="form-control" id="city" required [(ngModel)]="model.city" [ngClass]="{ 'show-error-border': claimForm.submitted && !city.valid }" name="city" #city="ngModel">
-                            <div class="col-sm-8">
-                                <small *ngIf="claimForm.submitted && !city.valid" translate class="" [ngClass]="{ 'show-error': claimForm.submitted && !city.valid }">* This is required</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group col-sm-2">
-                        <div [ngClass]="{ 'has-error': claimForm.submitted && !state.valid }">
-                            <label for="state" class="required" translate>State/Province</label>
-                            <select class="form-control" id="state" required [(ngModel)]="model.state" [ngClass]="{ 'show-error-border': claimForm.submitted && !state.valid }" name="state" #state="ngModel">
-                                <option *ngFor="let s of state_province" [value]="s.abbreviation">{{s.abbreviation}}</option>
-                              </select>
-                            <div class="col-sm-14">
-                                <small *ngIf="claimForm.submitted && !state.valid" translate class="" [ngClass]="{ 'show-error': claimForm.submitted && !state.valid }">* This is required</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group col-sm-2">
-                        <div [ngClass]="{ 'has-error': claimForm.submitted && !zip.valid }">
-                            <label for="zip" class="required" translate>Zip Code</label>
-                            <input type="text" class="form-control" id="zip" required [(ngModel)]="model.zip" [ngClass]="{ 'show-error-border': claimForm.submitted && !zip.valid }" name="zip" #zip="ngModel">
-                            <div class="col-sm-14">
-                                <small *ngIf="claimForm.submitted && !zip.valid" translate class="" [ngClass]="{ 'show-error': claimForm.submitted && !zip.valid }">* This is required</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="main-cat">
-                <div class="claim-head">
-                    <h4 translate>Contact</h4>
-                </div>
-                <div class="row">
-                    <div class="form-group col-sm-6">
-                        <div [ngClass]="{ 'has-error': claimForm.submitted && !email.valid }">
-                            <label for="email" class="required" translate>Email</label>
-                            <input type="text" class="form-control" id="email" pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$" required [(ngModel)]="model.email" [ngClass]="{ 'show-error-border': claimForm.submitted && !email.valid }" name="email" #email="ngModel">
-                            <div class="col-sm-6">
-                                <small *ngIf="claimForm.submitted && !email.valid" translate class="" [ngClass]="{ 'show-error': claimForm.submitted && !email.valid }">* This is required</small>
-                                <small *ngIf="email.errors?.pattern && email.touched" [ngClass]="{'show-error': email.errors?.pattern && email.touched}" translate>* Email is invalid</small>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group col-sm-6">
-                        <div [ngClass]="{ 'has-error': claimForm.submitted && !phone.valid }">
-                            <label for="phone" class="required" translate>Phone</label>
-                            <input type="text" mask="(000)000-0000" class="form-control" id="phone" required [(ngModel)]="model.phone" [ngClass]="{ 'show-error-border': claimForm.submitted && !phone.valid }" name="phone" #phone="ngModel">
-                            <div class="col-sm-6">
-                                <small *ngIf="claimForm.submitted && !phone.valid" translate class="" [ngClass]="{ 'show-error': claimForm.submitted && !phone.valid }">* This is required</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-sm-6">
-                        <div [ngClass]="{ 'has-error': claimForm.submitted && !webPage.valid }">
-                            <label for="webPage" class="required" translate>WebPage</label>
-                            <input type="text" id="webPage" class="form-control" id="webPage" pattern="^((http|https):\/\/[w|W]+(\.[a-zA-Z0-9]+)+.*)$" [(ngModel)]="model.webPage" [ngClass]="{ 'show-error-border': claimForm.submitted && !webPage.dirty }" name="webPage" #webPage="ngModel">
-                            <div class="col-sm-6">
-                                <small *ngIf="claimForm.submitted && !webPage.dirty" translate class="" [ngClass]="{ 'show-error': claimForm.submitted && !webPage.dirty }">* This is required</small>
-                                <small *ngIf="webPage.errors?.pattern && webPage.touched" [ngClass]="{'show-error': webPage.errors?.pattern && webPage.touched}" translate>* Please enter valid URL (eg.http://www.google.com)</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="main-cat">
-                <div class="claim-head">
-                    <h4 translate>Business Info</h4>
-                </div>
-                <div class="row">
-                    <div class="form-group col-sm-6">
-                        <label for="businessMainCategory" class="required" [ngClass]="{ 'has-error': claimForm.submitted && !businessCategory.valid }" translate>Main Category</label>
-                        <select class="form-control" id="businessMainCategory" required (change)="MainCategoryDropDownChanged($event.target.value)" [(ngModel)]="model.businessMainCategory" [ngClass]="{ 'show-error-border': claimForm.submitted && !businessCategory.valid }" name="businessMainCategory"
-                            #businessCategory="ngModel">
-                            <option *ngFor="let cat of categories" [value]="cat.Description" translate>{{cat.Description}}</option>
-                        </select>
-                        <div class="col-sm-6">
-                            <small *ngIf="claimForm.submitted && !businessCategory.valid" translate class="" [ngClass]="{ 'show-error': claimForm.submitted && !businessCategory.valid }">* This is required</small>
-                        </div>
-                    </div>
-                    <div class="form-group col-sm-6">
-                        <label for="businessSubCategory" class="required" [ngClass]="{ 'has-error': claimForm.submitted && !businessSubCategory.valid }" translate>Sub Category</label>
-                        <select class="form-control" id="businessSubCategory" required [(ngModel)]="model.businessSubCategory" [ngClass]="{ 'show-error-border': claimForm.submitted && !businessSubCategory.valid }" name="businessSubCategory" #businessSubCategory="ngModel">
-                            <option  value="" translate></option>
-                            <option *ngFor="let subcat of subcategories" [value]="subcat.Description" translate>{{subcat.Description}}</option>
-                        </select>
-                        <div class="col-sm-6">
-                            <small *ngIf="claimForm.submitted && !businessSubCategory.valid" translate class="" [ngClass]="{ 'show-error': claimForm.submitted && !businessSubCategory.valid }">* This is required</small>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-sm-6">
-                        <label for="servicingArea" class="required" [ngClass]="{ 'has-error': claimForm.submitted && !servicingArea.valid }" translate>Servicing Area</label>
-                        <input type="text" class="form-control" id="servicingArea" required [(ngModel)]="model.servicingArea" [ngClass]="{ 'show-error-border': claimForm.submitted && !servicingArea.valid }" name="servicingArea" #servicingArea="ngModel">
-                        <div class="col-sm-6">
-                            <small *ngIf="claimForm.submitted && !servicingArea.valid" translate class="" [ngClass]="{ 'show-error': claimForm.submitted && !servicingArea.valid }">* This is required</small>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-sm-6">
-                        <label for="businessHour" class="required" [ngClass]="{ 'has-error': claimForm.submitted && !businessHour.valid }" translate>Business Hour</label>
-                        <input type="text" class="form-control" id="businessHour" required [(ngModel)]="model.businessHour" [ngClass]="{ 'show-error-border': claimForm.submitted && !businessHour.valid }" name="businessHour" #businessHour="ngModel">
-                        <div class="col-sm-6">
-                            <small *ngIf="claimForm.submitted && !businessHour.valid" translate class="" [ngClass]="{ 'show-error': claimForm.submitted && !businessHour.valid }">* This is required</small>
-                        </div>
-                    </div>
-                </div>
-                <div class="row" *ngIf="false">
-                    <div class="col-sm-12">
-                        <input type="text" readonly class="form-control" id="formType" [(ngModel)]="model.formType" name="formType" #formType="ngModel">
-                        <input type="text" readonly class="form-control" id="publishDate" [(ngModel)]="model.publishDate" name="publishDate" #publishDate="ngModel">
-                    </div>
-                </div>
-            </div>
-            <div class="main-cat">
-                <div class="claim-head">
-                    <h4 translate>Business Description</h4>
-                </div>
-                <div class="row">
-                    <div class="form-group col-sm-12">
-                        <div [ngClass]="{ 'has-error': claimForm.submitted && !service.valid }">
-                            <label for="service" class="required" translate>Description</label>
-                            <textarea class="form-control" style="resize: none;" rows="6" id="service" required [(ngModel)]="model.service" [ngClass]="{ 'show-error-border': claimForm.submitted && !service.valid }" name="service" #service="ngModel"></textarea>
-                            <div class="col-sm-6">
-                                <small *ngIf="claimForm.submitted && !service.valid" translate class="" [ngClass]="{ 'show-error': claimForm.submitted && !service.valid }">* This is required</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group col-sm-12">
-                        <label for="image_uploads" translate>Choose images(<2MB) to upload (PNG, JPG)(coming soon)
-                                <span class="btn btn-mdb-color btn-sm" translate>Browse</span>
-                              </label>
-                        <input style="display: none;" type="file" id="image_uploads" accept=".jpg, .jpeg, .png" multiple (change)="detectFiles($event)" title="Choose">
-                        <div *ngIf="isOversize"><small translate class="show-error" translate>* picture(s) too large</small></div>
-                        <div *ngIf="isAlreadyAdded"><small translate class="show-error" translate>* picture(s) already added</small></div>
-                        <div *ngIf="isOverTotal"><small translate class="show-error" translate>* you have reached the max allowable uploads</small></div>
-                        <div>
-                            <div class="img-wrap" *ngFor="let url of urls">
-                                <span class="close" (click)="deleteFile(url)">&times;</span>
-                                <img [src]="url.url" class="rounded mb-3" width="150" height="150" data-id="{{url.id}}">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div>
-                <input type="checkbox" [(ngModel)]="model.notification" name="notification" #notification="ngModel"> <label translate>check here if you want to be notified when a new comment is posted</label>
-            </div> -->
             <div>
                 <div class="col-12 mt-3">
                     <div class="row col-12">
@@ -289,6 +71,12 @@
                                         {{field.description}}
                                     </div>
                                 </div>
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-12 col-md-2">Cost:</div>
+                                    <div class="col-xs-12 col-sm-12 col-md-10">
+                                        {{field.cost}} iXin
+                                    </div>
+                                </div>
                                 <div class="divTable darkTable">
                                     <div class="divTableHeading">
                                         <div class="divTableHeadRow">
@@ -314,7 +102,10 @@
                             <div class="card workingCard">
                                 <div class="card-block">
                                     <div class="row mt-1">
-                                        <div class="col-xs-12 col-sm-12 col-md-3">Title <small>(Max 50 characters)</small>:</div>
+                                        <div class="col-xs-12 col-sm-12 col-md-3">
+                                            <label placement="top" ngbTooltip="this will be displayed at main page">Title
+                                                <small>(Max 50 characters)</small>:</label>
+                                        </div>
                                         <div class="col-xs-12 col-sm-12 col-md-7">
                                             <input class="form-control" maxlength="50" id="newAttributeTitle"
                                                 [(ngModel)]="newDiscount.title" name="newAttributeAmount" required />
@@ -325,7 +116,8 @@
                                         </div>
                                     </div>
                                     <div class="row mt-1">
-                                        <div class="col-xs-12 col-sm-12 col-md-3">Description <small>(Max 100 characters)</small>:</div>
+                                        <div class="col-xs-12 col-sm-12 col-md-3">Description <small>(Max 100
+                                                characters)</small>:</div>
                                         <div class="col-xs-12 col-sm-12 col-md-7">
                                             <input class="form-control" maxlength="100" id="newAttributeDescription"
                                                 [(ngModel)]="newDiscount.description" name="newAttributeDescription"
@@ -333,6 +125,28 @@
                                         </div>
                                         <div *ngIf="!newDiscount.description" class="col-xs-12 col-sm-12 col-md-2">
                                             <small *ngIf="!newDiscount.description" translate class="" [ngClass]="{ 'show-error': !newDiscount.description }">*
+                                                required</small>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-1">
+                                        <div class="col-xs-12 col-sm-12 col-md-3">Minimum Group Count: </div>
+                                        <div class="col-xs-12 col-sm-12 col-md-2">
+                                            <input class="form-control" type="number" min="1" [(ngModel)]="newDiscount.groupCount"
+                                                name="newAttributeGroupCount" required />
+                                        </div>
+                                        <div *ngIf="!newDiscount.groupCount" class="col-xs-12 col-sm-12 col-md-2">
+                                            <small *ngIf="!newDiscount.groupCount" translate class="" [ngClass]="{ 'show-error': !newDiscount.groupCount }">*
+                                                required</small>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-1">
+                                        <div class="col-xs-12 col-sm-12 col-md-3">Expiration Date: </div>
+                                        <div class="col-xs-12 col-sm-12 col-md-4">
+                                            <input class="form-control" type="date" [(ngModel)]="newDiscount.expirationDate"
+                                                name="newAttributeExpirationDate" required />
+                                        </div>
+                                        <div *ngIf="!newDiscount.expirationDate" class="col-xs-12 col-sm-12 col-md-2">
+                                            <small *ngIf="!newDiscount.expirationDate" translate class="" [ngClass]="{ 'show-error': !newDiscount.expirationDate }">*
                                                 required</small>
                                         </div>
                                     </div>
@@ -380,9 +194,9 @@
                                         </div>
                                     </div>
                                     <div class="text-center">
-                                        <button *ngIf="!newDiscount.title || !newDiscount.description || !newDiscount.amount || !newDiscount.discount || !newDiscount.token"
+                                        <button *ngIf="!newDiscount.title || !newDiscount.description || !newDiscount.amount || !newDiscount.discount || !newDiscount.token || !newDiscount.groupCount || !newDiscount.expirationDate"
                                             disabled class="btn btn-light btn-sm">Add</button>
-                                        <button *ngIf="newDiscount.title && newDiscount.description && newDiscount.amount && newDiscount.discount && newDiscount.token"
+                                        <button *ngIf="newDiscount.title && newDiscount.description && newDiscount.amount && newDiscount.discount && newDiscount.token && newDiscount.groupCount && newDiscount.expirationDate"
                                             class="btn btn-default btn-sm" (click)="addDiscount()">Add</button>
                                         <button *ngIf="discountArray.length > 0" class="btn btn-danger btn-sm" (click)="hideOfferUI()">Cancel</button>
                                     </div>
@@ -400,7 +214,7 @@
                             <div class="card-block">
                                 <div class="row">
                                     <div class="col-9">
-                                        <h4 class="offer-head">OFFER {{i+1}}</h4>
+                                        <h5 class="offer-head">Deal {{i+1}}</h5>
                                     </div>
                                     <!-- <div class="col-1">
                                         <a>
@@ -413,16 +227,28 @@
                                         </a>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-xs-12 col-sm-12 col-md-2">Title:</div>
-                                    <div class="col-xs-12 col-sm-12 col-md-10">
+                                <!-- <div class="row">
+                                    <div class="col-xs-12 col-sm-12 col-md-3">Title:</div>
+                                    <div class="col-xs-12 col-sm-12 col-md-9">
                                         {{field.title}}
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-xs-12 col-sm-12 col-md-2">Description:</div>
-                                    <div class="col-xs-12 col-sm-12 col-md-10">
+                                    <div class="col-xs-12 col-sm-12 col-md-3">Description:</div>
+                                    <div class="col-xs-12 col-sm-12 col-md-9">
                                         {{field.description}}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-12 col-md-3">Minimum Group Count:</div>
+                                    <div class="col-xs-12 col-sm-12 col-md-9">
+                                        {{field.groupCount}}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12 col-sm-12 col-md-3">Expiration Date:</div>
+                                    <div class="col-xs-12 col-sm-12 col-md-9">
+                                        {{field.expirationDate}}
                                     </div>
                                 </div>
                                 <div class="divTable darkTable">
@@ -440,110 +266,209 @@
                                             <div class="divTableCell">{{field.token}}</div>
                                         </div>
                                     </div>
+                                </div> -->
+                                <div class="row mt-1">
+                                    <div class="col-xs-12 col-sm-12 col-md-3">
+                                        <label placement="top" ngbTooltip="this will be displayed at main page">Title
+                                            <small>(Max 50 characters)</small>:</label>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-12 col-md-7">
+                                        <input class="form-control" maxlength="50" [(ngModel)]="field.title" name="title-{{i}}"
+                                            required />
+                                    </div>
+                                    <div *ngIf="!field.title" class="col-xs-12 col-sm-12 col-md-2">
+                                        <small *ngIf="!field.title" translate class="" [ngClass]="{ 'show-error': !field.title }">*
+                                            required</small>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div *ngIf="showNewOfferUI">
-                            <div class="col-xs-12 col-sm-12 col-md-11 mt-3">
-                                <div class="card workingCard">
-                                    <div class="card-block">
-                                        <div class="row mt-1">
-                                            <div class="col-xs-12 col-sm-12 col-md-3">Title <small>(Max 50 characters)</small>:</div>
-                                            <div class="col-xs-12 col-sm-12 col-md-7">
-                                                <input class="form-control" maxlength="50" id="newAttributeTitle"
-                                                    [(ngModel)]="newDiscount.title" name="newAttributeAmount" required />
-                                            </div>
-                                            <div *ngIf="!newDiscount.title" class="col-xs-12 col-sm-12 col-md-2">
-                                                <small *ngIf="!newDiscount.title" translate class="" [ngClass]="{ 'show-error': !newDiscount.title }">*
+                                <div class="row mt-1">
+                                    <div class="col-xs-12 col-sm-12 col-md-3">Description <small>(Max 100
+                                            characters)</small>:</div>
+                                    <div class="col-xs-12 col-sm-12 col-md-7">
+                                        <input class="form-control" maxlength="100" [(ngModel)]="field.description"
+                                            name="description-{{i}}" required />
+                                    </div>
+                                    <div *ngIf="!field.description" class="col-xs-12 col-sm-12 col-md-2">
+                                        <small *ngIf="!field.description" translate class="" [ngClass]="{ 'show-error': !field.description }">*
+                                            required</small>
+                                    </div>
+                                </div>
+                                <div class="row mt-1">
+                                    <div class="col-xs-12 col-sm-12 col-md-3">Minimum Group Count: </div>
+                                    <div class="col-xs-12 col-sm-12 col-md-2">
+                                        <input class="form-control" type="number" min="1" [(ngModel)]="field.groupCount"
+                                            name="groupCount-{{i}}" required />
+                                    </div>
+                                    <div *ngIf="!field.groupCount" class="col-xs-12 col-sm-12 col-md-2">
+                                        <small *ngIf="!field.groupCount" translate class="" [ngClass]="{ 'show-error': !field.groupCount }">*
+                                            required</small>
+                                    </div>
+                                </div>
+                                <div class="row mt-1">
+                                    <div class="col-xs-12 col-sm-12 col-md-3">Expiration Date: </div>
+                                    <div class="col-xs-12 col-sm-12 col-md-4">
+                                        <input class="form-control" type="date" [(ngModel)]="field.expirationDate" name="expirationDate-{{i}}"
+                                            required />
+                                    </div>
+                                    <div *ngIf="!field.expirationDate" class="col-xs-12 col-sm-12 col-md-2">
+                                        <small *ngIf="!field.expirationDate" translate class="" [ngClass]="{ 'show-error': !field.expirationDate }">*
+                                            required</small>
+                                    </div>
+                                </div>
+                                <div class="divTable darkTable mt-1">
+                                    <div class="divTableHeading">
+                                        <div class="divTableHeadRow">
+                                            <div class="divTableHead">Amount Spend</div>
+                                            <div class="divTableHead">Discount</div>
+                                            <div class="divTableHead">Token Number</div>
+                                        </div>
+                                    </div>
+                                    <div class="divTableRow">
+                                        <div class="divTableCell">
+                                            <input class="form-control" type="number" min="1" [(ngModel)]="field.amount"
+                                                name="amount-{{i}}" required />
+                                            <div *ngIf="!field.amount">
+                                                <small *ngIf="!field.amount" translate class="" [ngClass]="{ 'show-error': !field.amount }">*
                                                     required</small>
                                             </div>
                                         </div>
-                                        <div class="row mt-1">
-                                            <div class="col-xs-12 col-sm-12 col-md-3">Description <small>(Max 100 characters)</small>:</div>
-                                            <div class="col-xs-12 col-sm-12 col-md-7">
-                                                <input class="form-control" maxlength="100" id="newAttributeDescription"
-                                                    [(ngModel)]="newDiscount.description" name="newAttributeDescription"
-                                                    required />
+                                        <div class="divTableCell">
+                                            <div class="input-group">
+                                                <select class="form-control" [(ngModel)]="field.discount" name="discount-{{i}}"
+                                                    #discount="ngModel" required>
+                                                    <option *ngFor="let discount of discountValueList">{{discount}}</option>
+                                                </select>
+                                                <div class="input-group-append">
+                                                    <span class="input-group-text" id="basic-addon2">%</span>
+                                                </div>
                                             </div>
-                                            <div *ngIf="!newDiscount.description" class="col-xs-12 col-sm-12 col-md-2">
-                                                <small *ngIf="!newDiscount.description" translate class="" [ngClass]="{ 'show-error': !newDiscount.description }">*
+                                            <div *ngIf="!field.discount">
+                                                <small *ngIf="!field.discount" translate class="" [ngClass]="{ 'show-error': !field.discount }">*
                                                     required</small>
                                             </div>
                                         </div>
-                                        <!-- <div class="row mt-1">
-                                                <div class="col-xs-12 col-sm-12 col-md-3">Offer Expires in </div>
-                                                <div class="col-xs-12 col-sm-12 col-md-7">
-                                                    <select class="form-control" type="number" id="newAttributeExpireDays"
-                                                        [(ngModel)]="newDiscount.expireDays" name="newAttributeExpireDays"
-                                                        required>
-                                                        <option *ngFor="let days of expireDays" [ngValue]="30">{{days}}</option>
-                                                    </select>
-                                                </div>
-                                                <div *ngIf="!newDiscount.expireDays" class="col-xs-12 col-sm-12 col-md-2">
-                                                    <small *ngIf="!newDiscount.expireDays" translate class="" [ngClass]="{ 'show-error': !newDiscount.expireDays }">*
-                                                        required</small>
-                                                </div>
-                                            </div> -->
-                                        <div class="divTable darkTable mt-1">
-                                            <div class="divTableHeading">
-                                                <div class="divTableHeadRow">
-                                                    <div class="divTableHead">Amount Spend</div>
-                                                    <div class="divTableHead">Discount</div>
-                                                    <div class="divTableHead">Token Number</div>
-                                                </div>
+                                        <div class="divTableCell">
+                                            <input class="form-control" type="number" min="1" [(ngModel)]="field.token"
+                                                name="token-{{i}}" #token="ngModel" required />
+                                            <div *ngIf="!field.token">
+                                                <small *ngIf="!field.token" translate class="" [ngClass]="{ 'show-error': !field.token }">*
+                                                    required</small>
                                             </div>
-                                            <div class="divTableRow">
-                                                <div class="divTableCell">
-                                                    <input class="form-control" type="number" min="1" id="newAttributeAmount"
-                                                        [(ngModel)]="newDiscount.amount" name="newAttributeAmount" required />
-                                                    <div *ngIf="!newDiscount.amount">
-                                                        <small *ngIf="!newDiscount.amount" translate class="" [ngClass]="{ 'show-error': !newDiscount.amount }">*
-                                                            required</small>
-                                                    </div>
-                                                </div>
-                                                <div class="divTableCell">
-                                                    <div class="input-group">
-                                                        <select class="form-control" id="newAttributeDiscount" [(ngModel)]="newDiscount.discount"
-                                                            name="newAttributeDiscount" #discount="ngModel" required>
-                                                            <option *ngFor="let discount of discountValueList">{{discount}}</option>
-                                                        </select>
-                                                        <div class="input-group-append">
-                                                            <span class="input-group-text" id="basic-addon2">%</span>
-                                                        </div>
-                                                    </div>
-                                                    <div *ngIf="!newDiscount.discount">
-                                                        <small *ngIf="!newDiscount.discount" translate class="" [ngClass]="{ 'show-error': !newDiscount.discount }">*
-                                                            required</small>
-                                                    </div>
-                                                </div>
-                                                <div class="divTableCell">
-                                                    <input class="form-control" type="number" min="1" id="newAttributeToken"
-                                                        [(ngModel)]="newDiscount.token" name="newAttributeToken" #token="ngModel"
-                                                        required />
-                                                    <div *ngIf="!newDiscount.token">
-                                                        <small *ngIf="!newDiscount.token" translate class="" [ngClass]="{ 'show-error': !newDiscount.token }">*
-                                                            required</small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="text-center">
-                                            <button *ngIf="!newDiscount.title || !newDiscount.description || !newDiscount.amount || !newDiscount.discount || !newDiscount.token"
-                                                disabled class="btn btn-light btn-sm">Add</button>
-                                            <button *ngIf="newDiscount.title && newDiscount.description && newDiscount.amount && newDiscount.discount && newDiscount.token"
-                                                class="btn btn-default btn-sm" (click)="addDiscount()">Add</button>
-                                            <button class="btn btn-danger btn-sm" (click)="hideOfferUI()">Cancel</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div *ngIf="showNewOfferUI">
+                        <div class="col-xs-12 col-sm-12 col-md-11 mt-3">
+                            <div class="card workingCard">
+                                <div class="card-block">
+                                    <div class="row mt-1">
+                                        <div class="col-xs-12 col-sm-12 col-md-3">Title <small>(Max 50 characters)</small>:</div>
+                                        <div class="col-xs-12 col-sm-12 col-md-7">
+                                            <input class="form-control" maxlength="50" id="newAttributeTitle"
+                                                [(ngModel)]="newDiscount.title" name="newAttributeAmount" required />
+                                        </div>
+                                        <div *ngIf="!newDiscount.title" class="col-xs-12 col-sm-12 col-md-2">
+                                            <small *ngIf="!newDiscount.title" translate class="" [ngClass]="{ 'show-error': !newDiscount.title }">*
+                                                required</small>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-1">
+                                        <div class="col-xs-12 col-sm-12 col-md-3">Description <small>(Max 100
+                                                characters)</small>:</div>
+                                        <div class="col-xs-12 col-sm-12 col-md-7">
+                                            <input class="form-control" maxlength="100" id="newAttributeDescription"
+                                                [(ngModel)]="newDiscount.description" name="newAttributeDescription"
+                                                required />
+                                        </div>
+                                        <div *ngIf="!newDiscount.description" class="col-xs-12 col-sm-12 col-md-2">
+                                            <small *ngIf="!newDiscount.description" translate class="" [ngClass]="{ 'show-error': !newDiscount.description }">*
+                                                required</small>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-1">
+                                            <div class="col-xs-12 col-sm-12 col-md-3">Minimum Group Count: </div>
+                                            <div class="col-xs-12 col-sm-12 col-md-2">
+                                                <input class="form-control" type="number" min="1" [(ngModel)]="newDiscount.groupCount"
+                                                    name="newAttributeGroupCount" required />
+                                            </div>
+                                            <div *ngIf="!newDiscount.groupCount" class="col-xs-12 col-sm-12 col-md-2">
+                                                <small *ngIf="!newDiscount.groupCount" translate class="" [ngClass]="{ 'show-error': !newDiscount.groupCount }">*
+                                                    required</small>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-1">
+                                            <div class="col-xs-12 col-sm-12 col-md-3">Expiration Date: </div>
+                                            <div class="col-xs-12 col-sm-12 col-md-4">
+                                                <input class="form-control" type="date" [(ngModel)]="newDiscount.expirationDate" name="newAttributeExpirationDate"
+                                                    required />
+                                            </div>
+                                            <div *ngIf="!newDiscount.expirationDate" class="col-xs-12 col-sm-12 col-md-2">
+                                                <small *ngIf="!newDiscount.expirationDate" translate class="" [ngClass]="{ 'show-error': !newDiscount.expirationDate }">*
+                                                    required</small>
+                                            </div>
+                                        </div>
+                                    <div class="divTable darkTable mt-1">
+                                        <div class="divTableHeading">
+                                            <div class="divTableHeadRow">
+                                                <div class="divTableHead">Amount Spend</div>
+                                                <div class="divTableHead">Discount</div>
+                                                <div class="divTableHead">Token Number</div>
+                                            </div>
+                                        </div>
+                                        <div class="divTableRow">
+                                            <div class="divTableCell">
+                                                <input class="form-control" type="number" min="1" id="newAttributeAmount"
+                                                    [(ngModel)]="newDiscount.amount" name="newAttributeAmount" required />
+                                                <div *ngIf="!newDiscount.amount">
+                                                    <small *ngIf="!newDiscount.amount" translate class="" [ngClass]="{ 'show-error': !newDiscount.amount }">*
+                                                        required</small>
+                                                </div>
+                                            </div>
+                                            <div class="divTableCell">
+                                                <div class="input-group">
+                                                    <select class="form-control" id="newAttributeDiscount" [(ngModel)]="newDiscount.discount"
+                                                        name="newAttributeDiscount" #discount="ngModel" required>
+                                                        <option *ngFor="let discount of discountValueList">{{discount}}</option>
+                                                    </select>
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text" id="basic-addon2">%</span>
+                                                    </div>
+                                                </div>
+                                                <div *ngIf="!newDiscount.discount">
+                                                    <small *ngIf="!newDiscount.discount" translate class="" [ngClass]="{ 'show-error': !newDiscount.discount }">*
+                                                        required</small>
+                                                </div>
+                                            </div>
+                                            <div class="divTableCell">
+                                                <input class="form-control" type="number" min="1" id="newAttributeToken"
+                                                    [(ngModel)]="newDiscount.token" name="newAttributeToken" #token="ngModel"
+                                                    required />
+                                                <div *ngIf="!newDiscount.token">
+                                                    <small *ngIf="!newDiscount.token" translate class="" [ngClass]="{ 'show-error': !newDiscount.token }">*
+                                                        required</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="text-center">
+                                        <button *ngIf="!newDiscount.title || !newDiscount.description || !newDiscount.amount || !newDiscount.discount || !newDiscount.token || !newDiscount.groupCount || !newDiscount.expirationDate"
+                                            disabled class="btn btn-light btn-sm">Add</button>
+                                        <button *ngIf="newDiscount.title && newDiscount.description && newDiscount.amount && newDiscount.discount && newDiscount.token && newDiscount.groupCount && newDiscount.expirationDate"
+                                            class="btn btn-default btn-sm" (click)="addDiscount()">Add</button>
+                                        <button class="btn btn-danger btn-sm" (click)="hideOfferUI()">Cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div *ngIf="!showNewOfferUI" class="text-center">
                         <button type="button" class="btn btn-mdb-color btn-sm" (click)="showOfferUI()">Add New Offer</button>
                     </div>
                 </div>
-                
+
                 <div class="col-12 mt-2">
                     <div class="col-xs-12 col-sm-12">
                         <label for="fineprintTextarea" translate>Fine Prints:</label>
@@ -585,9 +510,9 @@
             </div>
 
             <div class="col-12 text-center submitBtn mt-3">
-                <button type="submit" [disabled]="!fineprintText.valid || discountArray?.length == 0"
-                    class="btn" [ngClass]="{'btn-light': !fineprintText.valid || discountArray?.length == 0,
-                        'btn-success': fineprintText.valid && discountArray?.length > 0}"
+                <button type="submit" [disabled]="!tokenponForm.valid || discountArray?.length == 0" class="btn"
+                    [ngClass]="{'btn-light': !tokenponForm.valid || discountArray?.length == 0,
+                        'btn-success': tokenponForm.valid && discountArray?.length > 0}"
                     translate>{{isUpdate? 'Update': 'Submit'}}</button>
                 <button *ngIf="isUpdate" class="btn btn-outline-danger  waves-effect" [routerLink]="['/home/claim-detail']"
                     [queryParams]="{id: claimId}" type="submit" translate>Cancel

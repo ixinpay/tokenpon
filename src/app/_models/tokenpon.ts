@@ -35,7 +35,9 @@ export class Discount {
         public token: number,
         public address: string,
         public title: string,
-        public description: string
+        public description: string,
+        public groupCount: number,
+        public expirationDate: number
     ) {}
 }
 

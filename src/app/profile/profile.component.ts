@@ -468,6 +468,7 @@ export class ProfileComponent implements OnInit {
     // if (this.inBusinessEdit == true) {
     // console.log(this.profileModel);
     this.profileModel.appId = this.globals.TokenponAppId;
+    localStorage.setItem("profileModel", this.profileModel);
     // this.mongoService.updateProfile(this.profileModel)
     this.oothService.updateAccountType(localStorage.getItem("currentUserId"), this.accountType)
       .then(response => {

@@ -229,6 +229,7 @@ export class ClaimComponent implements OnInit {
         // console.log(response)
         this.model = response.json();
         this.discountArray = this.model.discounts;
+        console.log(this.discountArray);
         this.discountArray.forEach(element => {
           element.discount = element.discount * 100;
         });

@@ -73,7 +73,9 @@ var DiscountSchema = new Schema({
     token: { type: Number },
     address: { type: String},
     title: { type: String},
-    description: { type: String}
+    description: { type: String},
+    groupCount: { type: Number },
+    expirationDate: { type: Number }
 })
 var TokenponSchema = new Schema({
     name: { type: String },
