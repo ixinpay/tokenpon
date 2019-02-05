@@ -917,4 +917,13 @@ export class ClaimDetailComponent implements OnInit {
       }
     });
   }
+  shareDeal(shareModal){
+    this.modalService.open(shareModal).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      if (reason === "Send") {
+        this.toasterService.pop("success", "Your invite was sent successfully!");
+      }
+    });
+  }
 }

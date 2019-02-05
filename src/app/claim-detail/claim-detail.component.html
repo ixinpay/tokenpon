@@ -108,19 +108,18 @@
                 <div class="card">
                     <div class="col-12">
                         <div class="card-block">
-                            <div class="row">
-                                <div class="col-8">
+                            <div class="row mt-3">
+                                <div class="col-6">
                                     <h5 class="offer-head">Deal {{i+1}}</h5>
                                 </div>
-                                <div class="col-4 text-center">
-                                    <button type="button" class="btn defaultbtn" (click)="displayBuyModal(content, i, finalConfirm);">BUY</button>
+                                <div class="col-6 text-center text-info">
+                                    <h5>4 More to deal 8/12</h5>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-xs-12 col-sm-12 col-md-2">Title:</div>
-                                <div class="col-xs-12 col-sm-12 col-md-10">
+                                <h5 class="col-xs-12 col-sm-12 col-md-10 font-weight-bold">
                                     {{field.title}}
-                                </div>
+                                </h5>
                             </div>
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12 col-md-2">Description:</div>
@@ -132,6 +131,14 @@
                                 <div class="col-xs-12 col-sm-12 col-md-2">Cost:</div>
                                 <div class="col-xs-12 col-sm-12 col-md-10">
                                     {{field.token}} iXin
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-3">
+                                    <button type="button" class="btn defaultbtn" (click)="displayBuyModal(content, i, finalConfirm);">BUY</button>
+                                </div>
+                                <div class="col-3">
+                                    <button type="button" class="btn defaultbtn" (click)="shareDeal(shareModal);">SHARE</button>
                                 </div>
                             </div>
                             <!-- <div class="row">
@@ -326,5 +333,23 @@
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" (click)="d('No')">No</button>
         <button type="button" class="btn btn-danger" (click)="d('Yes');">Yes</button>
+    </div>
+</ng-template>
+<ng-template #shareModal let-d="dismiss">
+    <div class="modal-body row form-group">
+        <div class="col-xs-12 col-sm-12 col-md-2">
+            <label class="col-form-label" for="shareEmail">Email</label>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-6">
+            <input type="email" class="form-control" id="shareEmail" required placeholder="Enter email" 
+                pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$" [(ngModel)]="shareWith" #shareEmail="ngModel">
+        </div>
+        <div *ngIf="!shareEmail.valid" class="col-1">
+            <small *ngIf="!shareEmail.valid" translate class="" [ngClass]="{ 'show-error': !shareEmail.valid }">
+                *</small>
+        </div>  
+    </div>
+    <div class="modal-footer">
+        <button type="button" [disabled]="!shareEmail.valid" class="btn btn-secondary" (click)="d('Send')">Send</button>
     </div>
 </ng-template>

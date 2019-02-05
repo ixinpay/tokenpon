@@ -132,3 +132,14 @@ div.darkTable {
     #myCarousel .carousel-indicators > li.active img {
         opacity: 0.7;
     }
+
+    .offer-head {
+        color: #ff8f00
+    }
+    .show-error {
+        color: darkred;
+    }
+    
+    .show-error-border {
+        border-color: darkred;
+    }
