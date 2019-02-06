@@ -16,13 +16,14 @@ import { Title } from '@angular/platform-browser';
 import { AgmCoreModule, MouseEvent, GoogleMapsAPIWrapper, AgmMap, LatLngBounds, LatLngBoundsLiteral } from '@agm/core';
 import { } from 'googlemaps';
 import { Marker } from '../_models/index'
-import { NgbModal, NgbActiveModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbActiveModal, ModalDismissReasons, NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   moduleId: module.id.toString(),
   selector: 'app-claim-detail',
   templateUrl: './claim-detail.component.html',
-  styleUrls: ['./claim-detail.component.css']
+  styleUrls: ['./claim-detail.component.css'],
+  providers: [NgbCarouselConfig]
 })
 export class ClaimDetailComponent implements OnInit {
   public carouselBanner: NguCarousel;
@@ -78,7 +79,15 @@ export class ClaimDetailComponent implements OnInit {
 
   constructor(private http: Http, private route: ActivatedRoute, private globals: Globals, private oothService: OothService,
     private lightbox: Lightbox, private toasterService: ToasterService, private titleService: Title, private googleGeoService: GoogleGeoService,
-    private router: Router, private mongoService: MongoService, private swarmService: SwarmService, private modalService: NgbModal) {
+    private router: Router, private mongoService: MongoService, private swarmService: SwarmService, private modalService: NgbModal,
+    private config: NgbCarouselConfig) {
+
+    //ng-bootstrap carousel config
+    // customize default values of carousels used by this component tree
+    config.interval = 10000;
+    config.wrap = false;
+    config.keyboard = false;
+    // config.pauseOnHover = false;
 
     this.account = localStorage.getItem("currentUserAccount");
     this.page = 1;

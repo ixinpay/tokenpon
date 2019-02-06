@@ -134,7 +134,7 @@ div.darkTable {
     }
 
     .offer-head {
-        color: #ff8f00
+        color: #ff8f00;
     }
     .show-error {
         color: darkred;
@@ -142,4 +142,8 @@ div.darkTable {
     
     .show-error-border {
         border-color: darkred;
+    }
+
+   #ngbcarousel >ol>li {
+        background-color:  #ff8f00 !important;
     }

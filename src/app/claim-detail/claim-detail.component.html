@@ -3,11 +3,14 @@
         <div class="form-group col-md-9 no-gutters">
             <label for="businessCategory" translate>{{model.businessMainCategory}}</label> >
             <label for="businessCategory" class="inline" translate>{{model.businessSubCategory}}</label>
-            <div class="text-center">
+            <div class="col-11 text-center">
                 <button class="btn defaultbtn btn-md" [hidden]="!isAuthor" translate [routerLink]="['/home/claim']"
                     [queryParams]="{id: claimId}">Edit</button>
                 <button class="btn btn-danger btn-md" [hidden]="!isAuthor" translate (click)="Remove_Listing(claimId, deleteConfirmation)">Delete</button>
-
+                <a class="float-right" (click)="shareDeal(shareModal);">
+                    <i class="fa fa-share-alt fa-lg" aria-hidden="true" matTooltip="share this deal"></i>
+                    <small>Share</small>
+                </a>
                 <div>
                     <!-- {{model.commentsNum + " Reviews"}} -->
                 </div>
@@ -87,8 +90,8 @@
                     </div>
             
                 </div> -->
-            <div class="row mt-2">
-                <ngu-carousel #myCarousels1 class="col-12" [inputs]="carouselBanner" (carouselLoad)="carouselTileOneLoad()"
+            <div class="row mt-2 mb-2">
+                <!-- <ngu-carousel #myCarousels1 class="col-12" [inputs]="carouselBanner" (carouselLoad)="carouselTileOneLoad()"
                     (onMove)="onMoveData($event)" [reset]="rsts" (initData)="getCarouselData($event)">
                     <ngu-tile NguCarouselItem *ngFor="let image of albums; let i=index">
                         <img style="cursor: pointer;width: 100%;height: 150px;" [src]="image.thumb" (click)="open(i)"
@@ -102,7 +105,16 @@
                         <i class="fa fa-chevron-right fa-lg text-muted pt-5 mt-4"></i>
                         <span class="sr-only">Next</span>
                     </a>
-                </ngu-carousel>
+                </ngu-carousel> -->
+                <ngb-carousel *ngIf="albums" id="ngbcarousel">
+                    <ng-template ngbSlide *ngFor="let image of albums; let i=index">
+                        <img [src]="image.thumb" class="img-fluid" style="width:100%; height: 300px;">
+                        <!-- <div class="carousel-caption">
+                            <h3>10 seconds between slides...</h3>
+                            <p>This carousel uses customized default values.</p>
+                        </div> -->
+                    </ng-template>
+                </ngb-carousel>
             </div>
             <div class="col-12 mb-2" *ngFor="let field of discountArray; let i = index">
                 <div class="card">
@@ -138,7 +150,7 @@
                                     <button type="button" class="btn defaultbtn" (click)="displayBuyModal(content, i, finalConfirm);">BUY</button>
                                 </div>
                                 <div class="col-3">
-                                    <button type="button" class="btn defaultbtn" (click)="shareDeal(shareModal);">SHARE</button>
+                                    <button type="button" class="btn defaultbtn" (click)="makeDeal();">DEAL</button>
                                 </div>
                             </div>
                             <!-- <div class="row">
@@ -173,10 +185,10 @@
                 <h4 translate>General Info</h4>
                 <hr align="left">
                 <div #map>
-                    <agm-map [style.height.px]="200" [style.width.px]="map.offsetWidth" [latitude]="lat" [longitude]="lng" [zoom]="zoom" [streetViewControl]="false">
+                    <agm-map [style.height.px]="200" [style.width.px]="map.offsetWidth" [latitude]="lat" [longitude]="lng"
+                        [zoom]="zoom" [streetViewControl]="false">
                         <agm-marker *ngFor="let m of markers; let i = index" (markerClick)="clickedMarker(m.label, i)"
-                            [latitude]="m.lat" [longitude]="m.lng" [label]="" [markerDraggable]="m.draggable"
-                            (dragEnd)="markerDragEnd(m, $event)">
+                            [latitude]="m.lat" [longitude]="m.lng" [label]="" [markerDraggable]="m.draggable" (dragEnd)="markerDragEnd(m, $event)">
                         </agm-marker>
                     </agm-map>
                 </div>
@@ -341,13 +353,13 @@
             <label class="col-form-label" for="shareEmail">Email</label>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-6">
-            <input type="email" class="form-control" id="shareEmail" required placeholder="Enter email" 
-                pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$" [(ngModel)]="shareWith" #shareEmail="ngModel">
+            <input type="email" class="form-control" id="shareEmail" required placeholder="Enter email" pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
+                [(ngModel)]="shareWith" #shareEmail="ngModel">
         </div>
         <div *ngIf="!shareEmail.valid" class="col-1">
             <small *ngIf="!shareEmail.valid" translate class="" [ngClass]="{ 'show-error': !shareEmail.valid }">
                 *</small>
-        </div>  
+        </div>
     </div>
     <div class="modal-footer">
         <button type="button" [disabled]="!shareEmail.valid" class="btn btn-secondary" (click)="d('Send')">Send</button>
