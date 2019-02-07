@@ -143,7 +143,7 @@
                             </div>
                             <div class="row mb-2">
                                 <div class="col-3">
-                                    <button type="button" class="btn defaultbtn" (click)="displayBuyModal(content, i, finalConfirm);">BUY</button>
+                                    <button type="button" class="btn defaultbtn" (click)="displayBuyModal(content, i, finalConfirm, loginModal);">BUY</button>
                                 </div>
                                 <div class="col-3">
                                     <button type="button" class="btn defaultbtn" (click)="makeDeal();">DEAL</button>
@@ -201,9 +201,13 @@
                         <i class="fas fa-envelope"></i><span style="padding-left:10px">{{model.email}}</span>
                     </li>
                     <li>
-                        <i class="fas fa-globe"></i><span style="padding-left:10px"><a [href]=" formatURL(model.webPage) "
+                        <i class="fas fa-globe"></i><span style="padding-left:10px"><a [href]="model.webPage"
                                 target="_blank ">{{model.webPage}}</a></span>
                     </li>
+                    <!-- <li>
+                        <i class="fas fa-globe"></i><span style="padding-left:10px"><a [href]=" formatURL(model.webPage) "
+                                target="_blank ">{{model.webPage}}</a></span>
+                    </li> -->
                 </ul>
             </div>
         </div>
@@ -360,4 +364,36 @@
     <div class="modal-footer">
         <button type="button" [disabled]="!shareEmail.valid" class="btn btn-secondary" (click)="d('Send')">Send</button>
     </div>
+</ng-template>
+<ng-template #loginModal let-d="dismiss">
+    <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="d('Close')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body row form-group">
+        <form name="form" (ngSubmit)="f.form.valid && login()" #f="ngForm" novalidate>
+            <div *ngIf="phoneLogin" class="form-group" [ngClass]="{ 'has-error': !phone.valid }">
+                <label for="phone" translate>Phone Number</label>
+                <international-phone-number id="intPhone" [(ngModel)]="model.phone" placeholder="Enter phone number" [maxlength]="20" [defaultCountry]="'us'" [required]="true" #phone="ngModel" name="phone" ></international-phone-number>
+                <!-- <div *ngIf="phoneLogin && !phone.valid" class="alert alert-danger" translate>required</div> -->
+                <div class="col-sm-6">
+                    <small *ngIf="phoneLogin && !phone.valid" translate class="" [ngClass]="{ 'show-error': !phone.valid }">
+                        *</small>
+                </div>
+            </div>
+            <div class="form-group" [ngClass]="{ 'has-error': !password.valid }">
+                <label for="password" translate>Password</label>
+                <input type="password" class="form-control" name="password" [(ngModel)]="model.password" #password="ngModel" required />
+                <div class="col-sm-6">
+                    <small *ngIf="!password.valid" translate class="" [ngClass]="{ 'show-error': !password.valid }">
+                        *</small>
+                </div>
+            </div>            
+        </form>
+    </div>
+    <div class="modal-footer">
+            <button [disabled]="loading" class="btn btn-primary" (click)="d('Login')" translate>Login</button>
+            <!-- <button type="button" class="btn btn-secondary" (click)="d('Cancel')" translate>Cancel</button> -->
+        </div>
 </ng-template>

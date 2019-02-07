@@ -76,6 +76,9 @@ export class ClaimDetailComponent implements OnInit {
   modalSuccess: boolean = false;
   failMessage: string = "There was an error. iXin coin was not deducted from your account. Sorry for the inconvenience.";
   closeResult: string;
+  loading = false;
+  returnUrl: string;
+  phoneLogin: boolean = true; // true = phone number, false = username/email
 
   constructor(private http: Http, private route: ActivatedRoute, private globals: Globals, private oothService: OothService,
     private lightbox: Lightbox, private toasterService: ToasterService, private titleService: Title, private googleGeoService: GoogleGeoService,
@@ -890,7 +893,7 @@ export class ClaimDetailComponent implements OnInit {
       });
 
   }
-  displayBuyModal(content, i, finalConfirm) {
+  displayBuyModal(content, i, finalConfirm, loginModal) {
     if (this.currentUser !== null && this.currentUser !== undefined && this.currentUser.trim() !== "") {
       this.discountTokenCost = this.discountArray[i].token;
       this.modalService.open(content).result.then((result) => {
@@ -899,9 +902,14 @@ export class ClaimDetailComponent implements OnInit {
         this.closeResult = `Dismissed ${this.getDismissReason(reason, i, finalConfirm)}`;
       });
     }
-    else
-    {
-      alert("Please login first")
+    else {
+      this.modalService.open(loginModal).result.then((result) => {
+        this.closeResult = `Closed with: ${result}`;
+      }, (reason) => {
+        if (reason === 'Login') {
+          this.login();
+        }
+      });
     }
   }
   private getDismissReason(reason: any, i: number, finalConfirm): string {
@@ -941,5 +949,39 @@ export class ClaimDetailComponent implements OnInit {
         this.toasterService.pop("success", "Your invite was sent successfully!");
       }
     });
+  }
+
+  login() {
+    this.oothService.Logout();
+    let userid = "";
+    if (!this.phoneLogin) {
+      userid = this.model.email
+    }
+    else {
+      userid = this.model.phone.substring(1);
+    }
+    this.oothService.Login(userid, this.model.password, this.phoneLogin)
+      .then(res => {//console.log(this.model.email + " " + this.model.password)
+        console.log(res)
+        if (res.status === 'error') {
+          // console.log("error: "+res.status)
+          this.toasterService.pop("error", res.message.message);
+          this.loading = false;
+        }
+        else {
+          this.currentUser = localStorage.getItem("currentUser");
+          // console.log("redirect to: " + this.returnUrl);
+          // // var arr = this.returnUrl.split("?");
+          // // if(arr.length == 1){
+          // //     this.router.navigate([arr[0]]); 
+          // // }   
+          // // else if(arr.length > 1){
+          // this.router.navigateByUrl(this.returnUrl);
+          // // }               
+        }
+      })
+      .catch(error => {
+        this.toasterService.pop("error", error);
+      });
   }
 }

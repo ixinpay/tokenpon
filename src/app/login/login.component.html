@@ -7,7 +7,7 @@
     <form name="form" (ngSubmit)="f.form.valid && login()" #f="ngForm" novalidate>
         <div *ngIf="phoneLogin" class="form-group" [ngClass]="{ 'has-error': f.submitted && !phone.valid }">
             <label for="phone" translate>Phone Number</label>
-            <a class="ml-3 text-primary" (click)="toggleLogin(); f.resetForm();"><small translate>or use Username</small></a>
+            <!-- <a class="ml-3 text-primary" (click)="toggleLogin(); f.resetForm();"><small translate>or use Username</small></a> -->
             <international-phone-number id="intPhone" [(ngModel)]="model.phone" placeholder="Enter phone number" [maxlength]="20" [defaultCountry]="'us'" [required]="true" #phone="ngModel" name="phone" ></international-phone-number>
             
             <!-- <input type="small" class="form-control" name="phone" [(ngModel)]="model.phone" #phone="ngModel" required /> -->
