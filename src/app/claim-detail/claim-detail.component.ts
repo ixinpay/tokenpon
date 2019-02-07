@@ -301,55 +301,55 @@ export class ClaimDetailComponent implements OnInit {
       // console.log(user.local.email);
       // add new comment
       // if (!this.ownComment) {
-        if (this.tokenBalance >= this.globals.tokenDeductAmmount_TokenponComment) {
-          let data = {
-            _id: this.claimId,
-            appId: this.globals.TokenponAppId,
-            comment: {
-              comment: commentText,
-              postedBy: this.currentUser,
-              postedTime: Date.now()
-            }
-          };
-          // console.log((JSON.stringify(data)));
-          this.mongoService.addComment(data)
-            .subscribe(response => {
-              console.log(response);
-              if (response.status == 200) {
-                this.toasterService.pop('success', 'Thanks for you comment!');
-                this.submitted = true;
-                console.log("account: " + this.account);
-                //email author about new comment if allowed
-                // if (this.model.notification) {
-                //   console.log("sending email to author ...");
-                //   this.oothService.sendEmail(this.model.postedBy, this.globals.ChainPageNewCommentSubject
-                //     , this.globals.ChainPageNewCommentMessageToAuthor + window.location + '<br/><br/>New Comment by ' + this.currentUser + ':<br/>' + commentText);
+      if (this.tokenBalance >= this.globals.tokenDeductAmmount_TokenponComment) {
+        let data = {
+          _id: this.claimId,
+          appId: this.globals.TokenponAppId,
+          comment: {
+            comment: commentText,
+            postedBy: this.currentUser,
+            postedTime: Date.now()
+          }
+        };
+        // console.log((JSON.stringify(data)));
+        this.mongoService.addComment(data)
+          .subscribe(response => {
+            console.log(response);
+            if (response.status == 200) {
+              this.toasterService.pop('success', 'Thanks for you comment!');
+              this.submitted = true;
+              console.log("account: " + this.account);
+              //email author about new comment if allowed
+              // if (this.model.notification) {
+              //   console.log("sending email to author ...");
+              //   this.oothService.sendEmail(this.model.postedBy, this.globals.ChainPageNewCommentSubject
+              //     , this.globals.ChainPageNewCommentMessageToAuthor + window.location + '<br/><br/>New Comment by ' + this.currentUser + ':<br/>' + commentText);
 
-                // }
-                //send email to comment provider if he is not the author
-                // if (this.model.postedBy !== this.currentUser) {
-                //   console.log("sending email to commenter ...");
-                //   this.oothService.sendEmail(this.currentUser, this.globals.ChainPostNewCommentSubject
-                //     , this.globals.ChainPageNewCommentMessageToProvider + window.location);
-                // }
-                //deduct token
-                // if (!this.ownComment) {
-                  // console.log("deduct new comment token from " + localStorage.getItem("currentUserId"));
-                  // this.oothService.deductToken(localStorage.getItem("currentUserId"), this.globals.tokenDeductAmmount_ChainpageComment);
-                  this.oothService.onUserAction(this.globals.TokenponAppId, this.globals.action.comment);
-                // }
-                //reload comments
-                this.getDetails();
-                return true;
-              }
-              else {
-                this.toasterService.pop("error", response.statusText);
-              }
-            })
-        }
-        else {
-          this.toasterService.pop("error", "You don't have enough tokens");
-        }
+              // }
+              //send email to comment provider if he is not the author
+              // if (this.model.postedBy !== this.currentUser) {
+              //   console.log("sending email to commenter ...");
+              //   this.oothService.sendEmail(this.currentUser, this.globals.ChainPostNewCommentSubject
+              //     , this.globals.ChainPageNewCommentMessageToProvider + window.location);
+              // }
+              //deduct token
+              // if (!this.ownComment) {
+              // console.log("deduct new comment token from " + localStorage.getItem("currentUserId"));
+              // this.oothService.deductToken(localStorage.getItem("currentUserId"), this.globals.tokenDeductAmmount_ChainpageComment);
+              this.oothService.onUserAction(this.globals.TokenponAppId, this.globals.action.comment);
+              // }
+              //reload comments
+              this.getDetails();
+              return true;
+            }
+            else {
+              this.toasterService.pop("error", response.statusText);
+            }
+          })
+      }
+      else {
+        this.toasterService.pop("error", "You don't have enough tokens");
+      }
       // }
       // update comment
       // else {
@@ -798,14 +798,15 @@ export class ClaimDetailComponent implements OnInit {
   }
   ngOnInit() {
     this.carouselBanner = {
-      grid: { xs: 1, sm: 2, md: 3, lg: 4, all: 0 },
+      grid: { xs: 1, sm: 1, md: 1, lg: 1, all: 0 },
       speed: 600,
       slide: 1,
       point: {
         visible: true
       },
       load: 2,
-      // loop: true,
+      loop: true,
+      interval: 5000,
       touch: true,
       easing: 'ease',
       animation: 'lazy'
@@ -890,12 +891,18 @@ export class ClaimDetailComponent implements OnInit {
 
   }
   displayBuyModal(content, i, finalConfirm) {
-    this.discountTokenCost = this.discountArray[i].token;
-    this.modalService.open(content).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason, i, finalConfirm)}`;
-    });
+    if (this.currentUser !== null && this.currentUser !== undefined && this.currentUser.trim() !== "") {
+      this.discountTokenCost = this.discountArray[i].token;
+      this.modalService.open(content).result.then((result) => {
+        this.closeResult = `Closed with: ${result}`;
+      }, (reason) => {
+        this.closeResult = `Dismissed ${this.getDismissReason(reason, i, finalConfirm)}`;
+      });
+    }
+    else
+    {
+      alert("Please login first")
+    }
   }
   private getDismissReason(reason: any, i: number, finalConfirm): string {
     if (reason === ModalDismissReasons.ESC) {
@@ -926,7 +933,7 @@ export class ClaimDetailComponent implements OnInit {
       }
     });
   }
-  shareDeal(shareModal){
+  shareDeal(shareModal) {
     this.modalService.open(shareModal).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
