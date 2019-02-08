@@ -1,0 +1,43 @@
+<div class="container">
+    <!-- header -->
+  	<header class="jumbotron">
+      <div class="container">
+        <h1>Newest Deal</h1>
+        <hr>
+        <p>
+          <a class="btn btn-info btn-rounded" [routerLink]="['/home']">View All Deals</a>
+        </p>
+      </div>
+    </header>
+    <div *ngFor="let claim of claims">
+      <div class="jumbotron text-center hoverable p-4">
+        <div class="row">
+            <div class="col-md-4 offset-md-1 mx-3 my-3">
+              <div class="view overlay">
+                <div *ngIf="claim.pictures.length != 0; else default_pic">
+                    <img src="{{claim.pictures[0]}}" class="img-fluid" alt="No Pic">
+                </div>
+                <ng-template #default_pic>
+                    <img src="https://images.unsplash.com/photo-1548021682-1720ed403a5b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2850&q=80" class="img-fluid" alt="default-pic">
+                </ng-template>
+                <a>
+                  <div class="mask rgba-stylish-light">
+                    <p class="flex-center white-text">View More</p>
+                  </div>
+                </a>
+              </div>
+            </div>
+            <div class="col-md-7 text-md-left ml-3 mt-3">
+                <h4>{{claim.businessName}}</h4>
+                <div *ngFor="let discount of claim.discounts">
+                    <h5><strong>{{discount.title}}: </strong></h5>
+                    <p class="inline">{{discount.description}}</p>
+                </div>
+                <a class="btn btn-primary btn-rounded" (click)="selectOffer(claim._id)">More!</a>
+            </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+

@@ -45,6 +45,7 @@ import { AgmCoreModule } from '@agm/core';
 import { AgmJsMarkerClustererModule } from '@agm/js-marker-clusterer';
 import {MegaMenuModule} from 'primeng/megamenu';
 import { InternationalPhoneNumberModule } from 'ngx-international-phone-number';
+import { NewestComponent } from './newest/newest.component';
 // const SERVICES = [
 //   MetaCoinService,
 //   Web3Service,
@@ -99,7 +100,8 @@ import { InternationalPhoneNumberModule } from 'ngx-international-phone-number';
     ProfileComponent,
     ConfirmEqualValidatorDirective,
     ActivationComponent,
-    SafePipe
+    SafePipe,
+    NewestComponent
   ],
   providers: [
     // SERVICES,
