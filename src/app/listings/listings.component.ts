@@ -235,6 +235,7 @@ export class ListingsComponent implements OnInit {
               productDescription: this.claims[j].productDescription,
               businessMainCategory: this.claims[j].businessMainCategory,
               businessName: this.claims[j].businessName,
+              offers: this.claims[j].discounts,
               service: this.claims[j].service,
               phone: this.claims[j].phone,
               street: this.claims[j].street,
@@ -244,7 +245,8 @@ export class ListingsComponent implements OnInit {
               likes: this.votes[j].likes,
               dislikes: this.votes[j].dislikes,
               viewCount: this.claims[j].viewCount == null || this.claims[j].viewCount == undefined ? 0 : this.claims[j].viewCount,
-              comments: this.claims[j].comments.length
+              comments: this.claims[j].comments.length,
+              isOwner: this.claims[j].postedBy == this.currentUser
             };
           }
           // console.log(this.listings);
@@ -296,6 +298,7 @@ export class ListingsComponent implements OnInit {
                 productDescription: this.claims[j].productDescription,
                 businessMainCategory: this.claims[j].businessMainCategory,
                 businessName: this.claims[j].businessName,
+                offers: this.claims[j].discounts,
                 service: this.claims[j].service,
                 phone: this.claims[j].phone,
                 street: this.claims[j].street,
@@ -305,7 +308,8 @@ export class ListingsComponent implements OnInit {
                 likes: this.votes[j].likes,
                 dislikes: this.votes[j].dislikes,
                 viewCount: this.claims[j].viewCount == null || this.claims[j].viewCount == undefined ? 0 : this.claims[j].viewCount,
-                comments: this.claims[j].comments.length
+                comments: this.claims[j].comments.length,
+                isOwner: this.claims[j].postedBy == this.currentUser
               };
             }
             this.claimsPage = this.listings.slice(0, this.pageSize);

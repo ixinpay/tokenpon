@@ -22,7 +22,8 @@ import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TopNavComponent } from './top-nav/top-nav.component';
 import { ClaimDetailComponent } from './claim-detail/claim-detail.component';
-import { NgbModule, NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbModal, ModalDismissReasons, NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
+import { NgbdDatepickerPopup } from './datepicker-popup/datepicker-popup';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToasterModule, ToasterService } from 'angular2-toaster';
 import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
@@ -101,7 +102,8 @@ import { NewestComponent } from './newest/newest.component';
     ConfirmEqualValidatorDirective,
     ActivationComponent,
     SafePipe,
-    NewestComponent
+    NewestComponent,
+    NgbdDatepickerPopup
   ],
   providers: [
     // SERVICES,

@@ -75,7 +75,7 @@
                                 <div class="form-group">
                                     <div class="main-cat">
                                         <div class="claim-head">
-                                            <h4 translate>Account Type</h4>
+                                            <h4 translate>User Type</h4>
                                         </div>
                                         <div>
                                             <div class="row">
@@ -247,12 +247,12 @@
                                 <div class="form-group">
                                     <div class="main-cat">
                                         <div class="claim-head">
-                                            <h4 translate>Account Type</h4>
+                                            <h4 translate>User Type</h4>
                                         </div>
                                         <div class="row">
                                             <div class="form-group col-sm-6">
                                                 <label for="accountType" class="required" [ngClass]="{ 'has-error': profileForm.submitted && !businessSubCategory.valid }"
-                                                    translate>Account Type</label>
+                                                    translate>User Type</label>
                                                 <select class="form-control" id="accountType" required [(ngModel)]="accountType"
                                                     [ngClass]="{ 'show-error-border': profileForm.submitted && !accountType.valid }"
                                                     name="accountType" (change)="accountDropDownChanged($event.target.value)">
@@ -596,7 +596,7 @@
                                             [routerLink]="" [queryParams]="{id: claimId}" type="submit" translate>Cancel
                                             <i class="fa fa-ban ml-2"></i>
                                         </button>
-                                        <button type="button" class="btn btn-outline-danger  waves-effect" (click)="cancelProfileUpdate();"
+                                        <button type="button" class="btn btn-outline-danger  waves-effect" (click)="profileForm.reset(); cancelProfileUpdate();"
                                             translate>Cancel
                                             <i class="fa fa-ban ml-2"></i>
                                         </button>

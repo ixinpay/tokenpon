@@ -610,7 +610,6 @@ app.get("/api/searchListings/:searchtext/:appId", function(req, res) {
         });
 })
 
-
 //https://ixinhub.com:8092/api/getUserExt/666777888
 app.get("/api/getUserExt/:id", function(req, res) {
     //console.log(req.params);

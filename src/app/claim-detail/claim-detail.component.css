@@ -64,10 +64,7 @@ hr {
     margin-right: 0 !important;
     margin-left: 0 !important;
   }
-agm-map {
-    height: 150px;
-    width: 250px;
-  }
+
 div.darkTable {
     text-align: center;
     border-collapse: collapse;
@@ -134,4 +131,19 @@ div.darkTable {
 
     #myCarousel .carousel-indicators > li.active img {
         opacity: 0.7;
+    }
+
+    .offer-head {
+        color: #ff8f00;
+    }
+    .show-error {
+        color: darkred;
+    }
+
+    .show-error-border {
+        border-color: darkred;
+    }
+
+   #ngbcarousel >ol>li {
+        background-color:  #ff8f00 !important;
     }

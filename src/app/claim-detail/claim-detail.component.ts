@@ -16,13 +16,14 @@ import { Title } from '@angular/platform-browser';
 import { AgmCoreModule, MouseEvent, GoogleMapsAPIWrapper, AgmMap, LatLngBounds, LatLngBoundsLiteral } from '@agm/core';
 import { } from 'googlemaps';
 import { Marker } from '../_models/index'
-import { NgbModal, NgbActiveModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, NgbActiveModal, ModalDismissReasons, NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   moduleId: module.id.toString(),
   selector: 'app-claim-detail',
   templateUrl: './claim-detail.component.html',
-  styleUrls: ['./claim-detail.component.css']
+  styleUrls: ['./claim-detail.component.css'],
+  providers: [NgbCarouselConfig]
 })
 export class ClaimDetailComponent implements OnInit {
   public carouselBanner: NguCarousel;
@@ -75,10 +76,21 @@ export class ClaimDetailComponent implements OnInit {
   modalSuccess: boolean = false;
   failMessage: string = "There was an error. iXin coin was not deducted from your account. Sorry for the inconvenience.";
   closeResult: string;
+  loading = false;
+  returnUrl: string;
+  phoneLogin: boolean = true; // true = phone number, false = username/email
 
   constructor(private http: Http, private route: ActivatedRoute, private globals: Globals, private oothService: OothService,
     private lightbox: Lightbox, private toasterService: ToasterService, private titleService: Title, private googleGeoService: GoogleGeoService,
-    private router: Router, private mongoService: MongoService, private swarmService: SwarmService, private modalService: NgbModal) {
+    private router: Router, private mongoService: MongoService, private swarmService: SwarmService, private modalService: NgbModal,
+    private config: NgbCarouselConfig) {
+
+    //ng-bootstrap carousel config
+    // customize default values of carousels used by this component tree
+    config.interval = 10000;
+    config.wrap = false;
+    config.keyboard = false;
+    // config.pauseOnHover = false;
 
     this.account = localStorage.getItem("currentUserAccount");
     this.page = 1;
@@ -224,18 +236,19 @@ export class ClaimDetailComponent implements OnInit {
             return b.postedTime - a.postedTime;
           });
 
-          this.model.comments.forEach(element => {
-            if (element.postedBy == this.currentUser) {
-              this.ownComment = element;
-              // console.log("ownComment: " + this.ownComment)
-            }
-            else {
-              // console.log(element)
-              this.comments.push(element);
-            }
-          });
+          // this.model.comments.forEach(element => {
+          //   if (element.postedBy == this.currentUser) {
+          //     this.ownComment = element;
+          //     // console.log("ownComment: " + this.ownComment)
+          //   }
+          //   else {
+          //     // console.log(element)
+          //     this.comments.push(element);
+          //   }
+          // });
           this.model.commentsNum = this.model.comments.length;
-          this.commentsPage = this.comments.slice(0, this.pageSize);
+          // this.commentsPage = this.comments.slice(0, this.pageSize);
+          this.commentsPage = this.model.comments.slice(0, this.pageSize);
           // console.log("comments: " + this.commentsPage);
           //retrieve votes
           this.model.votes.forEach(element => {
@@ -287,81 +300,46 @@ export class ClaimDetailComponent implements OnInit {
       // console.log("calling onSubmit()");
       // console.log(localStorage.getItem("oothtoken"));
       // this.VerifyToken();
-      let user = await this.oothService.getUser();
+      //let user = await this.oothService.getUser();
       // console.log(user.local.email);
       // add new comment
-      if (!this.ownComment) {
-        if (this.tokenBalance >= this.globals.tokenDeductAmmount_ChainpageComment) {
-          let data = {
-            _id: this.claimId,
-            appId: this.globals.TokenponAppId,
-            comment: {
-              comment: commentText,
-              postedBy: this.currentUser,
-              postedTime: Date.now()
-            }
-          };
-          // console.log((JSON.stringify(data)));
-          this.mongoService.addComment(data)
-            .subscribe(response => {
-              console.log(response);
-              if (response.status == 200) {
-                this.toasterService.pop('success', 'Comment submitted successfully');
-                this.submitted = true;
-                console.log("account: " + this.account);
-                //email author about new comment if allowed
-                if (this.model.notification) {
-                  console.log("sending email to author ...");
-                  this.oothService.sendEmail(this.model.postedBy, this.globals.ChainPageNewCommentSubject
-                    , this.globals.ChainPageNewCommentMessageToAuthor + window.location + '<br/><br/>New Comment by ' + this.currentUser + ':<br/>' + commentText);
-
-                }
-                //send email to comment provider if he is not the author
-                if (this.model.postedBy !== this.currentUser) {
-                  console.log("sending email to commenter ...");
-                  this.oothService.sendEmail(this.currentUser, this.globals.ChainPostNewCommentSubject
-                    , this.globals.ChainPageNewCommentMessageToProvider + window.location);
-                }
-                //deduct token
-                if (!this.ownComment) {
-                  console.log("deduct new comment token from " + localStorage.getItem("currentUserId"));
-                  // this.oothService.deductToken(localStorage.getItem("currentUserId"), this.globals.tokenDeductAmmount_ChainpageComment);
-                  this.oothService.onUserAction(this.globals.TokenponAppId, this.globals.action.comment);
-                }
-                //reload comments
-                this.getDetails();
-                return true;
-              }
-              else {
-                this.toasterService.pop("error", response.statusText);
-              }
-            })
-        }
-        else {
-          this.toasterService.pop("error", "You don't have enough tokens");
-        }
-      }
-      // update comment
-      else {
+      // if (!this.ownComment) {
+      if (this.tokenBalance >= this.globals.tokenDeductAmmount_TokenponComment) {
         let data = {
           _id: this.claimId,
           appId: this.globals.TokenponAppId,
           comment: {
-            _id: this.ownComment._id,
             comment: commentText,
+            postedBy: this.currentUser,
             postedTime: Date.now()
           }
         };
-        this.mongoService.updateComment(data)
+        // console.log((JSON.stringify(data)));
+        this.mongoService.addComment(data)
           .subscribe(response => {
+            console.log(response);
             if (response.status == 200) {
-              this.toasterService.pop('success', 'Comment submitted successfully');
+              this.toasterService.pop('success', 'Thanks for you comment!');
               this.submitted = true;
-              // console.log("account: " + this.account);
+              console.log("account: " + this.account);
+              //email author about new comment if allowed
+              // if (this.model.notification) {
+              //   console.log("sending email to author ...");
+              //   this.oothService.sendEmail(this.model.postedBy, this.globals.ChainPageNewCommentSubject
+              //     , this.globals.ChainPageNewCommentMessageToAuthor + window.location + '<br/><br/>New Comment by ' + this.currentUser + ':<br/>' + commentText);
+
+              // }
+              //send email to comment provider if he is not the author
+              // if (this.model.postedBy !== this.currentUser) {
+              //   console.log("sending email to commenter ...");
+              //   this.oothService.sendEmail(this.currentUser, this.globals.ChainPostNewCommentSubject
+              //     , this.globals.ChainPageNewCommentMessageToProvider + window.location);
+              // }
               //deduct token
               // if (!this.ownComment) {
-              //   console.log("deduct new comment token from " + this.account);
-              //   this.oothService.deductToken(this.account, this.globals.tokenDeductAmmount_ChainpageComment);
+              // console.log("deduct new comment token from " + localStorage.getItem("currentUserId"));
+              // this.oothService.deductToken(localStorage.getItem("currentUserId"), this.globals.tokenDeductAmmount_ChainpageComment);
+              this.oothService.onUserAction(this.globals.TokenponAppId, this.globals.action.comment);
               // }
               //reload comments
               this.getDetails();
@@ -372,6 +350,41 @@ export class ClaimDetailComponent implements OnInit {
             }
           })
       }
+      else {
+        this.toasterService.pop("error", "You don't have enough tokens");
+      }
+      // }
+      // update comment
+      // else {
+      //   let data = {
+      //     _id: this.claimId,
+      //     appId: this.globals.TokenponAppId,
+      //     comment: {
+      //       _id: this.ownComment._id,
+      //       comment: commentText,
+      //       postedTime: Date.now()
+      //     }
+      //   };
+      //   this.mongoService.updateComment(data)
+      //     .subscribe(response => {
+      //       if (response.status == 200) {
+      //         this.toasterService.pop('success', 'Comment submitted successfully');
+      //         this.submitted = true;
+      //         // console.log("account: " + this.account);
+      //         //deduct token
+      //         // if (!this.ownComment) {
+      //         //   console.log("deduct new comment token from " + this.account);
+      //         //   this.oothService.deductToken(this.account, this.globals.tokenDeductAmmount_ChainpageComment);
+      //         // }
+      //         //reload comments
+      //         this.getDetails();
+      //         return true;
+      //       }
+      //       else {
+      //         this.toasterService.pop("error", response.statusText);
+      //       }
+      //     })
+      // }
       // console.log(result);
     }
     else {
@@ -411,7 +424,7 @@ export class ClaimDetailComponent implements OnInit {
       }
       else {
         console.log("token balance: " + this.tokenBalance)
-        if (this.tokenBalance >= this.globals.tokenDeductAmmount_ChainpageUpVote) {
+        if (this.tokenBalance >= this.globals.tokenDeductAmmount_TokenponUpVote) {
           // console.log("not yet liked: " + this.alreadyLiked)
           let data = {
             _id: this.claimId,
@@ -481,7 +494,7 @@ export class ClaimDetailComponent implements OnInit {
           })
       }
       else {
-        if (this.tokenBalance >= this.globals.tokenDeductAmmount_ChainpageDownVote) {
+        if (this.tokenBalance >= this.globals.tokenDeductAmmount_TokenponDownVote) {
           // console.log(this.alreadyDisliked);
           let data = {
             _id: this.claimId,
@@ -788,14 +801,15 @@ export class ClaimDetailComponent implements OnInit {
   }
   ngOnInit() {
     this.carouselBanner = {
-      grid: { xs: 2, sm: 3, md: 4, lg: 4, all: 0 },
+      grid: { xs: 1, sm: 1, md: 1, lg: 1, all: 0 },
       speed: 600,
       slide: 1,
       point: {
         visible: true
       },
       load: 2,
-      // loop: true,
+      loop: true,
+      interval: 5000,
       touch: true,
       easing: 'ease',
       animation: 'lazy'
@@ -879,13 +893,24 @@ export class ClaimDetailComponent implements OnInit {
       });
 
   }
-  displayBuyModal(content, i, finalConfirm) {
-    this.discountTokenCost = this.discountArray[i].token;
-    this.modalService.open(content).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason, i, finalConfirm)}`;
-    });
+  displayBuyModal(content, i, finalConfirm, loginModal) {
+    if (this.currentUser !== null && this.currentUser !== undefined && this.currentUser.trim() !== "") {
+      this.discountTokenCost = this.discountArray[i].token;
+      this.modalService.open(content).result.then((result) => {
+        this.closeResult = `Closed with: ${result}`;
+      }, (reason) => {
+        this.closeResult = `Dismissed ${this.getDismissReason(reason, i, finalConfirm)}`;
+      });
+    }
+    else {
+      this.modalService.open(loginModal).result.then((result) => {
+        this.closeResult = `Closed with: ${result}`;
+      }, (reason) => {
+        if (reason === 'Login') {
+          this.login();
+        }
+      });
+    }
   }
   private getDismissReason(reason: any, i: number, finalConfirm): string {
     if (reason === ModalDismissReasons.ESC) {
@@ -915,5 +940,48 @@ export class ClaimDetailComponent implements OnInit {
           });
       }
     });
+  }
+  shareDeal(shareModal) {
+    this.modalService.open(shareModal).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      if (reason === "Send") {
+        this.toasterService.pop("success", "Your invite was sent successfully!");
+      }
+    });
+  }
+
+  login() {
+    this.oothService.Logout();
+    let userid = "";
+    if (!this.phoneLogin) {
+      userid = this.model.email
+    }
+    else {
+      userid = this.model.phone.substring(1);
+    }
+    this.oothService.Login(userid, this.model.password, this.phoneLogin)
+      .then(res => {//console.log(this.model.email + " " + this.model.password)
+        console.log(res)
+        if (res.status === 'error') {
+          // console.log("error: "+res.status)
+          this.toasterService.pop("error", res.message.message);
+          this.loading = false;
+        }
+        else {
+          this.currentUser = localStorage.getItem("currentUser");
+          // console.log("redirect to: " + this.returnUrl);
+          // // var arr = this.returnUrl.split("?");
+          // // if(arr.length == 1){
+          // //     this.router.navigate([arr[0]]); 
+          // // }   
+          // // else if(arr.length > 1){
+          // this.router.navigateByUrl(this.returnUrl);
+          // // }               
+        }
+      })
+      .catch(error => {
+        this.toasterService.pop("error", error);
+      });
   }
 }

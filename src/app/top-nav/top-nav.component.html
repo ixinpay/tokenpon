@@ -74,7 +74,7 @@
         </ul>
         <div class="nav-profile" *ngIf="currentUser != undefined">
             <a class="mr-1" id="dropdownMenuProfile"
-                [routerLink]="['/profile']" [queryParams]="{user: currentUser}">{{currentUser}}
+                [routerLink]="['/profile']">{{currentUser}}
             </a>
             <a class="nav-item nav-profile" (click)="LogOut()">
                 <i class="fa fa-sign-out" aria-hidden="true">Logout</i>
