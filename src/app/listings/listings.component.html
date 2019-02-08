@@ -37,8 +37,10 @@
                         <h3>{{claim.businessName}}</h3>
                     </div>
                     <div *ngFor="let discount of claim.offers" class="caption card-body">
-                        <h5 class="group card-title inner list-group-item-heading">
-                            {{discount.title}}</h5>
+                        <h5 class="group card-title inner list-group-item-heading text-left">
+                            {{discount.title}} 
+                            <small class="float-right">4/8</small>
+                        </h5>
                     </div>
                     <!-- <div class="caption card-body">
                         <p class="group card-title inner list-group-item-heading">
