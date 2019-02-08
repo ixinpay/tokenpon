@@ -7,7 +7,7 @@ const fs = require('fs')
 const TokenponAppId = 1
 const ChainpostAppId = 2
 // Read our configure file
-const config = JSON.parse(fs.readFileSync('.configure.json'));  
+const config = JSON.parse(fs.readFileSync('.configure.json'));
 
     // The chain page url
     //var gChainPageUrl = "http://localhost:4200";
@@ -73,7 +73,9 @@ var DiscountSchema = new Schema({
     token: { type: Number },
     address: { type: String},
     title: { type: String},
-    description: { type: String}
+    description: { type: String},
+    groupCount: { type: Number },
+    expirationDate: { type: Date }
 })
 var TokenponSchema = new Schema({
     name: { type: String },
@@ -157,9 +159,17 @@ var ChainPostSchema = new Schema({
 });
 ChainPostSchema.index({ Tags: 'text' });
 
+const userExtSchema = new Schema({  // user extended structure
+    userId: { type: String },  // user id from user._id
+    gender: { type: String },  // gendar: "M", "F", "U"
+    dob:    { type: String },  // Date of birth: YYYY-MM-DD
+    icon: [String],
+});
+
 var modelTokenpon = mongo.model('tokenpon', TokenponSchema);
 var modelTokenponProfile = mongo.model('tokenponProfile', TokenponProfileSchema);
 var modelChainPost = mongo.model('Post', ChainPostSchema);
+const modelUserExt = mongo.model('userExt', userExtSchema);
 
 app.get("/api/getProfile/:username/:appId", function(req, res) {
     var model;
@@ -598,6 +608,42 @@ app.get("/api/searchListings/:searchtext/:appId", function(req, res) {
                 res.send(data);
             }
         });
+})
+
+
+//https://ixinhub.com:8092/api/getUserExt/666777888
+app.get("/api/getUserExt/:id", function(req, res) {
+    //console.log(req.params);
+    const model = modelUserExt;
+    model.findOne({ userId: req.params.id }, (err, data) => {
+        if (err) {
+            res.send(err);
+        } else {
+            //console.log(data);
+            res.send(data);
+        }
+    });
+})
+
+//https://ixinhub.com:8092/api/modifyUserExt
+app.post("/api/modifyUserExt", function(req, res) {
+    const model = modelUserExt;
+    //console.log(req.body);
+    var {userId} = req.body;
+    if (typeof userId == 'object')
+        userId = userId.toString();
+
+    const query = {"userId": userId};
+    //console.log(query);
+    model.updateOne(query, {$set: req.body}, {upsert: true}, (err, data) => {
+        //console.log(req.body);
+        if (err) {
+            res.send(err);
+        } else {
+            //console.log(data._id)
+            res.send(data._id);
+        }
+    });
 })
 
 console.log(`https: ${httpsRun}`)
