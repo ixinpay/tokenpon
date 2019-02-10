@@ -172,14 +172,14 @@ var modelTokenponProfile = mongo.model('tokenponProfile', TokenponProfileSchema)
 var modelChainPost = mongo.model('Post', ChainPostSchema);
 const modelUserExt = mongo.model('userExt', userExtSchema);
 
-app.get("/api/getProfile/:username/:appId", function(req, res) {
+app.get("/api/getProfile/:userId/:appId", function(req, res) {
     var model;
     if (req.params.appId == TokenponAppId) {
         model = modelTokenponProfile;
     } else if (req.params.appId == ChainpostAppId) {
         model = modelChainPost;
     }
-    model.findOne({ postedBy: req.params.username }, function(err, data) {
+    model.findOne({ userId: req.params.userId }, function(err, data) {
         if (err) {
             res.send(err);
         } else {
