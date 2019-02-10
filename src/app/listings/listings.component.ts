@@ -323,12 +323,24 @@ export class ListingsComponent implements OnInit {
       //
     }
   }
+
+  /**
+   *
+   * @param pageNum : The number of page selected by users
+   * check if we need load a new page
+   */
   loadPage(pageNum: number) {
     if (pageNum !== this.previousPage) {
       this.previousPage = pageNum;
       this.loadData(pageNum);
     }
   }
+
+  /**
+   *
+   * @param pageNum : The number of page
+   * load new page data
+   */
   loadData(pageNum: number) {
     // console.log("this.pageSize * (pageNum - 1)" + this.pageSize * (pageNum - 1))
     // console.log("this.pageSize * " + this.pageSize * (pageNum - 1) + this.pageSize)
@@ -488,7 +500,7 @@ export class ListingsComponent implements OnInit {
 
   Remove_Listing(id) {
 
-    // setTimeout(() => 
+    // setTimeout(() =>
     // {
     // this.subscription = this.route.queryParams.subscribe(params => {
     //console.log(params['cat']);
@@ -656,7 +668,7 @@ export class ListingsComponent implements OnInit {
     //         this.displayModal(content);
     //     }
     //     else {
-    //       this.router.navigate(['/home/claim']);          
+    //       this.router.navigate(['/home/claim']);
     //     }
     //   }
     // });

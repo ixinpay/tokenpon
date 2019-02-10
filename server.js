@@ -7,7 +7,7 @@ const fs = require('fs')
 const TokenponAppId = 1
 const ChainpostAppId = 2
 // Read our configure file
-const config = JSON.parse(fs.readFileSync('.configure.json'));  
+const config = JSON.parse(fs.readFileSync('.configure.json'));
 
     // The chain page url
     //var gChainPageUrl = "http://localhost:4200";
@@ -162,11 +162,11 @@ ChainPostSchema.index({ Tags: 'text' });
 
 const userExtSchema = new Schema({  // user extended structure
     userId: { type: String },  // user id from user._id
-    gender: { type: String },  // gendar: "M", "F", "U"  
+    gender: { type: String },  // gendar: "M", "F", "U"
     dob:    { type: String },  // Date of birth: YYYY-MM-DD
-    icon: [String],            
+    icon:   { type: String }   // user icon
 });
-  
+
 var modelTokenpon = mongo.model('tokenpon', TokenponSchema);
 var modelTokenponProfile = mongo.model('tokenponProfile', TokenponProfileSchema);
 var modelChainPost = mongo.model('Post', ChainPostSchema);
@@ -618,39 +618,32 @@ app.get("/api/searchListings/:searchtext/:appId", function(req, res) {
         });
 })
 
-//https://ixinhub.com:8092/api/getUserExt/666777888
-app.get("/api/getUserExt/:id", function(req, res) {
-    //console.log(req.params);
-    const model = modelUserExt;   
-    model.findOne({ userId: req.params.id }, (err, data) => {
-        if (err) {
-            res.send(err);
-        } else {
-            //console.log(data);
-            res.send(data);
-        }
-    });
+/**
+ * get the user extend by id
+ */
+app.get("api/userExt/:id", function(req, res){
+  modelUserExt.findOne({userId: req.params.id}, function(err, foundUserExt){
+    if(err){
+      res.status(404).send(err);
+    }else{
+      console.log(foundUserExt);
+      res.status(200).send(foundUserExt);
+    }
+  })
 })
 
-//https://ixinhub.com:8092/api/modifyUserExt
-app.post("/api/modifyUserExt", function(req, res) {
-    const model = modelUserExt;
-    //console.log(req.body);
-    var {userId} = req.body;
-    if (typeof userId == 'object')
-        userId = userId.toString();
-
-    const query = {"userId": userId};
-    //console.log(query);
-    model.updateOne(query, {$set: req.body}, {upsert: true}, (err, data) => {
-        //console.log(req.body);
-        if (err) {
-            res.send(err);
-        } else {
-            //console.log(data._id)
-            res.send(data._id);
-        }
-    });
+/**
+ * update the user icon
+ */
+app.put("/api/userExt/:id", function(req, res){
+  var newIcon = req.body.icon;
+  modelUserExt.findOneAndUpdate({userId: req.params.id}, {$set: {icon: newIcon}}, function(err, updatedData){
+    if(err){
+      res.status(404).send(err);
+    }else{
+      res.status(200).send(updatedData._id);
+    }
+  })
 })
 
 console.log(`https: ${httpsRun}`)
