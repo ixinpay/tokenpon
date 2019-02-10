@@ -9,6 +9,7 @@ import { ClaimDetailComponent } from './claim-detail/claim-detail.component';
 import { ListingsComponent } from './listings/listings.component';
 import { ProfileComponent } from './profile/profile.component';
 import {ActivationComponent} from './activation/activation.component'
+import { NewestComponent } from './newest/newest.component';
 const appRoutes: Routes = [
     { path: '', redirectTo: '/home', pathMatch: 'full' },
     // { path: 'landing', component: LandingComponent },
@@ -32,8 +33,11 @@ const appRoutes: Routes = [
     { path: 'login', component: LoginComponent },
     // { path: 'register', component: RegisterComponent },
 
+    // daily newest page
+    { path: 'newest', component: NewestComponent},
     // otherwise redirect to home
     { path: '**', redirectTo: '/home' }
+
 ];
 
 export const routing = RouterModule.forRoot(appRoutes);
