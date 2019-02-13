@@ -642,15 +642,7 @@ app.get("/api/userExt/:id", function(req, res){
  * otherwise, post new user extend
  */
 app.post("/api/userExt", function(req, res){
-    var userId = req.body.userId;
-    var gender = req.body.gender;
-    var dob = req.body.dob;
-    var icon = req.body.icon;
-    var displayName = req.body.displayName;
-    var city = req.body.city;
-    var state = req.body.state;
-    var country = req.body.country;
-    var aboutme = req.body.aboutme;
+    const {userId,gender,dob,icon,displayName,city,state,country,aboutme} = req.body;
     var newUserExt = {
         userId: userId,
         gender: gender,
@@ -662,25 +654,13 @@ app.post("/api/userExt", function(req, res){
         country: country,
         aboutme: aboutme
     };
-  modelUserExt.findOne({userId: req.body.userId}, function(err, data){
-    if(err){
-        modelUserExt.create(newUserExt, function(err, newCreated){
-            if(err){
-                res.send(err);
-            }else{
-                res.send(newCreated);
-            }
-        })
-    }else{
-        modelUserExt.findOneAndUpdate({userId: req.body.userId}, newUserExt, function(err, updatedData){
-            if(err){
-                res.send(err);
-            }else{
-                res.send(updatedData);
-            }
-        })
-    }
-  })
+    modelUserExt.findOneAndUpdate({userId: userId}, {$set: newUserExt}, {upsert: true}, function(err, updatedData){
+       if (err){
+          res.send(err);
+       }else{
+          res.send(updatedData);
+       }
+    })
 })
 
 console.log(`https: ${httpsRun}`)
