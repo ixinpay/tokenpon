@@ -109,6 +109,7 @@ var TokenponSchema = new Schema({
     finePrint: { type: String}
 });
 var TokenponProfileSchema = new Schema({
+    userId: { type: String},
     accountAddress: { type: String},
     accountType: { type: String},
     name: { type: String },
@@ -176,14 +177,14 @@ var modelTokenponProfile = mongo.model('tokenponProfile', TokenponProfileSchema)
 var modelChainPost = mongo.model('Post', ChainPostSchema);
 const modelUserExt = mongo.model('userExt', userExtSchema);
 
-app.get("/api/getProfile/:username/:appId", function(req, res) {
+app.get("/api/getProfile/:userId/:appId", function(req, res) {
     var model;
     if (req.params.appId == TokenponAppId) {
         model = modelTokenponProfile;
     } else if (req.params.appId == ChainpostAppId) {
         model = modelChainPost;
     }
-    model.findOne({ postedBy: req.params.username }, function(err, data) {
+    model.findOne({ userId: req.params.userId }, function(err, data) {
         if (err) {
             res.send(err);
         } else {
@@ -215,10 +216,16 @@ app.post("/api/updateProfile", function(req, res) {
     //var mod = new model(req.body);
     console.log("update address: " + req.body.accountAddress)
     var model;
+    //console.log(req.body)
     if (req.body.appId == TokenponAppId) {
         model = modelTokenponProfile;
-        model.update({ _id: req.body._id }, {
+        if (typeof req.body.userId == 'object')
+           req.body.userId = req.body.userId.toString();
+
+        //model.update({ _id: req.body._id }, {
+        model.updateOne({ userId: req.body.userId }, {
                 "$set": {
+                    userId: req.body.userId,
                     name: req.body.name,
                     accountAddress: req.body.accountAddress,
                     accountType: req.body.accountType,
@@ -236,6 +243,7 @@ app.post("/api/updateProfile", function(req, res) {
                     businessHour: req.body.businessHour,
                     businessMainCategory: req.body.businessMainCategory,
                     businessSubCategory: req.body.businessSubCategory,
+                    postedBy: req.body.postedBy,
                     postedTime: req.body.postedTime,
                     pictures: req.body.pictures,
                     notification: req.body.notification

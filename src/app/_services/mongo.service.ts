@@ -15,13 +15,13 @@ export class MongoService {
     private readonly API = environment.MongoAPI;
     constructor(private http: Http) { }
 
-    GetProfile(username, appId) {
-        console.log(username);
+    GetProfile(userId, appId) {
+        console.log(userId);
         let params = new URLSearchParams();
-        params.append('username', username);
+        params.append('userId', userId);
         params.append('appId', appId);
         // let params = new HttpParams().set('id', id);
-        return this.http.get(this.API + 'getProfile/' + username + "/" + appId)
+        return this.http.get(this.API + 'getProfile/' + userId + "/" + appId)
         // .map((response: Response) => response.json())
     }
     saveProfile(listing) {

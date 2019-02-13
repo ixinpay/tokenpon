@@ -156,7 +156,7 @@ export class ProfileComponent implements OnInit {
   }
   //get user profile data
   getProfileData() {
-    this.mongoService.GetProfile(this.userName, this.globals.TokenponAppId)
+    this.mongoService.GetProfile(localStorage.getItem("currentUserId"), this.globals.TokenponAppId)
       .subscribe(response => {
         if (response.status == 200) {
           console.log(response);
@@ -458,6 +458,7 @@ export class ProfileComponent implements OnInit {
     // if (this.profileModel.id === undefined) {
     //   this.profileModel.id = "NA";
     // }
+    this.profileModel.userId = localStorage.getItem("currentUserId");
     this.profileModel.accountType = this.accountType;
     this.profileModel.postedBy = this.currentUser;
     this.profileModel.postedTime = Date.now();
