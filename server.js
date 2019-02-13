@@ -164,7 +164,12 @@ const userExtSchema = new Schema({  // user extended structure
     userId: { type: String },  // user id from user._id
     gender: { type: String },  // gendar: "M", "F", "U"
     dob:    { type: String },  // Date of birth: YYYY-MM-DD
-    icon:   { type: String }   // user icon
+    icon:   { type: String },   // user icon
+    displayName: { type: String },
+    city: { type: String },
+    state: { type: String },
+    country: { type: String },
+    aboutme: { type: String }
 });
 
 var modelTokenpon = mongo.model('tokenpon', TokenponSchema);
@@ -621,27 +626,59 @@ app.get("/api/searchListings/:searchtext/:appId", function(req, res) {
 /**
  * get the user extend by id
  */
-app.get("api/userExt/:id", function(req, res){
+app.get("/api/userExt/:id", function(req, res){
   modelUserExt.findOne({userId: req.params.id}, function(err, foundUserExt){
     if(err){
-      res.status(404).send(err);
+      res.send(err);
     }else{
       console.log(foundUserExt);
-      res.status(200).send(foundUserExt);
+      res.send(foundUserExt);
     }
   })
 })
 
 /**
- * update the user icon
+ * if user exists, update
+ * otherwise, post new user extend
  */
-app.put("/api/userExt/:id", function(req, res){
-  var newIcon = req.body.icon;
-  modelUserExt.findOneAndUpdate({userId: req.params.id}, {$set: {icon: newIcon}}, function(err, updatedData){
+app.post("/api/userExt", function(req, res){
+    var userId = req.body.userId;
+    var gender = req.body.gender;
+    var dob = req.body.dob;
+    var icon = req.body.icon;
+    var displayName = req.body.displayName;
+    var city = req.body.city;
+    var state = req.body.state;
+    var country = req.body.country;
+    var aboutme = req.body.aboutme;
+    var newUserExt = {
+        userId: userId,
+        gender: gender,
+        dob: dob,
+        icon: icon,
+        displayName: displayName,
+        city: city,
+        state: state,
+        country: country,
+        aboutme: aboutme
+    };
+  modelUserExt.findOne({userId: req.body.userId}, function(err, data){
     if(err){
-      res.status(404).send(err);
+        modelUserExt.create(newUserExt, function(err, newCreated){
+            if(err){
+                res.send(err);
+            }else{
+                res.send(newCreated);
+            }
+        })
     }else{
-      res.status(200).send(updatedData._id);
+        modelUserExt.findOneAndUpdate({userId: req.body.userId}, newUserExt, function(err, updatedData){
+            if(err){
+                res.send(err);
+            }else{
+                res.send(updatedData);
+            }
+        })
     }
   })
 })
