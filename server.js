@@ -164,7 +164,12 @@ const userExtSchema = new Schema({  // user extended structure
     userId: { type: String },  // user id from user._id
     gender: { type: String },  // gendar: "M", "F", "U"
     dob:    { type: String },  // Date of birth: YYYY-MM-DD
-    icon:   { type: String }   // user icon
+    icon:   { type: String },   // user icon
+    displayName: { type: String },
+    city: { type: String },
+    state: { type: String },
+    country: { type: String },
+    aboutme: { type: String }
 });
 
 var modelTokenpon = mongo.model('tokenpon', TokenponSchema);
@@ -621,29 +626,41 @@ app.get("/api/searchListings/:searchtext/:appId", function(req, res) {
 /**
  * get the user extend by id
  */
-app.get("api/userExt/:id", function(req, res){
+app.get("/api/userExt/:id", function(req, res){
   modelUserExt.findOne({userId: req.params.id}, function(err, foundUserExt){
     if(err){
-      res.status(404).send(err);
+      res.send(err);
     }else{
       console.log(foundUserExt);
-      res.status(200).send(foundUserExt);
+      res.send(foundUserExt);
     }
   })
 })
 
 /**
- * update the user icon
+ * if user exists, update
+ * otherwise, post new user extend
  */
-app.put("/api/userExt/:id", function(req, res){
-  var newIcon = req.body.icon;
-  modelUserExt.findOneAndUpdate({userId: req.params.id}, {$set: {icon: newIcon}}, function(err, updatedData){
-    if(err){
-      res.status(404).send(err);
-    }else{
-      res.status(200).send(updatedData._id);
-    }
-  })
+app.post("/api/userExt", function(req, res){
+    const {userId,gender,dob,icon,displayName,city,state,country,aboutme} = req.body;
+    var newUserExt = {
+        userId: userId,
+        gender: gender,
+        dob: dob,
+        icon: icon,
+        displayName: displayName,
+        city: city,
+        state: state,
+        country: country,
+        aboutme: aboutme
+    };
+    modelUserExt.findOneAndUpdate({userId: userId}, {$set: newUserExt}, {upsert: true}, function(err, updatedData){
+       if (err){
+          res.send(err);
+       }else{
+          res.send(updatedData);
+       }
+    })
 })
 
 console.log(`https: ${httpsRun}`)
