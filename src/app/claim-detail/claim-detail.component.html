@@ -91,11 +91,11 @@
 
                 </div> -->
             <div class="row mt-2 mb-2">
-                <ngu-carousel #myCarousels1 class="col-12" [inputs]="carouselBanner" (carouselLoad)="carouselTileOneLoad()"
+                <ngu-carousel #myCarousels1 class="col-sm-12 col-md-10 col-lg-9 mx-auto" [inputs]="carouselBanner" (carouselLoad)="carouselTileOneLoad()"
                     (onMove)="onMoveData($event)" [reset]="rsts" (initData)="getCarouselData($event)">
                     <ngu-tile NguCarouselItem *ngFor="let image of albums; let i=index">
                         <img style="cursor: pointer;width: 100%;height: 300px;" [src]="image.thumb" (click)="open(i)"
-                            class="img-thumbnail hoverable" />
+                            class="img-thumbnail hoverable facilitiesImage " />
                     </ngu-tile>
                     <a NguCarouselPrev class="carousel-control-prev" style="margin-top: 145px;">
                         <i class="fa fa-chevron-left fa-lg text-muted"></i>
@@ -117,11 +117,14 @@
                     <div class="col-12">
                         <div class="card-block">
                             <div class="row mt-3">
-                                <div class="col-6">
+                                <div class="col-xs-4 col-sm-4 col-md-2">
                                     <h5 class="offer-head">Deal {{i+1}}</h5>
                                 </div>
-                                <div class="col-6 text-center text-info">
-                                    <h5>4 More to deal 8/12</h5>
+                                <div class="col text-center text-info">
+                                    <small>In NEED X more buyer. Currently X buyers are in. This deal needs minimum {{model.discounts[i].groupCount}} buyers.</small>
+                                </div>
+                                <div class="float-right" [hidden]="!isAuthor">
+                                    <button type="button" class="btn btn-success btn-sm" (click)="makeDeal(dealConfirmation, i)">DEAL</button>
                                 </div>
                             </div>
                             <div class="row">
@@ -129,48 +132,22 @@
                                     {{field.title}}
                                 </h5>
                             </div>
-                            <div class="row">
-                                <div class="col-xs-12 col-sm-12 col-md-2">Description:</div>
-                                <div class="col-xs-12 col-sm-12 col-md-10">
-                                    {{field.description}}
-                                </div>
+                            <div class="row col-12">
+                                <label class="mr-2">Description:</label>
+                                <label>{{field.description}}</label>
                             </div>
-                            <div class="row">
-                                <div class="col-xs-12 col-sm-12 col-md-2">Cost:</div>
-                                <div class="col-xs-12 col-sm-12 col-md-10">
-                                    {{field.token}} iXin
-                                </div>
+                            <div class="row col-12">
+                                <label class="mr-2">Cost:</label>
+                                <label>{{field.token}} iXin</label>
                             </div>
-                            <div class="row mb-2">
-                                <div class="col-3">
-                                    <button type="button" class="btn defaultbtn" (click)="displayBuyModal(content, i, finalConfirm, loginModal);">BUY</button>
-                                </div>
-                                <div class="col-3">
-                                    <button type="button" class="btn defaultbtn" (click)="makeDeal();">DEAL</button>
-                                </div>
+                            <div class="row col-12">
+                                <label class="mr-2">Minimum Required Buyers:</label>
+                                <label>{{model.discounts[i].groupCount}}</label>
                             </div>
-                            <!-- <div class="row">
-                                    <div class="col-xs-12 col-sm-12 col-md-2">Minimum Purchasers:</div>
-                                    <div class="col-xs-12 col-sm-12 col-md-10">
-                                        {{field.groupCount}}
-                                    </div>
-                                </div> -->
-                            <!-- <div class="divTable darkTable">
-                                <div class="divTableHeading">
-                                    <div class="divTableHeadRow">
-                                        <div class="divTableHead">Amount Spend</div>
-                                        <div class="divTableHead">Discount</div>
-                                        <div class="divTableHead">Token Number</div>
-                                    </div>
-                                </div>
-                                <div class="divTableBody">
-                                    <div class="divTableRow">
-                                        <div class="divTableCell">{{field.amount}}</div>
-                                        <div class="divTableCell">{{field.discount * 100}}%</div>
-                                        <div class="divTableCell">{{field.token}}</div>
-                                    </div>
-                                </div>
-                            </div> -->
+                            <div class="col-12 mb-2 text-center">                                
+                                <button type="button" class="btn defaultbtn" (click)="displayBuyModal(content, i, finalConfirm, loginModal);">BUY</button>
+                                                                
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -302,7 +279,7 @@
         </div>
     </div>
 </div>
-<!-- Modal -->
+<!-- confirm purchase modal -->
 <ng-template #content let-d="dismiss">
     <!-- <div class="modal-header">
             <button type="button" class="close" aria-label="Close" (click)="d()">
@@ -310,7 +287,11 @@
             </button>
         </div> -->
     <div class="modal-body">
-        <p translate>{{discountTokenCost}} iXin coin will be withdrawn from your account. Your purchase will be shown
+        <label class="form-label">How many tokenpon would you like to purchase?</label>
+        <select>
+            <option></option>
+        </select>
+        <p translate>Total <label class="font-weight-bold">{{discountTokenCost * tokenponPurchaseCount}}</label> iXin coin will be withdrawn from your account. Your purchase will be shown
             on Your
             iXin Pay Mobile App.
         </p>
@@ -320,7 +301,7 @@
         <button type="button" class="btn btn-primary" (click)="d('Confirm');">Confirm</button>
     </div>
 </ng-template>
-
+<!-- purchase success modal -->
 <ng-template #finalConfirm let-d="dismiss">
     <!-- <div class="modal-header">
                 <button type="button" class="close" aria-label="Close" (click)="d()">
@@ -337,6 +318,7 @@
         <button type="button" class="btn btn-secondary" (click)="d()">OK</button>
     </div>
 </ng-template>
+<!-- delete listing modal -->
 <ng-template #deleteConfirmation let-d="dismiss">
     <div class="modal-body">
         <p translate>Are you sure you want to delete this listing?
@@ -347,6 +329,18 @@
         <button type="button" class="btn btn-danger" (click)="d('Yes');">Yes</button>
     </div>
 </ng-template>
+<!-- deal modal -->
+<ng-template #dealConfirmation let-d="dismiss">
+        <div class="modal-body">
+            <p translate>Are you sure you want to honor this deal?
+            </p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="d('No')">No</button>
+            <button type="button" class="btn btn-success" (click)="d('Yes');">Yes</button>
+        </div>
+    </ng-template>
+    <!-- share deal modal -->
 <ng-template #shareModal let-d="dismiss">
     <div class="modal-body row form-group">
         <div class="col-xs-12 col-sm-12 col-md-2">
@@ -360,11 +354,16 @@
             <small *ngIf="!shareEmail.valid" translate class="" [ngClass]="{ 'show-error': !shareEmail.valid }">
                 *</small>
         </div>
-    </div>
-    <div class="modal-footer">
-        <button type="button" [disabled]="!shareEmail.valid" class="btn btn-secondary" (click)="d('Send')">Send</button>
+        <div class="col-xs-12 col-sm-12 col-md-2">
+                <button type="button" [disabled]="!shareEmail.valid" class="btn btn-default btn-sm" (click)="d('Send')">Send</button>
+        </div>
+        <div class="mr-auto ml-auto">
+            <ngx-qrcode [qrc-element-type]="img" qrc-class="qrSize" [qrc-element-type]="elementType" [qrc-value]="currentUrl">
+            </ngx-qrcode>
+        </div>
     </div>
 </ng-template>
+<!-- login modal -->
 <ng-template #loginModal let-d="dismiss">
     <div class="modal-header">
         <button type="button" class="close" aria-label="Close" (click)="d('Close')">

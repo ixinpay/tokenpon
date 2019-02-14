@@ -64,7 +64,7 @@ export class ClaimComponent implements OnInit {
   ) {
     this.expireDays = Array.from(new Array(90),(val,index)=>index+30);
     this.currentUser = localStorage.getItem('currentUser');
-    this.model.submitBy = this.currentUser;
+    // this.model.submitBy = this.currentUser;
     this.discountValueList = Array.from(new Array(100),(val,index)=>index+1);
     this.route.queryParams.subscribe(params => {
       // console.log(params['id']);
@@ -80,12 +80,12 @@ export class ClaimComponent implements OnInit {
   }
   //get user profile data
   getProfileData() {
-    this.mongoService.GetProfile(this.currentUser, this.globals.TokenponAppId)
+    this.mongoService.GetProfile(localStorage.getItem('currentUserId'), this.globals.TokenponAppId)
       .subscribe(response => {
         if (response.status == 200) {
           // console.log(response);
           try{
-          this.profileModel = response.json();
+            this.profileModel = response.json();
           }
           catch(e){
             this.toasterService.pop("error", "Please complete your 'Account Profile' before posting a new deal!");
@@ -292,7 +292,7 @@ export class ClaimComponent implements OnInit {
     // }
     this.model.merchantAccountAddress = localStorage.getItem("currentUserAccount");
     this.model.appId = this.globals.TokenponAppId;
-    this.model.merchantId = this.profileModel._id;
+    this.model.merchantId = this.profileModel.userId;
     this.model.businessName = this.profileModel.businessName;
     this.model.street = this.profileModel.street;
     this.model.city = this.profileModel.city;
@@ -378,10 +378,7 @@ export class ClaimComponent implements OnInit {
     //   this.uploadData();
     // }
   }
-  isAuthor(user: string): boolean {
-    //console.log(this.currentUser.username == user);
-    return this.currentUser == user;
-  }
+
   addDiscount() {
     this.discountArray.push(this.newDiscount);
     if(this.discountArray.length > 0){

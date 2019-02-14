@@ -109,4 +109,7 @@ export class MongoService {
         // params.append('appId', appId);
         return this.http.get(this.API + 'searchListings/' + searchtext + "/" + appId);
     }
+    getTokenponBuyerCount(merchant, tokenponId){
+        return this.http.get(this.API + 'getTokenonponCount/' + merchant + "/" + tokenponId);
+    }
 }

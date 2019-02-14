@@ -79,6 +79,9 @@ export class ClaimDetailComponent implements OnInit {
   loading = false;
   returnUrl: string;
   phoneLogin: boolean = true; // true = phone number, false = username/email
+  currentUrl: string; // for QR code sharing
+  shareWith: string; // share deal with
+  tokenponPurchaseCount: number = 1; // tokenpon purchase count
 
   constructor(private http: Http, private route: ActivatedRoute, private globals: Globals, private oothService: OothService,
     private lightbox: Lightbox, private toasterService: ToasterService, private titleService: Title, private googleGeoService: GoogleGeoService,
@@ -92,6 +95,7 @@ export class ClaimDetailComponent implements OnInit {
     config.keyboard = false;
     // config.pauseOnHover = false;
 
+    this.currentUrl = window.location.href;
     this.account = localStorage.getItem("currentUserAccount");
     this.page = 1;
     this.maxSize = 100;
@@ -946,11 +950,22 @@ export class ClaimDetailComponent implements OnInit {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
       if (reason === "Send") {
-        this.toasterService.pop("success", "Your invite was sent successfully!");
+        // this.oothService.sendEmail(this.shareWith, this.globals.TokenponShareDealSubject, this.currentUrl)
+        //   .subscribe(response => {
+        //     this.toasterService.pop("success", "Your invite was sent successfully!");
+        // });        
       }
     });
   }
-
+  makeDeal(dealConfirmation, id) {
+    this.modalService.open(dealConfirmation).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      if (reason === "Yes") {
+        // this.toasterService.pop("success", "Your invite was sent successfully!");
+      }
+    });
+  }
   login() {
     this.oothService.Logout();
     let userid = "";

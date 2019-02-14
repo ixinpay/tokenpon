@@ -39,7 +39,7 @@
                     <div *ngFor="let discount of claim.offers" class="caption card-body">
                         <h5 class="group card-title inner list-group-item-heading text-left">
                             {{discount.title}} 
-                            <small class="float-right">4/8</small>
+                            <small [class]="discount.groupCount >= 4? 'float-right text-success' : 'float-right text-danger'" #ratio>4/{{discount.groupCount}}</small>
                         </h5>
                     </div>
                     <!-- <div class="caption card-body">

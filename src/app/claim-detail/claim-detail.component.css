@@ -147,3 +147,9 @@ div.darkTable {
    #ngbcarousel >ol>li {
         background-color:  #ff8f00 !important;
     }
+
+    .sticky {
+        position: -webkit-sticky; /* Safari */
+        position: sticky;
+        top: 0;
+      }

@@ -130,7 +130,8 @@
                                                         </div>
                                                         <div class="form-group col-sm-6">
                                                             <!-- <label for="businessName" translate>Business Name</label> -->
-                                                            <label translate>Business Name: {{profileModel.businessName}}</label>
+                                                            <label translate>Business Name:
+                                                                {{profileModel.businessName}}</label>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -192,11 +193,13 @@
                                                 <div class="row">
                                                     <div class="form-group col-sm-6">
                                                         <!-- <label for="businessMainCategory" class="required" translate>Main Category</label> -->
-                                                        <label translate>Main Category: {{profileModel.businessMainCategory}}</label>
+                                                        <label translate>Main Category:
+                                                            {{profileModel.businessMainCategory}}</label>
                                                     </div>
                                                     <div class="form-group col-sm-6">
                                                         <!-- <label for="businessSubCategory" class="required" translate>Sub Category</label> -->
-                                                        <label translate>Sub Category: {{profileModel.businessSubCategory}}</label>
+                                                        <label translate>Sub Category:
+                                                            {{profileModel.businessSubCategory}}</label>
                                                     </div>
                                                 </div>
                                                 <div class="row">
@@ -208,7 +211,8 @@
                                                 <div class="row">
                                                     <div class="form-group col-sm-6">
                                                         <!-- <label for="businessHour" translate>Business Hour</label> -->
-                                                        <label class="label">Business Hour: {{profileModel.businessHour}}</label>
+                                                        <label class="label">Business Hour:
+                                                            {{profileModel.businessHour}}</label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -222,22 +226,28 @@
                                                         <label class="label">{{profileModel.service}}</label>
                                                     </div>
                                                 </div>
+                                                <div class="row">
+                                                    <div class="col-2"><label>Your logo: </label></div>
+                                                    <div class="col-12">
+                                                            <ngu-carousel #myCarousels1 [inputs]="carouselBanner"
+                                                            (carouselLoad)="carouselTileOneLoad()" (onMove)="onMoveData($event)"
+                                                            [reset]="rsts" (initData)="getCarouselData($event)">
+                                                            <ngu-tile NguCarouselItem *ngFor="let image of urls; let i=index">
+                                                                <img style="cursor: pointer;width: 100%;height: 150px;"
+                                                                    [src]="image.url" (click)="open(i)" class="img-thumbnail hoverable" />
+                                                            </ngu-tile>
+                                                            <a NguCarouselPrev class="carousel-control-prev">
+                                                                <i class="fa fa-chevron-left fa-lg text-muted pt-5"></i>
+                                                                <span class="sr-only">Previous</span>
+                                                            </a>
+                                                            <a NguCarouselNext class="carousel-control-next text-faded">
+                                                                <i class="fa fa-chevron-right fa-lg text-muted pt-5"></i>
+                                                                <span class="sr-only">Next</span>
+                                                            </a>
+                                                        </ngu-carousel>
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <ngu-carousel #myCarousels1 [inputs]="carouselBanner" (carouselLoad)="carouselTileOneLoad()"
-                                                (onMove)="onMoveData($event)" [reset]="rsts" (initData)="getCarouselData($event)">
-                                                <ngu-tile NguCarouselItem *ngFor="let image of albums; let i=index">
-                                                    <img style="cursor: pointer;width: 100%;height: 100px;" [src]="image.thumb"
-                                                        (click)="open(i)" class="img-thumbnail hoverable" />
-                                                </ngu-tile>
-                                                <a NguCarouselPrev class="carousel-control-prev">
-                                                    <i class="fa fa-chevron-left fa-lg text-muted pt-5"></i>
-                                                    <span class="sr-only">Previous</span>
-                                                </a>
-                                                <a NguCarouselNext class="carousel-control-next text-faded">
-                                                    <i class="fa fa-chevron-right fa-lg text-muted pt-5"></i>
-                                                    <span class="sr-only">Next</span>
-                                                </a>
-                                            </ngu-carousel>
                                         </div>
                                     </div>
                                 </div>
@@ -284,8 +294,8 @@
                                                                 <option *ngFor="let c of countries" [value]="c.Country">{{c.Country}}</option>
                                                             </select>
                                                             <div class="col-sm-6">
-                                                                <small *ngIf="!country.valid"
-                                                                    translate class="" [ngClass]="{ 'show-error': !country.valid }">*
+                                                                <small *ngIf="!country.valid" translate class=""
+                                                                    [ngClass]="{ 'show-error': !country.valid }">*
                                                                     required</small>
                                                             </div>
 
@@ -323,8 +333,7 @@
                                                                 [(ngModel)]="profileModel.name" [ngClass]="{ 'show-error-border': profileForm.submitted && !name.valid }"
                                                                 name="name" #name="ngModel">
                                                             <div class="col-sm-6">
-                                                                <small *ngIf="!name.valid"
-                                                                    translate class="" [ngClass]="{ 'show-error': !name.valid }">*
+                                                                <small *ngIf="!name.valid" translate class="" [ngClass]="{ 'show-error': !name.valid }">*
                                                                     required</small>
                                                             </div>
                                                         </div>
@@ -336,8 +345,8 @@
                                                                 [ngClass]="{ 'show-error-border': profileForm.submitted && !businessName.valid }"
                                                                 name="businessName" #businessName="ngModel">
                                                             <div class="col-sm-6">
-                                                                <small *ngIf="!businessName.valid"
-                                                                    translate class="" [ngClass]="{ 'show-error': !businessName.valid }">*
+                                                                <small *ngIf="!businessName.valid" translate class=""
+                                                                    [ngClass]="{ 'show-error': !businessName.valid }">*
                                                                     required</small>
                                                             </div>
                                                         </div>
@@ -356,8 +365,7 @@
                                                             [(ngModel)]="profileModel.street" [ngClass]="{ 'show-error-border': profileForm.submitted && !street.valid }"
                                                             name="street" #street="ngModel">
                                                         <div class="col-sm-8">
-                                                            <small *ngIf="!street.valid"
-                                                                translate class="" [ngClass]="{ 'show-error': !street.valid }">*
+                                                            <small *ngIf="!street.valid" translate class="" [ngClass]="{ 'show-error': !street.valid }">*
                                                                 required</small>
                                                         </div>
                                                     </div>
@@ -370,8 +378,7 @@
                                                                 [(ngModel)]="profileModel.city" [ngClass]="{ 'show-error-border': profileForm.submitted && !city.valid }"
                                                                 name="city" #city="ngModel">
                                                             <div class="col-sm-8">
-                                                                <small *ngIf="!city.valid"
-                                                                    translate class="" [ngClass]="{ 'show-error': !city.valid }">*
+                                                                <small *ngIf="!city.valid" translate class="" [ngClass]="{ 'show-error': !city.valid }">*
                                                                     required</small>
                                                             </div>
                                                         </div>
@@ -385,8 +392,8 @@
                                                                 <option *ngFor="let s of state_province" [value]="s.abbreviation">{{s.abbreviation}}</option>
                                                             </select>
                                                             <div class="col-sm-14">
-                                                                <small *ngIf="!state.valid"
-                                                                    translate class="" [ngClass]="{ 'show-error': !state.valid }">*
+                                                                <small *ngIf="!state.valid" translate class=""
+                                                                    [ngClass]="{ 'show-error': !state.valid }">*
                                                                     required</small>
                                                             </div>
                                                         </div>
@@ -398,8 +405,7 @@
                                                                 [(ngModel)]="profileModel.zip" [ngClass]="{ 'show-error-border': profileForm.submitted && !zip.valid }"
                                                                 name="zip" #zip="ngModel">
                                                             <div class="col-sm-14">
-                                                                <small *ngIf="!zip.valid"
-                                                                    translate class="" [ngClass]="{ 'show-error': !zip.valid }">*
+                                                                <small *ngIf="!zip.valid" translate class="" [ngClass]="{ 'show-error': !zip.valid }">*
                                                                     required</small>
                                                             </div>
                                                         </div>
@@ -418,8 +424,8 @@
                                                                 required [(ngModel)]="profileModel.email" [ngClass]="{ 'show-error-border': profileForm.submitted && !email.valid }"
                                                                 name="email" #email="ngModel">
                                                             <div class="col-sm-6">
-                                                                <small *ngIf="!email.valid"
-                                                                    translate class="" [ngClass]="{ 'show-error': !email.valid }">*
+                                                                <small *ngIf="!email.valid" translate class=""
+                                                                    [ngClass]="{ 'show-error': !email.valid }">*
                                                                     required</small>
                                                                 <small *ngIf="email.errors?.pattern && email.touched"
                                                                     [ngClass]="{'show-error': email.errors?.pattern && email.touched}"
@@ -435,8 +441,8 @@
                                                                 [ngClass]="{ 'show-error-border': profileForm.submitted && !phone.valid }"
                                                                 name="phone" #phone="ngModel">
                                                             <div class="col-sm-6">
-                                                                <small *ngIf="!phone.valid"
-                                                                    translate class="" [ngClass]="{ 'show-error': !phone.valid }">*
+                                                                <small *ngIf="!phone.valid" translate class=""
+                                                                    [ngClass]="{ 'show-error': !phone.valid }">*
                                                                     required</small>
                                                             </div>
                                                         </div>
@@ -479,8 +485,8 @@
                                                                 translate>{{cat.Description}}</option>
                                                         </select>
                                                         <div class="col-sm-6">
-                                                            <small *ngIf="!businessCategory.valid"
-                                                                translate class="" [ngClass]="{ 'show-error': !businessCategory.valid }">*
+                                                            <small *ngIf="!businessCategory.valid" translate class=""
+                                                                [ngClass]="{ 'show-error': !businessCategory.valid }">*
                                                                 required</small>
                                                         </div>
                                                     </div>
@@ -495,8 +501,8 @@
                                                                 translate>{{subcat.Description}}</option>
                                                         </select>
                                                         <div class="col-sm-6">
-                                                            <small *ngIf="!businessSubCategory.valid"
-                                                                translate class="" [ngClass]="{ 'show-error': !businessSubCategory.valid }">*
+                                                            <small *ngIf="!businessSubCategory.valid" translate class=""
+                                                                [ngClass]="{ 'show-error': !businessSubCategory.valid }">*
                                                                 required</small>
                                                         </div>
                                                     </div>
@@ -509,8 +515,8 @@
                                                             required [(ngModel)]="profileModel.servicingArea" [ngClass]="{ 'show-error-border': profileForm.submitted && !servicingArea.valid }"
                                                             name="servicingArea" #servicingArea="ngModel">
                                                         <div class="col-sm-6">
-                                                            <small *ngIf="!servicingArea.valid"
-                                                                translate class="" [ngClass]="{ 'show-error': !servicingArea.valid }">*
+                                                            <small *ngIf="!servicingArea.valid" translate class=""
+                                                                [ngClass]="{ 'show-error': !servicingArea.valid }">*
                                                                 required</small>
                                                         </div>
                                                     </div>
@@ -523,8 +529,8 @@
                                                             required [(ngModel)]="profileModel.businessHour" [ngClass]="{ 'show-error-border': profileForm.submitted && !businessHour.valid }"
                                                             name="businessHour" #businessHour="ngModel">
                                                         <div class="col-sm-6">
-                                                            <small *ngIf="!businessHour.valid"
-                                                                translate class="" [ngClass]="{ 'show-error': !businessHour.valid }">*
+                                                            <small *ngIf="!businessHour.valid" translate class=""
+                                                                [ngClass]="{ 'show-error': !businessHour.valid }">*
                                                                 required</small>
                                                         </div>
                                                     </div>
@@ -553,8 +559,8 @@
                                                                 [ngClass]="{ 'show-error-border': profileForm.submitted && !service.valid }"
                                                                 name="service" #service="ngModel"></textarea>
                                                             <div class="col-sm-6">
-                                                                <small *ngIf="!service.valid"
-                                                                    translate class="" [ngClass]="{ 'show-error': !service.valid }">*
+                                                                <small *ngIf="!service.valid" translate class=""
+                                                                    [ngClass]="{ 'show-error': !service.valid }">*
                                                                     required</small>
                                                             </div>
                                                         </div>
@@ -562,8 +568,8 @@
                                                 </div>
                                                 <div class="row">
                                                     <div class="form-group col-sm-12">
-                                                        <label for="image_uploads" translate>Choose images(<2MB) to
-                                                                upload (PNG, JPG)(coming soon) <span class="btn btn-mdb-color btn-sm"
+                                                        <label for="image_uploads" translate>Choose a business logo(<2MB)
+                                                                to upload (PNG, JPG) <span class="btn btn-mdb-color btn-sm"
                                                                 translate>Browse</span>
                                                         </label>
                                                         <input style="display: none;" type="file" id="image_uploads"
@@ -588,10 +594,12 @@
                                         </div>
                                     </div>
                                     <div class="submitBtn" disabled>
-                                        <button *ngIf="profileForm.valid" type="submit" class="btn btn-success" translate>{{isUpdate?
+                                        <button *ngIf="profileForm.valid" type="submit" class="btn btn-success"
+                                            translate>{{isUpdate?
                                             'Update': 'Submit'}}</button>
-                                        <button *ngIf="!profileForm.valid" disabled type="submit" class="btn btn-light" translate>{{isUpdate?
-                                                'Update': 'Submit'}}</button>
+                                        <button *ngIf="!profileForm.valid" disabled type="submit" class="btn btn-light"
+                                            translate>{{isUpdate?
+                                            'Update': 'Submit'}}</button>
                                         <button *ngIf="isUpdate" class="btn btn-outline-danger  waves-effect"
                                             [routerLink]="" [queryParams]="{id: claimId}" type="submit" translate>Cancel
                                             <i class="fa fa-ban ml-2"></i>
