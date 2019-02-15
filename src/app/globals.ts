@@ -21,6 +21,6 @@ export class Globals {
   readonly TokenponDiscountList = [5, 10, 15, 20] ;
   readonly TokenponAccountType = ["individual", "merchant"];
   readonly iXinMobileAppMessage = "Download the iXin mobile app in order to take advantage of this deal. Android: url  iOS: url";
-  readonly TokenponGroupBuyPrint = "***This is a group buying item. This deal becomes valid only when the minimum number of buyers is met.";
+  readonly TokenponGroupBuyPrint = "***This is a group buying item, only the number of buyers reaches the minimum required buyers, this deal will happen.";
   readonly TokenponFineprint = "Promotional value expires 30 days after purchase. After the expiration day, refund will be made, there will be 20% refund charge. Limit 1 per visit. Merchant is solely responsible to purchasers for the care and quality of the advertised goods and services.";
 }
