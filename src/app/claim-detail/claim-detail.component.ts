@@ -907,8 +907,12 @@ export class ClaimDetailComponent implements OnInit {
   displayBuyModal(content, i, finalConfirm, loginModal) {    
     if (this.currentUserId !== null && this.currentUserId !== undefined && this.currentUserId.trim() !== "") {
       
-      //initializing the array
+      //initializing the array: set max allowable number of tokenpons a user can purchase
       this.purchaseCountList = Array.from(new Array(this.discountArray[i].groupCount),(val,index)=>index+1);
+      //if not a group buy, set max to 10
+      if(this.discountArray[i].groupCount == 1 || this.discountArray[i].groupCount == null || this.discountArray[i].groupCount == undefined){
+        this.purchaseCountList = Array.from(new Array(10),(val,index)=>index+1);
+      }
       this.selectedDiscount = this.discountArray[i];
 
       const modalRef = this.modalService.open(content).result.then((result) => {
