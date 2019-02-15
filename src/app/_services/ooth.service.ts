@@ -317,7 +317,8 @@ export class OothService {
             }),
             credentials: 'include',
         })
-        const body = await res.json()
+        const body = await res.json();
+        return body;
     }
     // Gege Info
     // Get gege Info

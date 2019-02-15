@@ -5,7 +5,7 @@
     }
 </style>
 <div class="container col-sm-18 col-md-12 col-lg-10 offset-md-1">
-    <form (ngSubmit)="onSubmit()" #tokenponForm="ngForm">
+    <form (ngSubmit)="onSubmit(true)" #tokenponForm="ngForm">
         <div class="form-group">
             <div>
                 <div class="col-12 mt-3">
@@ -510,6 +510,7 @@
             </div>
 
             <div class="col-12 text-center submitBtn mt-3">
+                <!-- <button class="btn btn-warning" (click)="onSubmit(false)">Save as draft</button> -->
                 <button type="submit" [disabled]="!tokenponForm.valid || discountArray?.length == 0" class="btn"
                     [ngClass]="{'btn-light': !tokenponForm.valid || discountArray?.length == 0,
                         'btn-success': tokenponForm.valid && discountArray?.length > 0}"

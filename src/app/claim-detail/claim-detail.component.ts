@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { Router, ActivatedRoute, Params, ParamMap } from '@angular/router';
 import { UserService, GoogleGeoService, AlertService, OothService, MongoService, SwarmService } from '../_services/index';
 import { Globals } from "../globals";
@@ -38,6 +38,7 @@ export class ClaimDetailComponent implements OnInit {
   private isAuthor: boolean = false;
   private reactions: string[] = ['like', 'dislike']
   currentUser: string = undefined;
+  currentUserId: string = undefined;
   currentUserEmail: string = undefined;
   claimId: string;
   country: string;
@@ -64,7 +65,6 @@ export class ClaimDetailComponent implements OnInit {
   private userId: string;
   private tokenBalance: number;
   private discountArray: Array<any> = [];
-  private discountTokenCost: number;
   @ViewChild('AgmMap') agmMap: AgmMap;
   // map: google.maps.Map;
   protected map: any;
@@ -82,6 +82,10 @@ export class ClaimDetailComponent implements OnInit {
   currentUrl: string; // for QR code sharing
   shareWith: string; // share deal with
   tokenponPurchaseCount: number = 1; // tokenpon purchase count
+  @Input() purchaseCountList: number[]; // list of numbers of tokenpon you can purchase 
+  @Input() selectedDiscount: any; // user selected offer
+  TokenponGroupBuyPrint: string;
+  iXinMobileAppMessage: string;
 
   constructor(private http: Http, private route: ActivatedRoute, private globals: Globals, private oothService: OothService,
     private lightbox: Lightbox, private toasterService: ToasterService, private titleService: Title, private googleGeoService: GoogleGeoService,
@@ -95,12 +99,15 @@ export class ClaimDetailComponent implements OnInit {
     config.keyboard = false;
     // config.pauseOnHover = false;
 
+    this.iXinMobileAppMessage = this.globals.iXinMobileAppMessage;
+    this.TokenponGroupBuyPrint = this.globals.TokenponGroupBuyPrint;
     this.currentUrl = window.location.href;
     this.account = localStorage.getItem("currentUserAccount");
     this.page = 1;
     this.maxSize = 100;
     this.pageSize = 5;
     this.currentUser = localStorage.getItem("currentUser");
+    this.currentUserId = localStorage.getItem("currentUserId");
     this.currentUserEmail = localStorage.getItem("currentUserEmail");
     this.oothService.getTokenBalance(this.account)
       .then(balance => {
@@ -219,11 +226,11 @@ export class ClaimDetailComponent implements OnInit {
           }
           else {
             // if current user is not logged in, hide Edit button
-            if (this.currentUser == null || this.currentUser == undefined) {
+            if (this.currentUserId == null || this.currentUserId == undefined) {
               this.isAuthor = false;
             }
             else {
-              if (this.currentUser == this.model.postedBy) {
+              if (this.currentUserId == this.model.postedBy) {
                 this.isAuthor = true;
               }
               else {
@@ -257,7 +264,7 @@ export class ClaimDetailComponent implements OnInit {
           //retrieve votes
           this.model.votes.forEach(element => {
             // get the current user's vote
-            if (element.postedBy == this.currentUser) {
+            if (element.postedBy == this.currentUserId) {
               this.ownVote = element;
               if (element.vote == "like") {
                 this.alreadyLiked = true;
@@ -308,55 +315,55 @@ export class ClaimDetailComponent implements OnInit {
       // console.log(user.local.email);
       // add new comment
       // if (!this.ownComment) {
-      if (this.tokenBalance >= this.globals.tokenDeductAmmount_TokenponComment) {
-        let data = {
-          _id: this.claimId,
-          appId: this.globals.TokenponAppId,
-          comment: {
-            comment: commentText,
-            postedBy: this.currentUser,
-            postedTime: Date.now()
-          }
-        };
-        // console.log((JSON.stringify(data)));
-        this.mongoService.addComment(data)
-          .subscribe(response => {
-            console.log(response);
-            if (response.status == 200) {
-              this.toasterService.pop('success', 'Thanks for you comment!');
-              this.submitted = true;
-              console.log("account: " + this.account);
-              //email author about new comment if allowed
-              // if (this.model.notification) {
-              //   console.log("sending email to author ...");
-              //   this.oothService.sendEmail(this.model.postedBy, this.globals.ChainPageNewCommentSubject
-              //     , this.globals.ChainPageNewCommentMessageToAuthor + window.location + '<br/><br/>New Comment by ' + this.currentUser + ':<br/>' + commentText);
+      // if (this.tokenBalance >= this.globals.tokenDeductAmmount_TokenponComment) {
+      let data = {
+        _id: this.claimId,
+        appId: this.globals.TokenponAppId,
+        comment: {
+          comment: commentText,
+          postedBy: this.currentUserId,
+          postedTime: Date.now()
+        }
+      };
+      // console.log((JSON.stringify(data)));
+      this.mongoService.addComment(data)
+        .subscribe(response => {
+          console.log(response);
+          if (response.status == 200) {
+            this.toasterService.pop('success', 'Thanks for you comment!');
+            this.submitted = true;
+            console.log("account: " + this.account);
+            //email author about new comment if allowed
+            // if (this.model.notification) {
+            //   console.log("sending email to author ...");
+            //   this.oothService.sendEmail(this.model.postedBy, this.globals.ChainPageNewCommentSubject
+            //     , this.globals.ChainPageNewCommentMessageToAuthor + window.location + '<br/><br/>New Comment by ' + this.currentUser + ':<br/>' + commentText);
 
-              // }
-              //send email to comment provider if he is not the author
-              // if (this.model.postedBy !== this.currentUser) {
-              //   console.log("sending email to commenter ...");
-              //   this.oothService.sendEmail(this.currentUser, this.globals.ChainPostNewCommentSubject
-              //     , this.globals.ChainPageNewCommentMessageToProvider + window.location);
-              // }
-              //deduct token
-              // if (!this.ownComment) {
-              // console.log("deduct new comment token from " + localStorage.getItem("currentUserId"));
-              // this.oothService.deductToken(localStorage.getItem("currentUserId"), this.globals.tokenDeductAmmount_ChainpageComment);
-              this.oothService.onUserAction(this.globals.TokenponAppId, this.globals.action.comment);
-              // }
-              //reload comments
-              this.getDetails();
-              return true;
-            }
-            else {
-              this.toasterService.pop("error", response.statusText);
-            }
-          })
-      }
-      else {
-        this.toasterService.pop("error", "You don't have enough tokens");
-      }
+            // }
+            //send email to comment provider if he is not the author
+            // if (this.model.postedBy !== this.currentUser) {
+            //   console.log("sending email to commenter ...");
+            //   this.oothService.sendEmail(this.currentUser, this.globals.ChainPostNewCommentSubject
+            //     , this.globals.ChainPageNewCommentMessageToProvider + window.location);
+            // }
+            //deduct token
+            // if (!this.ownComment) {
+            // console.log("deduct new comment token from " + localStorage.getItem("currentUserId"));
+            // this.oothService.deductToken(localStorage.getItem("currentUserId"), this.globals.tokenDeductAmmount_ChainpageComment);
+            this.oothService.onUserAction(this.globals.TokenponAppId, this.globals.action.comment);
+            // }
+            //reload comments
+            this.getDetails();
+            return true;
+          }
+          else {
+            this.toasterService.pop("error", response.statusText);
+          }
+        })
+      // }
+      // else {
+      //   this.toasterService.pop("error", "You don't have enough tokens");
+      // }
       // }
       // update comment
       // else {
@@ -428,40 +435,40 @@ export class ClaimDetailComponent implements OnInit {
       }
       else {
         console.log("token balance: " + this.tokenBalance)
-        if (this.tokenBalance >= this.globals.tokenDeductAmmount_TokenponUpVote) {
-          // console.log("not yet liked: " + this.alreadyLiked)
-          let data = {
-            _id: this.claimId,
-            appId: this.globals.TokenponAppId,
-            vote: {
-              vote: this.reactions[0],  //like
-              postedBy: this.currentUser,
-              postedTime: Date.now()
+        // if (this.tokenBalance >= this.globals.tokenDeductAmmount_TokenponUpVote) {
+        // console.log("not yet liked: " + this.alreadyLiked)
+        let data = {
+          _id: this.claimId,
+          appId: this.globals.TokenponAppId,
+          vote: {
+            vote: this.reactions[0],  //like
+            postedBy: this.currentUserId,
+            postedTime: Date.now()
+          }
+        };
+        this.mongoService.addVote(data)
+          .subscribe(response => {
+            if (response.status == 200) {
+              // this.toasterService.pop('success', 'Vote submitted successfully');
+              this.submitted = true;
+              // this.likes++;
+              console.log("user id: " + localStorage.getItem("currentUserId"));
+              //deduct token
+              this.oothService.onUserAction(this.globals.TokenponAppId, this.globals.action.like)
+              //this.oothService.deductToken(localStorage.getItem("currentUserId"), this.globals.tokenDeductAmmount_ChainpageUpVote);
+              //reload votes
+              this.getDetails();
+              this.alreadyLiked = !this.alreadyLiked;
+              return true;
             }
-          };
-          this.mongoService.addVote(data)
-            .subscribe(response => {
-              if (response.status == 200) {
-                // this.toasterService.pop('success', 'Vote submitted successfully');
-                this.submitted = true;
-                // this.likes++;
-                console.log("user id: " + localStorage.getItem("currentUserId"));
-                //deduct token
-                this.oothService.onUserAction(this.globals.TokenponAppId, this.globals.action.like)
-                //this.oothService.deductToken(localStorage.getItem("currentUserId"), this.globals.tokenDeductAmmount_ChainpageUpVote);
-                //reload votes
-                this.getDetails();
-                this.alreadyLiked = !this.alreadyLiked;
-                return true;
-              }
-              else {
-                this.toasterService.pop("error", response.statusText);
-              }
-            })
-        }
-        else {
-          this.toasterService.pop("error", "You don't have enough tokens");
-        }
+            else {
+              this.toasterService.pop("error", response.statusText);
+            }
+          })
+        // }
+        // else {
+        //   this.toasterService.pop("error", "You don't have enough tokens");
+        // }
       }
 
     }
@@ -498,40 +505,40 @@ export class ClaimDetailComponent implements OnInit {
           })
       }
       else {
-        if (this.tokenBalance >= this.globals.tokenDeductAmmount_TokenponDownVote) {
-          // console.log(this.alreadyDisliked);
-          let data = {
-            _id: this.claimId,
-            appId: this.globals.TokenponAppId,
-            vote: {
-              vote: this.reactions[1],  //dislike
-              postedBy: this.currentUser,
-              postedTime: Date.now()
+        // if (this.tokenBalance >= this.globals.tokenDeductAmmount_TokenponDownVote) {
+        // console.log(this.alreadyDisliked);
+        let data = {
+          _id: this.claimId,
+          appId: this.globals.TokenponAppId,
+          vote: {
+            vote: this.reactions[1],  //dislike
+            postedBy: this.currentUserId,
+            postedTime: Date.now()
+          }
+        };
+        this.mongoService.addVote(data)
+          .subscribe(response => {
+            if (response.status == 200) {
+              // this.toasterService.pop('success', 'Vote submitted successfully');
+              this.submitted = true;
+              // this.likes++;
+              // console.log("account: " + this.account);
+              //deduct token
+              this.oothService.onUserAction(this.globals.TokenponAppId, this.globals.action.dislike);
+              //this.oothService.deductToken(localStorage.getItem("currentUserId"), this.globals.tokenDeductAmmount_ChainpageDownVote);
+              //reload votes
+              this.getDetails();
+              this.alreadyDisliked = !this.alreadyDisliked;
+              return true;
             }
-          };
-          this.mongoService.addVote(data)
-            .subscribe(response => {
-              if (response.status == 200) {
-                // this.toasterService.pop('success', 'Vote submitted successfully');
-                this.submitted = true;
-                // this.likes++;
-                // console.log("account: " + this.account);
-                //deduct token
-                this.oothService.onUserAction(this.globals.TokenponAppId, this.globals.action.dislike);
-                //this.oothService.deductToken(localStorage.getItem("currentUserId"), this.globals.tokenDeductAmmount_ChainpageDownVote);
-                //reload votes
-                this.getDetails();
-                this.alreadyDisliked = !this.alreadyDisliked;
-                return true;
-              }
-              else {
-                this.toasterService.pop("error", response.statusText);
-              }
-            })
-        }
-        else {
-          this.toasterService.pop("error", "You don't have enough tokens");
-        }
+            else {
+              this.toasterService.pop("error", response.statusText);
+            }
+          })
+        // }
+        // else {
+        //   this.toasterService.pop("error", "You don't have enough tokens");
+        // }
       }
 
       // console.log(this.alreadyDisliked);
@@ -897,14 +904,19 @@ export class ClaimDetailComponent implements OnInit {
       });
 
   }
-  displayBuyModal(content, i, finalConfirm, loginModal) {
-    if (this.currentUser !== null && this.currentUser !== undefined && this.currentUser.trim() !== "") {
-      this.discountTokenCost = this.discountArray[i].token;
-      this.modalService.open(content).result.then((result) => {
+  displayBuyModal(content, i, finalConfirm, loginModal) {    
+    if (this.currentUserId !== null && this.currentUserId !== undefined && this.currentUserId.trim() !== "") {
+      
+      //initializing the array
+      this.purchaseCountList = Array.from(new Array(this.discountArray[i].groupCount),(val,index)=>index+1);
+      this.selectedDiscount = this.discountArray[i];
+
+      const modalRef = this.modalService.open(content).result.then((result) => {
         this.closeResult = `Closed with: ${result}`;
       }, (reason) => {
         this.closeResult = `Dismissed ${this.getDismissReason(reason, i, finalConfirm)}`;
       });
+      console.log(modalRef);
     }
     else {
       this.modalService.open(loginModal).result.then((result) => {
@@ -950,10 +962,21 @@ export class ClaimDetailComponent implements OnInit {
       this.closeResult = `Closed with: ${result}`;
     }, (reason) => {
       if (reason === "Send") {
-        // this.oothService.sendEmail(this.shareWith, this.globals.TokenponShareDealSubject, this.currentUrl)
-        //   .subscribe(response => {
-        //     this.toasterService.pop("success", "Your invite was sent successfully!");
-        // });        
+        this.oothService.sendEmail(this.shareWith, this.globals.TokenponShareDealSubject, this.globals.TokenponShareDealBody + this.currentUrl)
+          .then(response => {
+            if (response.status === 200) {
+              this.toasterService.pop("success", "Your invite was sent successfully!");
+            }
+            else if(response.result === true){
+              this.toasterService.pop("success", "Your invite was sent successfully!");
+            }
+            else{
+              this.toasterService.pop("error", "Sorry, there was an error sending your invite. Please try again later.");
+            }
+          })
+          .catch(reason => {
+            this.toasterService.pop("error", "Sorry, there was an error sending your invite. Please try again later.");
+          })
       }
     });
   }
@@ -984,7 +1007,7 @@ export class ClaimDetailComponent implements OnInit {
           this.loading = false;
         }
         else {
-          this.currentUser = localStorage.getItem("currentUser");
+          this.currentUserId = localStorage.getItem("currentUserId");
           // console.log("redirect to: " + this.returnUrl);
           // // var arr = this.returnUrl.split("?");
           // // if(arr.length == 1){

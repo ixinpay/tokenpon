@@ -30,7 +30,7 @@ export class ClaimComponent implements OnInit {
   urls: any[] = [];
   files: any[] = [];
   fileNames: any[] = [];
-  currentUser: string;
+  currentUserId: string;
   model: any = {};
   claims: Tokenpon[] = [];
   submitted = false;
@@ -63,7 +63,7 @@ export class ClaimComponent implements OnInit {
     private http: Http, private swarmService: SwarmService
   ) {
     this.expireDays = Array.from(new Array(90),(val,index)=>index+30);
-    this.currentUser = localStorage.getItem('currentUser');
+    this.currentUserId = localStorage.getItem('currentUserId');
     // this.model.submitBy = this.currentUser;
     this.discountValueList = Array.from(new Array(100),(val,index)=>index+1);
     this.route.queryParams.subscribe(params => {
@@ -307,7 +307,7 @@ export class ClaimComponent implements OnInit {
     this.model.businessHour = this.profileModel.businessHour;
     this.model.businessMainCategory = this.profileModel.businessMainCategory;
     this.model.businessSubCategory = this.profileModel.businessSubCategory;
-    this.model.postedBy = this.currentUser;
+    this.model.postedBy = this.currentUserId;
     this.model.pictures = this.urls.map(e => e.url);
     this.model.notification = this.profileModel.notification;
     this.model.discounts = this.discountArray;
@@ -359,7 +359,9 @@ export class ClaimComponent implements OnInit {
         );
     }
   }
-  async onSubmit() {
+  // isPublish: true = publish, false = draf
+  async onSubmit(isPublish: boolean) {
+    console.log("is publish?" + isPublish);
     this.submitted = true;
     //upload pictures to Mongo
     

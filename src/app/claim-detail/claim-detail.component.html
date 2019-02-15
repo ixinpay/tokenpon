@@ -1,5 +1,8 @@
 <div class="container">
     <div class="row">
+        <span class="col-9 text-info">{{iXinMobileAppMessage}}</span>
+    </div>
+    <div class="row">
         <div class="form-group col-md-9 no-gutters">
             <label for="businessCategory" translate>{{model.businessMainCategory}}</label> >
             <label for="businessCategory" class="inline" translate>{{model.businessSubCategory}}</label>
@@ -148,6 +151,9 @@
                                 <button type="button" class="btn defaultbtn" (click)="displayBuyModal(content, i, finalConfirm, loginModal);">BUY</button>
                                                                 
                             </div>
+                            <div class="text-warning">
+                                {{TokenponGroupBuyPrint}}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -189,7 +195,7 @@
             </div>
         </div>
         <div class="form-group col-md-9 no-gutters">
-            <div *ngIf="!currentUser">
+            <div *ngIf="!currentUserId">
                 <div class="row col-12">
                     <i class="far fa-thumbs-up fa-lg col-6">
                         <i style="font-size: medium;">{{likes}} likes</i>
@@ -199,7 +205,7 @@
                     </i>
                 </div>
             </div>
-            <div *ngIf="currentUser != undefined">
+            <div *ngIf="currentUserId != undefined">
                 <div class="row col-12">
                     <i (click)="thumbsUp()" [ngClass]="{ 'fa-thumbs-up-clicked': alreadyLiked }" class="far fa-thumbs-up fa-lg col-6"
                         placement="top" ngbTooltip="you liked it">
@@ -287,13 +293,29 @@
             </button>
         </div> -->
     <div class="modal-body">
-        <label class="form-label">How many tokenpon would you like to purchase?</label>
-        <select>
-            <option></option>
-        </select>
-        <p translate>Total <label class="font-weight-bold">{{discountTokenCost * tokenponPurchaseCount}}</label> iXin coin will be withdrawn from your account. Your purchase will be shown
-            on Your
-            iXin Pay Mobile App.
+        <div class="card bg-light">
+            <div class="row mt-2">
+                <h5 class="col-xs-12 col-sm-12 col-md-10 font-weight-bold">
+                    {{selectedDiscount.title}}
+                </h5>
+            </div>
+            <div class="row col-12">
+                <label class="mr-2">Description:</label>
+                <label>{{selectedDiscount.description}}</label>
+            </div>
+            <div class="row col-12">
+                <label class="mr-2">Cost:</label>
+                <label>{{selectedDiscount.token}} iXin</label>
+            </div>
+            <div class="row col-12 mb-2">
+                <label class="form-label mr-2">How many tokenpon would you like to purchase?</label>
+                <select class="col-xs-3 col-sm-3 col-md-2 form-control" [(ngModel)]="tokenponPurchaseCount">
+                    <option *ngFor="let count of purchaseCountList" [value]="count" [selected]="count == 1">{{count}}</option>
+                </select>
+            </div>
+        </div>        
+        <p class="mt-2" translate>Total <label class="font-weight-bold">{{selectedDiscount.token * tokenponPurchaseCount}}</label> iXin coins will be withdrawn from your account. Your purchase will be shown
+            on Your iXin Pay Mobile App.
         </p>
     </div>
     <div class="modal-footer">

@@ -58,7 +58,7 @@
             <li *ngFor="let cat of menuItems" class="nav-item active dropdown mr-2">
                 <!-- if there is a submenu -->
                 <div *ngIf="cat.subcategories.length > 0">
-                    <a href="{{'#Submenu' + cat.Category}}" data-toggle="dropdown" aria-expanded="false" translate>{{cat.Description}}</a>
+                    <a href="{{'#Submenu' + cat.Category}}" data-toggle="dropdown" aria-expanded="false" class="dropdown-toggle" translate>{{cat.Description}}</a>
                     <div class="dropdown-menu" id="{{'Submenu' + cat.Category}}">
                         <a class="dropdown-item" *ngFor="let subcat of cat.subcategories" [routerLink]="['/home']"
                             [queryParams]="{subcat: subcat.Description}" translate>
