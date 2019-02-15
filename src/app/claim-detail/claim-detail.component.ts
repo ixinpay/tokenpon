@@ -911,7 +911,7 @@ export class ClaimDetailComponent implements OnInit {
       this.purchaseCountList = Array.from(new Array(this.discountArray[i].groupCount),(val,index)=>index+1);
       //if not a group buy, set max to 10
       if(this.discountArray[i].groupCount == 1 || this.discountArray[i].groupCount == null || this.discountArray[i].groupCount == undefined){
-        this.purchaseCountList = Array.from(new Array(10),(val,index)=>index+1);
+        this.purchaseCountList = Array.from(new Array(this.globals.MaxTokenponPurchaseAllowable),(val,index)=>index+1);
       }
       this.selectedDiscount = this.discountArray[i];
 
