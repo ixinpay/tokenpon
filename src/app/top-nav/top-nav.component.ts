@@ -95,9 +95,9 @@ export class TopNavComponent implements OnInit {
     }
     this.defaultLabel = this.pleaseChoose.hasOwnProperty(locale) ? this.pleaseChoose[locale] : this.pleaseChoose.en;
 
-    this.currentUser = localStorage.getItem("currentUser");
-    this.currentUserAccount = localStorage.getItem("currentUserAccount");
-    this.currentUserEmail = localStorage.getItem("currentUserEmail");
+    this.currentUser = sessionStorage.getItem("currentUser");
+    this.currentUserAccount = sessionStorage.getItem("currentUserAccount");
+    this.currentUserEmail = sessionStorage.getItem("currentUserEmail");
     this.oothService.getLoggedInUserName
       .subscribe(dname => {
         this.currentUser = dname;
@@ -107,7 +107,7 @@ export class TopNavComponent implements OnInit {
     //   .subscribe(account => {
     //     this.currentUserAccount = account;
     //     console.log("account: " + this.currentUser);
-    //     // let balanceSession = localStorage.getItem('tokenBalance');
+    //     // let balanceSession = sessionStorage.getItem('tokenBalance');
     //     // if (balanceSession) {
     //     //   this.tokenBalance = Number.parseFloat(balanceSession);
     //     //   console.log("session balance=" + balanceSession)
@@ -140,8 +140,8 @@ export class TopNavComponent implements OnInit {
       });
   }
   // get userLoggedIn(): boolean {
-  //   // if (localStorage.getItem("currentUser")) {
-  //   //   this.currentUser = JSON.parse(localStorage.getItem("currentUser"));
+  //   // if (sessionStorage.getItem("currentUser")) {
+  //   //   this.currentUser = JSON.parse(sessionStorage.getItem("currentUser"));
   //   //   return true;
   //   // }
   //   // return false;
@@ -160,7 +160,7 @@ export class TopNavComponent implements OnInit {
     // .then(() => this.alertService.success('Logout successful', true));
     //this.globals.isLoggedIn = false;
     this.currentUser = undefined;
-    localStorage.setItem("oothtoken", "");
+    sessionStorage.setItem("oothtoken", "");
     // get return url from route parameters or default to '/'
     //this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
     this.router.navigate(['/login']);

@@ -63,7 +63,7 @@ export class ClaimComponent implements OnInit {
     private http: Http, private swarmService: SwarmService
   ) {
     this.expireDays = Array.from(new Array(90),(val,index)=>index+30);
-    this.currentUserId = localStorage.getItem('currentUserId');
+    this.currentUserId = sessionStorage.getItem('currentUserId');
     // this.model.submitBy = this.currentUser;
     this.discountValueList = Array.from(new Array(100),(val,index)=>index+1);
     this.route.queryParams.subscribe(params => {
@@ -80,7 +80,7 @@ export class ClaimComponent implements OnInit {
   }
   //get user profile data
   getProfileData() {
-    this.mongoService.GetProfile(localStorage.getItem('currentUserId'), this.globals.TokenponAppId)
+    this.mongoService.GetProfile(sessionStorage.getItem('currentUserId'), this.globals.TokenponAppId)
       .subscribe(response => {
         if (response.status == 200) {
           // console.log(response);
@@ -290,7 +290,7 @@ export class ClaimComponent implements OnInit {
     // if (this.model.id === undefined) {
     //   this.model.id = "NA";
     // }
-    this.model.merchantAccountAddress = localStorage.getItem("currentUserAccount");
+    this.model.merchantAccountAddress = sessionStorage.getItem("currentUserAccount");
     this.model.appId = this.globals.TokenponAppId;
     this.model.merchantId = this.profileModel.userId;
     this.model.businessName = this.profileModel.businessName;

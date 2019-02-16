@@ -76,7 +76,7 @@ export class ListingsComponent implements OnInit {
     private alertService: AlertService, private titleService: Title,
     private http: Http, private translate: TranslateService, private modalService: NgbModal
   ) {
-    // this.accountType = localStorage.getItem("accountType");
+    // this.accountType = sessionStorage.getItem("accountType");
     this.route.queryParams.subscribe(params => {
       // console.log(params['id']);
       let searchText = params['search']
@@ -397,8 +397,8 @@ export class ListingsComponent implements OnInit {
     //   });
     // });
 
-    // this.currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    this.currentUser = localStorage.getItem('currentUser');
+    // this.currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
+    this.currentUser = sessionStorage.getItem('currentUser');
     if (this.currentUser) {
       this.model.submitBy = this.currentUser;
     }
@@ -647,8 +647,8 @@ export class ListingsComponent implements OnInit {
   }
 
   addListing(content) {
-    if (localStorage.getItem("accountType") == undefined || localStorage.getItem("accountType").trim() == ""
-      || localStorage.getItem("accountType") == this.globals.TokenponAccountType[0]) {
+    if (sessionStorage.getItem("accountType") == undefined || sessionStorage.getItem("accountType").trim() == ""
+      || sessionStorage.getItem("accountType") == this.globals.TokenponAccountType[0]) {
 
       this.showModal = true;
       this.displayModal(content);
@@ -674,7 +674,7 @@ export class ListingsComponent implements OnInit {
     // });
   }
   getProfileData() {
-    let userName = localStorage.getItem("currentUser");
+    let userName = sessionStorage.getItem("currentUser");
     return this.mongoService.GetProfile(userName, this.globals.TokenponAppId);
   }
   selectOffer(id: string) {

@@ -102,13 +102,13 @@ export class ClaimDetailComponent implements OnInit {
     this.iXinMobileAppMessage = this.globals.iXinMobileAppMessage;
     this.TokenponGroupBuyPrint = this.globals.TokenponGroupBuyPrint;
     this.currentUrl = window.location.href;
-    this.account = localStorage.getItem("currentUserAccount");
+    this.account = sessionStorage.getItem("currentUserAccount");
     this.page = 1;
     this.maxSize = 100;
     this.pageSize = 5;
-    this.currentUser = localStorage.getItem("currentUser");
-    this.currentUserId = localStorage.getItem("currentUserId");
-    this.currentUserEmail = localStorage.getItem("currentUserEmail");
+    this.currentUser = sessionStorage.getItem("currentUser");
+    this.currentUserId = sessionStorage.getItem("currentUserId");
+    this.currentUserEmail = sessionStorage.getItem("currentUserEmail");
     this.oothService.getTokenBalance(this.account)
       .then(balance => {
         console.log("balance=" + balance)
@@ -306,10 +306,10 @@ export class ClaimDetailComponent implements OnInit {
   }
   async onSubmit(commentText: string) {
     // console.log("onSubmit: " + this.claimId)
-    if (localStorage.getItem("oothtoken") != undefined && localStorage.getItem("oothtoken").toString().trim() != "") {
+    if (sessionStorage.getItem("oothtoken") != undefined && sessionStorage.getItem("oothtoken").toString().trim() != "") {
       // console.log(this.oothService.getUser());
       // console.log("calling onSubmit()");
-      // console.log(localStorage.getItem("oothtoken"));
+      // console.log(sessionStorage.getItem("oothtoken"));
       // this.VerifyToken();
       //let user = await this.oothService.getUser();
       // console.log(user.local.email);
@@ -348,8 +348,8 @@ export class ClaimDetailComponent implements OnInit {
             // }
             //deduct token
             // if (!this.ownComment) {
-            // console.log("deduct new comment token from " + localStorage.getItem("currentUserId"));
-            // this.oothService.deductToken(localStorage.getItem("currentUserId"), this.globals.tokenDeductAmmount_ChainpageComment);
+            // console.log("deduct new comment token from " + sessionStorage.getItem("currentUserId"));
+            // this.oothService.deductToken(sessionStorage.getItem("currentUserId"), this.globals.tokenDeductAmmount_ChainpageComment);
             this.oothService.onUserAction(this.globals.TokenponAppId, this.globals.action.comment);
             // }
             //reload comments
@@ -420,7 +420,7 @@ export class ClaimDetailComponent implements OnInit {
               // this.toasterService.pop('success', 'Vote deleted successfully');
               this.submitted = true;
               // this.likes--;
-              // console.log("user id: " + localStorage.getItem("currentUserId"));
+              // console.log("user id: " + sessionStorage.getItem("currentUserId"));
               //deduct token
               // this.oothService.deductToken(this.account, this.globals.tokenDeductAmmount_ChainpageUpVote);
               //reload votes
@@ -452,10 +452,10 @@ export class ClaimDetailComponent implements OnInit {
               // this.toasterService.pop('success', 'Vote submitted successfully');
               this.submitted = true;
               // this.likes++;
-              console.log("user id: " + localStorage.getItem("currentUserId"));
+              console.log("user id: " + sessionStorage.getItem("currentUserId"));
               //deduct token
               this.oothService.onUserAction(this.globals.TokenponAppId, this.globals.action.like)
-              //this.oothService.deductToken(localStorage.getItem("currentUserId"), this.globals.tokenDeductAmmount_ChainpageUpVote);
+              //this.oothService.deductToken(sessionStorage.getItem("currentUserId"), this.globals.tokenDeductAmmount_ChainpageUpVote);
               //reload votes
               this.getDetails();
               this.alreadyLiked = !this.alreadyLiked;
@@ -525,7 +525,7 @@ export class ClaimDetailComponent implements OnInit {
               // console.log("account: " + this.account);
               //deduct token
               this.oothService.onUserAction(this.globals.TokenponAppId, this.globals.action.dislike);
-              //this.oothService.deductToken(localStorage.getItem("currentUserId"), this.globals.tokenDeductAmmount_ChainpageDownVote);
+              //this.oothService.deductToken(sessionStorage.getItem("currentUserId"), this.globals.tokenDeductAmmount_ChainpageDownVote);
               //reload votes
               this.getDetails();
               this.alreadyDisliked = !this.alreadyDisliked;
@@ -584,10 +584,10 @@ export class ClaimDetailComponent implements OnInit {
   //   //console.log(this.model);
   // }
   // async onSubmit(commentText: string) {
-  //   if (localStorage.getItem("oothtoken") != undefined && localStorage.getItem("oothtoken").toString().trim() != "") {
+  //   if (sessionStorage.getItem("oothtoken") != undefined && sessionStorage.getItem("oothtoken").toString().trim() != "") {
   //     // console.log(this.oothService.getUser());
   //     // console.log("calling onSubmit()");
-  //     // console.log(localStorage.getItem("oothtoken"));
+  //     // console.log(sessionStorage.getItem("oothtoken"));
   //     // this.VerifyToken();
   //     let user = await this.oothService.getUser();
   //     // console.log(user.local.email);
@@ -650,8 +650,8 @@ export class ClaimDetailComponent implements OnInit {
   //         JSON.parse(JSON.stringify(dataset)).forEach(element => {
   //           // console.log(element.data);
   //           if (element.data.type == this.globals.chainPageComment) {
-  //             if (localStorage.getItem("currentUser") != undefined) {
-  //               if (element.data.postedBy == localStorage.getItem("currentUser").toString()) {
+  //             if (sessionStorage.getItem("currentUser") != undefined) {
+  //               if (element.data.postedBy == sessionStorage.getItem("currentUser").toString()) {
   //                 this.ownComments.push(element.data);
   //                 // console.log("push to ownComments");
   //                 // console.log(element.data);
@@ -1011,7 +1011,7 @@ export class ClaimDetailComponent implements OnInit {
           this.loading = false;
         }
         else {
-          this.currentUserId = localStorage.getItem("currentUserId");
+          this.currentUserId = sessionStorage.getItem("currentUserId");
           // console.log("redirect to: " + this.returnUrl);
           // // var arr = this.returnUrl.split("?");
           // // if(arr.length == 1){

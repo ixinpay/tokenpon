@@ -98,17 +98,17 @@ export class OothService {
             this.logginStatus.emit(true);
             if (body.user.local.dname) {
                 this.getLoggedInUserName.emit(body.user.local.dname);
-                localStorage.setItem('currentUser', body.user.local.dname);
+                sessionStorage.setItem('currentUser', body.user.local.dname);
             }
             else {
                 this.getLoggedInUserName.emit(body.user.local.email);
-                localStorage.setItem('currentUser', body.user.local.email);
+                sessionStorage.setItem('currentUser', body.user.local.email);
             }
-            localStorage.setItem("currentUserId", body.user._id);
-            localStorage.setItem('currentUserEmail', body.user.local.email);
-            localStorage.setItem('currentUserAccount', body.user.local.account);
-            localStorage.setItem("accountType", body.user.local.accountType);
-            localStorage.setItem("phoneNumber", body.user.local.mobile);
+            sessionStorage.setItem("currentUserId", body.user._id);
+            sessionStorage.setItem('currentUserEmail', body.user.local.email);
+            sessionStorage.setItem('currentUserAccount', body.user.local.account);
+            sessionStorage.setItem("accountType", body.user.local.accountType);
+            sessionStorage.setItem("phoneNumber", body.user.local.mobile);
         }
         else {
             return { status: "error", message: body };
@@ -135,15 +135,15 @@ export class OothService {
             // this.getLoggedInAccount.emit(undefined);
             this.logginStatus.emit(false);
         }
-        localStorage.removeItem("currentUser");
-        localStorage.removeItem("currentUserId");
-        localStorage.removeItem("currentUserEmail");
-        localStorage.removeItem("expires_at");
-        localStorage.removeItem("oothtoken");
-        localStorage.removeItem("currentUserAccount");
-        localStorage.removeItem("tokenBalance");
-        localStorage.removeItem("accountType");
-        localStorage.removeItem("phoneNumber");
+        sessionStorage.removeItem("currentUser");
+        sessionStorage.removeItem("currentUserId");
+        sessionStorage.removeItem("currentUserEmail");
+        sessionStorage.removeItem("expires_at");
+        sessionStorage.removeItem("oothtoken");
+        sessionStorage.removeItem("currentUserAccount");
+        sessionStorage.removeItem("tokenBalance");
+        sessionStorage.removeItem("accountType");
+        sessionStorage.removeItem("phoneNumber");
         return body;
     }
     // GenerateV Verification Token
@@ -164,7 +164,7 @@ export class OothService {
         const body = await res.json();
         console.log(body);
         // alert(`${body.message} - ${body.token}`);
-        localStorage.setItem('oothtoken', body.token);
+        sessionStorage.setItem('oothtoken', body.token);
     }
     async onVerify() {
         console.log("onVerify");
@@ -174,7 +174,7 @@ export class OothService {
         if (user != null) {
             const userId = user._id;
             // console.log(`user Id: ${userId}`);
-            const token = localStorage.getItem("oothtoken");
+            const token = sessionStorage.getItem("oothtoken");
             console.log("token: " + token);
             const res = await fetch(this.API_PATH + 'local/verify', {
                 method: 'POST',
@@ -223,9 +223,9 @@ export class OothService {
         let expiresAt = Date.now() + environment.inactivitySec * 1000;
         // console.log(expiresAt)
         // console.log(user)
-        localStorage.setItem('currentUser', user);
-        localStorage.setItem("expires_at", expiresAt.toString());
-        //console.log("SESSION:" + localStorage.getItem('currentUser'));
+        sessionStorage.setItem('currentUser', user);
+        sessionStorage.setItem("expires_at", expiresAt.toString());
+        //console.log("SESSION:" + sessionStorage.getItem('currentUser'));
     }
 
     // Get the balance of the token
@@ -244,7 +244,7 @@ export class OothService {
         // const body = await res.json();
         // let balance = Math.round(parseFloat(body.result) * 100) / 100;
         // this.getAccountBalance.emit(balance);
-        // localStorage.setItem('tokenBalance', balance.toString());
+        // sessionStorage.setItem('tokenBalance', balance.toString());
         // console.log("balance: " + balance);
         // return balance;
         const res = await fetch(this.API_PATH + 'local/t-balanceOf', {
@@ -373,7 +373,7 @@ export class OothService {
         })
         const body = await res.json()
         if (body.status !== 'error') {
-            localStorage.setItem("accountType", accountType);
+            sessionStorage.setItem("accountType", accountType);
         }
         return body;
     }

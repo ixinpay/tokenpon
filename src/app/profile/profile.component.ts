@@ -73,10 +73,10 @@ export class ProfileComponent implements OnInit {
     private http: Http, private swarmService: SwarmService) {
 
     this.checkIsRegularAccount();
-    this.accountNumber = localStorage.getItem("currentUserAccount");
-    this.phoneNumber = localStorage.getItem("phoneNumber");
-    console.log(localStorage.getItem("accountType"));
-    this.accountType = localStorage.getItem("accountType");
+    this.accountNumber = sessionStorage.getItem("currentUserAccount");
+    this.phoneNumber = sessionStorage.getItem("phoneNumber");
+    console.log(sessionStorage.getItem("accountType"));
+    this.accountType = sessionStorage.getItem("accountType");
     this.accountTypeOriginal = this.accountType;
     this.accountTypeList = this.globals.TokenponAccountType;
 
@@ -84,7 +84,7 @@ export class ProfileComponent implements OnInit {
     //   this.userName = params["user"];
     //   this.getProfileData();
     // });
-    this.userName = localStorage.getItem("currentUser");
+    this.userName = sessionStorage.getItem("currentUser");
     this.getProfileData();
 
     this.profilePages = new Array("Account Information", "Account Profile", "Account Settings");
@@ -116,7 +116,7 @@ export class ProfileComponent implements OnInit {
     //     // });
     //   });
 
-    // let balanceSession = localStorage.getItem('tokenBalance');
+    // let balanceSession = sessionStorage.getItem('tokenBalance');
     //     if (balanceSession) {
     //       this.tokenBalance = Number.parseFloat(balanceSession);
     //       console.log("session balance=" + balanceSession)
@@ -128,7 +128,7 @@ export class ProfileComponent implements OnInit {
     //           this.tokenBalance = balance;
     //         });
     //     }
-    this.currentUser = localStorage.getItem('currentUser');
+    this.currentUser = sessionStorage.getItem('currentUser');
     // this.model.submitBy = this.currentUser;
 
     this.http.get('/assets/cat.json')
@@ -146,8 +146,8 @@ export class ProfileComponent implements OnInit {
   }
   //set isRegularAccount
   checkIsRegularAccount() {
-    if (localStorage.getItem("accountType") == undefined || localStorage.getItem("accountType").trim() == ""
-      || localStorage.getItem("accountType") == this.globals.TokenponAccountType[0]) {
+    if (sessionStorage.getItem("accountType") == undefined || sessionStorage.getItem("accountType").trim() == ""
+      || sessionStorage.getItem("accountType") == this.globals.TokenponAccountType[0]) {
       this.isRegularAccount = true;
     }
     else {
@@ -156,7 +156,7 @@ export class ProfileComponent implements OnInit {
   }
   //get user profile data
   getProfileData() {
-    this.mongoService.GetProfile(localStorage.getItem("currentUserId"), this.globals.TokenponAppId)
+    this.mongoService.GetProfile(sessionStorage.getItem("currentUserId"), this.globals.TokenponAppId)
       .subscribe(response => {
         if (response.status == 200) {
           console.log(response);
@@ -458,7 +458,7 @@ export class ProfileComponent implements OnInit {
     // if (this.profileModel.id === undefined) {
     //   this.profileModel.id = "NA";
     // }
-    this.profileModel.userId = localStorage.getItem("currentUserId");
+    this.profileModel.userId = sessionStorage.getItem("currentUserId");
     this.profileModel.accountType = this.accountType;
     this.profileModel.postedBy = this.currentUser;
     this.profileModel.postedTime = Date.now();
@@ -469,14 +469,14 @@ export class ProfileComponent implements OnInit {
     // if (this.inBusinessEdit == true) {
     // console.log(this.profileModel);
     this.profileModel.appId = this.globals.TokenponAppId;
-    localStorage.setItem("profileModel", this.profileModel);
+    sessionStorage.setItem("profileModel", this.profileModel);
     // this.mongoService.updateProfile(this.profileModel)
-    this.oothService.updateAccountType(localStorage.getItem("currentUserId"), this.accountType)
+    this.oothService.updateAccountType(sessionStorage.getItem("currentUserId"), this.accountType)
       .then(response => {
         // console.log(response);
         if (response.status !== "error") {
           //update cached accountType
-          localStorage.setItem("accountType", this.accountType);
+          sessionStorage.setItem("accountType", this.accountType);
           this.checkIsRegularAccount();
           this.mongoService.updateProfile(this.profileModel)
             .subscribe(res => {

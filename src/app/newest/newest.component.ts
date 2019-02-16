@@ -39,7 +39,7 @@ export class NewestComponent implements OnInit {
 
   ngOnInit() {
     this.titleService.setTitle("Tokenpon");
-    this.currentUser = localStorage.getItem('currentUser');
+    this.currentUser = sessionStorage.getItem('currentUser');
     if (this.currentUser) {
       this.model.submitBy = this.currentUser;
     }

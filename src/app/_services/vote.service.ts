@@ -75,8 +75,8 @@ export class VoteService {
   //         JSON.parse(JSON.stringify(dataset)).forEach(element => {
   //           // console.log(element.data);
   //           if (element.data.type == this.globals.chainPageVote) {
-  //             if (localStorage.getItem("currentUser") != undefined) {
-  //               if (element.data.postedBy == localStorage.getItem("currentUser").toString()) {
+  //             if (sessionStorage.getItem("currentUser") != undefined) {
+  //               if (element.data.postedBy == sessionStorage.getItem("currentUser").toString()) {
   //                 this.ownVotes.push(element.data);
   //               }
   //               else {

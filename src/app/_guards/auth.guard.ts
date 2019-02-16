@@ -14,9 +14,9 @@ export class AuthGuard implements CanActivate {
     }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-        console.log("oothtoken = " + localStorage.getItem("oothtoken"));
-        if (localStorage.getItem("oothtoken") != "" && localStorage.getItem("oothtoken") != null
-            && localStorage.getItem("oothtoken") != undefined) {
+        console.log("oothtoken = " + sessionStorage.getItem("oothtoken"));
+        if (sessionStorage.getItem("oothtoken") != "" && sessionStorage.getItem("oothtoken") != null
+            && sessionStorage.getItem("oothtoken") != undefined) {
             // console.log(this.oothService.getUser());
             // console.log("calling VerifyToken()");
             // this.VerifyToken()
@@ -48,14 +48,14 @@ export class AuthGuard implements CanActivate {
     private isValidSession(): boolean {
         // Check if current date is greater
         // than expiration and user is logged in
-        const expiresAt = JSON.parse(localStorage.getItem('expires_at'));
+        const expiresAt = JSON.parse(sessionStorage.getItem('expires_at'));
         console.log("original exp: " + expiresAt);
         return Date.now() < expiresAt;
     }
     private resetSessionTimeout() {
         let expiresAt = Date.now() + environment.inactivitySec * 1000;
         console.log("New exp: " + expiresAt);
-        localStorage.setItem("expires_at", expiresAt.toString());
+        sessionStorage.setItem("expires_at", expiresAt.toString());
     }
     VerifyToken() {
         return this.oothService.onVerify();
