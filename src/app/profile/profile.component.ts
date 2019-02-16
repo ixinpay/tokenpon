@@ -90,12 +90,12 @@ export class ProfileComponent implements OnInit {
     this.profilePages = new Array("Account Information", "Account Profile", "Account Settings");
     this.selectedPage = this.profilePages[0];
     //get user data
-    this.oothService.getUser()
-      .then(res => {
-        this.model = res;
-        console.log(this.model.local)
-        console.log(this.model.local.region)
-      });
+    // this.oothService.getUser()
+    //   .then(res => {
+    //     this.model = res;
+    //     console.log(this.model.local)
+    //     console.log(this.model.local.region)
+    //   });
     //get super node list
     // this.oothService.getInfo()
     //   .then(res => {
@@ -129,7 +129,7 @@ export class ProfileComponent implements OnInit {
     //         });
     //     }
     this.currentUser = localStorage.getItem('currentUser');
-    this.model.submitBy = this.currentUser;
+    // this.model.submitBy = this.currentUser;
 
     this.http.get('/assets/cat.json')
       .subscribe(data => {
