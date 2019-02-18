@@ -62,6 +62,9 @@ export class ProfileComponent implements OnInit {
   private accountTypeList: any[];
   private accountType: string;
   private accountTypeOriginal: string;
+  purchasedTokenpons: any[];
+  publishedTokenpons: any[];
+  draftTokenpons: any[];
 
   //end claim page
   constructor(private oothService: OothService, private route: ActivatedRoute
@@ -79,7 +82,18 @@ export class ProfileComponent implements OnInit {
     this.accountType = sessionStorage.getItem("accountType");
     this.accountTypeOriginal = this.accountType;
     this.accountTypeList = this.globals.TokenponAccountType;
-
+    this.purchasedTokenpons = [];
+    this.publishedTokenpons =[];
+    this.draftTokenpons = [];
+    
+    //get purchased tokenpon
+    this.mongoService.getTokenponPurchasesByUser(this.accountNumber)
+      .subscribe(response =>{
+        if(response.status == 200){
+          this.purchasedTokenpons = response.json().data;
+          console.log(this.purchasedTokenpons);
+        }
+      });
     // this.route.queryParams.subscribe(params => {
     //   this.userName = params["user"];
     //   this.getProfileData();
@@ -87,7 +101,7 @@ export class ProfileComponent implements OnInit {
     this.userName = sessionStorage.getItem("currentUser");
     this.getProfileData();
 
-    this.profilePages = new Array("Account Information", "Account Profile", "Account Settings");
+    this.profilePages = new Array("Account Information", "Account Profile", "Account Settings", "Your Tokenpon");
     this.selectedPage = this.profilePages[0];
     //get user data
     // this.oothService.getUser()

@@ -112,4 +112,15 @@ export class MongoService {
     getTokenponBuyerCount(merchant, tokenponId){
         return this.http.get(this.API + 'getTokenonponCount/' + merchant + "/" + tokenponId);
     }
+    publishTokenpon(tokenpon) {
+        return this.http.post(this.API + 'publishTokenpon/', tokenpon)
+        // .map((response: Response) =>response.json())
+    }
+    purchaseTokenpon(tokenpon) {
+        return this.http.post(this.API + 'purchaseTokenpon/', tokenpon)
+        // .map((response: Response) =>response.json())
+    }
+    getTokenponPurchasesByUser(address){
+        return this.http.get(this.API + 'getTokenponPurchasesByUser/' + address)
+    }
 }

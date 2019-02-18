@@ -904,14 +904,14 @@ export class ClaimDetailComponent implements OnInit {
       });
 
   }
-  displayBuyModal(content, i, finalConfirm, loginModal) {    
+  displayBuyModal(content, i, finalConfirm, loginModal) {
     if (this.currentUserId !== null && this.currentUserId !== undefined && this.currentUserId.trim() !== "") {
-      
+
       //initializing the array: set max allowable number of tokenpons a user can purchase
-      this.purchaseCountList = Array.from(new Array(this.discountArray[i].groupCount),(val,index)=>index+1);
+      this.purchaseCountList = Array.from(new Array(this.discountArray[i].groupCount), (val, index) => index + 1);
       //if not a group buy, set max to 10
-      if(this.discountArray[i].groupCount == 1 || this.discountArray[i].groupCount == null || this.discountArray[i].groupCount == undefined){
-        this.purchaseCountList = Array.from(new Array(this.globals.MaxTokenponPurchaseAllowable),(val,index)=>index+1);
+      if (this.discountArray[i].groupCount == 1 || this.discountArray[i].groupCount == null || this.discountArray[i].groupCount == undefined) {
+        this.purchaseCountList = Array.from(new Array(this.globals.MaxTokenponPurchaseAllowable), (val, index) => index + 1);
       }
       this.selectedDiscount = this.discountArray[i];
 
@@ -927,7 +927,21 @@ export class ClaimDetailComponent implements OnInit {
         this.closeResult = `Closed with: ${result}`;
       }, (reason) => {
         if (reason === 'Login') {
-          this.login();
+          this.login()
+            .then(res => {//console.log(this.model.email + " " + this.model.password)
+              console.log(res)
+              if (res.status === 'error') {
+                // console.log("error: "+res.status)
+                this.toasterService.pop("error", res.message.message);
+                this.loading = false;
+              }
+              else {
+                this.currentUserId = sessionStorage.getItem("currentUserId");              
+              }
+            })
+            .catch(error => {
+              this.toasterService.pop("error", error);
+            });
         }
       });
     }
@@ -971,10 +985,10 @@ export class ClaimDetailComponent implements OnInit {
             if (response.status === 200) {
               this.toasterService.pop("success", "Your invite was sent successfully!");
             }
-            else if(response.result === true){
+            else if (response.result === true) {
               this.toasterService.pop("success", "Your invite was sent successfully!");
             }
-            else{
+            else {
               this.toasterService.pop("error", "Sorry, there was an error sending your invite. Please try again later.");
             }
           })
@@ -1000,30 +1014,8 @@ export class ClaimDetailComponent implements OnInit {
       userid = this.model.email
     }
     else {
-      userid = this.model.phone.substring(1);
+      userid = this.model.loginphone.substring(1);
     }
-    this.oothService.Login(userid, this.model.password, this.phoneLogin)
-      .then(res => {//console.log(this.model.email + " " + this.model.password)
-        console.log(res)
-        if (res.status === 'error') {
-          // console.log("error: "+res.status)
-          this.toasterService.pop("error", res.message.message);
-          this.loading = false;
-        }
-        else {
-          this.currentUserId = sessionStorage.getItem("currentUserId");
-          // console.log("redirect to: " + this.returnUrl);
-          // // var arr = this.returnUrl.split("?");
-          // // if(arr.length == 1){
-          // //     this.router.navigate([arr[0]]); 
-          // // }   
-          // // else if(arr.length > 1){
-          // this.router.navigateByUrl(this.returnUrl);
-          // // }               
-        }
-      })
-      .catch(error => {
-        this.toasterService.pop("error", error);
-      });
+    return this.oothService.Login(userid, this.model.loginpassword, this.phoneLogin);
   }
 }

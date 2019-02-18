@@ -8,14 +8,14 @@
             <label for="businessCategory" class="inline" translate>{{model.businessSubCategory}}</label>
             <div class="col-11 text-center">
                 <button class="btn defaultbtn btn-md" [hidden]="!isAuthor" translate [routerLink]="['/home/claim']"
-                    [queryParams]="{id: claimId}">Edit</button>
+                    [queryParams]="{id: claimId, from: published}" [disabled]="model.numOfPurchases > 0">Edit</button>
                 <button class="btn btn-danger btn-md" [hidden]="!isAuthor" translate (click)="Remove_Listing(claimId, deleteConfirmation)">Delete</button>
                 <a class="float-right" (click)="shareDeal(shareModal);">
                     <i class="fa fa-share-alt fa-lg" aria-hidden="true" matTooltip="share this deal"></i>
                     <small>Share</small>
                 </a>
-                <div>
-                    <!-- {{model.commentsNum + " Reviews"}} -->
+                <div class="text-center text-danger" *ngIf="model.numOfPurchases > 0">
+                    Someone has already purchased this tokenpon. No more update can be made.
                 </div>
                 <!--
             <br>
@@ -411,7 +411,7 @@
                 <div class="row"><label class="col-12" for="phone" translate>Phone Number</label></div>
                 <div class="row">
                     <div class="col-10">
-                        <international-phone-number id="intPhone" [(ngModel)]="model.phone" placeholder="Enter phone number"
+                        <international-phone-number id="intPhone" [(ngModel)]="model.loginphone" placeholder="Enter phone number"
                             [maxlength]="20" [defaultCountry]="'us'" [required]="true" #phone="ngModel" name="phone"></international-phone-number>
                     </div>
                     <div  class="col-2">
@@ -424,7 +424,7 @@
                 <div class="row"><label class="col-12" for="password" translate>Password</label></div>
                 <div class="row">
                     <div class="col-10">
-                        <input type="password" class="form-control" name="password" [(ngModel)]="model.password"
+                        <input type="password" class="form-control" name="password" [(ngModel)]="model.loginpassword"
                             #password="ngModel" required />
                     </div>
                     <div  class="col-2">

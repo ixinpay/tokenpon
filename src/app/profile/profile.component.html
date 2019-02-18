@@ -41,6 +41,11 @@
                                 <i class="fa fa-cog" aria-hidden="true"></i> {{profilePages[2]}}
                             </a>
                         </li>
+                        <li class="col-12" [ngClass]="{'active': selectedPage == profilePages[3]}">
+                            <a (click)="onPageClick(profilePages[3])" translate>
+                                <i class="fa fa-connectdevelop" aria-hidden="true"></i> {{profilePages[3]}}
+                            </a>
+                        </li>
                     </ul>
                 </div>
                 <!-- END MENU -->
@@ -607,6 +612,60 @@
                                     </div>
                                 </div>
                             </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="selectedPage == profilePages[2]">
+                <div class="col-sm-12">
+                    <!-- third card -->
+                    <div class="card">
+                        <div class="card-body">
+                            Under development
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="selectedPage == profilePages[3]">
+                <div class="col-sm-12">
+                    <!-- 4th card -->
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="mb-5">
+                                <h4 class="text-primary" translate>Published Tokenpons</h4>
+                                <div *ngIf="publishedTokenpons.length == 0">
+                                    You have not published any Tokenpon yet.
+                                </div>
+                                <ul class="col-sm-12 col-md-9 col-lg-9 col-xl-8">
+                                    <li class="row listPage" *ngFor="let tokenpon of publishedTokenpons">
+                                        {{tokenpon.type}} - {{tokenpon.redeemLocation}}
+                                    </li>
+                                </ul>
+                            </div>
+                            <hr>
+                            <div class="mb-5">
+                                <h4 class="text-warning" translate>Draft Tokenpons</h4>
+                                <div *ngIf="draftTokenpons.length == 0">
+                                    You have no draft Tokenpon yet.
+                                </div>
+                                <ul class="col-sm-12 col-md-9 col-lg-9 col-xl-8">
+                                    <li class="row listPage" *ngFor="let tokenpon of draftTokenpons">
+                                        {{tokenpon.type}} - {{tokenpon.redeemLocation}}
+                                    </li>
+                                </ul>
+                            </div>
+                            <hr>
+                            <div class="mb-5">
+                                <h4 class="text-success" translate>Purchased Tokenpons</h4>
+                                <div *ngIf="purchasedTokenpons.length == 0">
+                                    You have not purchased any Tokenpon yet.
+                                </div>
+                                <ul class="col-sm-12 col-md-9 col-lg-9 col-xl-8">
+                                    <li class="row listPage" *ngFor="let tokenpon of purchasedTokenpons">
+                                        {{tokenpon.type}} - {{tokenpon.redeemLocation}}
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>

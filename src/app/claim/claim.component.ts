@@ -52,9 +52,11 @@ export class ClaimComponent implements OnInit {
   overallTitle: string;
   finePrint: string;
   logoUrl: string = "";
-  expireDays: number[];
+  // expireDays: number[];
   private showNewOfferUI: boolean = true;
   private discountValueList: number[];
+  fromPage: string; //navigation source 
+
   constructor(
     private router: Router, private route: ActivatedRoute, private translate: TranslateService,
     private userService: UserService, private bigchaindbService: BigchanDbService,
@@ -62,13 +64,14 @@ export class ClaimComponent implements OnInit {
     private alertService: AlertService, private toasterService: ToasterService,
     private http: Http, private swarmService: SwarmService
   ) {
-    this.expireDays = Array.from(new Array(90),(val,index)=>index+30);
+    // this.expireDays = Array.from(new Array(90),(val,index)=>index+30);
     this.currentUserId = sessionStorage.getItem('currentUserId');
     // this.model.submitBy = this.currentUser;
-    this.discountValueList = Array.from(new Array(100),(val,index)=>index+1);
+    this.discountValueList = Array.from(new Array(85),(val,index)=>index+15);
     this.route.queryParams.subscribe(params => {
       // console.log(params['id']);
       this.claimId = params['id'];
+      this.fromPage = params['from'];
       if (this.claimId) {
         this.getDetails(this.claimId);
       }
@@ -269,21 +272,21 @@ export class ClaimComponent implements OnInit {
         this.onChange(this.model.country);
       });
   }
-  uploadFiles() {
+  uploadFiles(isPublish: boolean) {
     //upload pictures to Swarm server first
     this.swarmService.uploadFiles(this.files)
       .subscribe(res => {
         // console.log(res);
         this.model.pictures = res
         // after uploading pictures, upload data
-        this.uploadData();
+        this.uploadData(isPublish);
       },
         err => {
           this.toasterService.pop("error", "fail to upload pictures")
         }
       );
   }
-  uploadData() {
+  uploadData(isPublish: boolean) {
     // set the upload time stamp
     delete this.model["__v"]
     // console.log("model = " + JSON.stringify(this.model));
@@ -319,6 +322,7 @@ export class ClaimComponent implements OnInit {
       element.discount = (element.discount / 100).toFixed(2);
     });
     this.model.postedTime = Date.now();
+    this.model.published = isPublish;
     //this.model.notification = this.toNotify;    
     console.log(this.model)
     if (this.isUpdate == true) {
@@ -327,7 +331,12 @@ export class ClaimComponent implements OnInit {
       this.mongoService.updateListing(this.model)
         .subscribe(response => {
           // console.log(response);
-          this.toasterService.pop('success', 'Update successful');
+          if(isPublish){
+            this.toasterService.pop('success', 'Publish successful');
+          }
+          else{
+            this.toasterService.pop('success', 'Draft was saved successfully');
+          }
           this.router.navigate(['/home/claim-detail'], { queryParams: { id: this.claimId } });
         },
           err => {
@@ -365,13 +374,13 @@ export class ClaimComponent implements OnInit {
     this.submitted = true;
     //upload pictures to Mongo
     
-    this.uploadData();
+    this.uploadData(isPublish);
 
     // update pictures to Swarm
     // if there are pictures to upload
     // if (this.files.length > 0) {
     //   console.log("have pictures to upload")
-    //   this.uploadFiles();
+    //   this.uploadFiles(isPublish);
     // }
     // else {
     //   console.log("no pictures to upload")

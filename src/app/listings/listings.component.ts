@@ -103,6 +103,9 @@ export class ListingsComponent implements OnInit {
   }
   private showListings(response: Response) {
     this.claims = response.json();
+    //filter published = true
+    this.claims = this.claims.filter(m => m.published == true || m.published == null || m.published == undefined);
+
     //sort by business name first
     // this.claims.sort((obj1, obj2) => {
     //   if (this.getBusinessName(obj1.businessName) < this.getBusinessName(obj2.businessName)) {
@@ -179,7 +182,8 @@ export class ListingsComponent implements OnInit {
         dislikes: this.votes[j].dislikes,
         viewCount: this.claims[j].viewCount == null || this.claims[j].viewCount == undefined ? 0 : this.claims[j].viewCount,
         comments: this.claims[j].comments.length,
-        isOwner: this.claims[j].postedBy == this.currentUser
+        isOwner: this.claims[j].postedBy == this.currentUser,
+        numOfPurchases: this.claims[j].numOfPurchases
       };
     }
     this.claimsPage = this.listings.slice(0, this.pageSize);
@@ -196,6 +200,8 @@ export class ListingsComponent implements OnInit {
         .subscribe(response => {
           // console.log(response);
           this.claims = response.json();
+          //filter published = true
+          this.claims = this.claims.filter(m => m.published == true);
           this.totalItems = this.claims.length;
           // console.log(this.claims)
           this.model = this.claims;
@@ -246,7 +252,8 @@ export class ListingsComponent implements OnInit {
               dislikes: this.votes[j].dislikes,
               viewCount: this.claims[j].viewCount == null || this.claims[j].viewCount == undefined ? 0 : this.claims[j].viewCount,
               comments: this.claims[j].comments.length,
-              isOwner: this.claims[j].postedBy == this.currentUser
+              isOwner: this.claims[j].postedBy == this.currentUser,
+              numOfPurchases: this.claims[j].numOfPurchases
             };
           }
           // console.log(this.listings);
@@ -262,6 +269,8 @@ export class ListingsComponent implements OnInit {
           if (response.status == 200) {
             // console.log(response.json());
             this.claims = response.json();
+            //filter published = true
+            this.claims = this.claims.filter(m => m.published == true);
             this.totalItems = this.claims.length;
             this.model = this.claims;
             // console.log( JSON.stringify(this.model));
@@ -309,7 +318,8 @@ export class ListingsComponent implements OnInit {
                 dislikes: this.votes[j].dislikes,
                 viewCount: this.claims[j].viewCount == null || this.claims[j].viewCount == undefined ? 0 : this.claims[j].viewCount,
                 comments: this.claims[j].comments.length,
-                isOwner: this.claims[j].postedBy == this.currentUser
+                isOwner: this.claims[j].postedBy == this.currentUser,
+                numOfPurchases: this.claims[j].numOfPurchases
               };
             }
             this.claimsPage = this.listings.slice(0, this.pageSize);
