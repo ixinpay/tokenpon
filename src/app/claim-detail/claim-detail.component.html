@@ -126,9 +126,12 @@
                                             class="fa fa-users" aria-hidden="true"></i></h6>
 
                                 </div>
-                                <div class="col text-center text-info">
-                                    <small>In NEED X more buyer. Currently X buyers are in. This deal needs minimum
+                                <div class="col text-center">
+                                    <small *ngIf="model.discounts[i].groupCount > model.numOfPurchases" class="text-info">
+                                        In NEED {{model.discounts[i].groupCount - model.numOfPurchases}} more buyer. Currently {{model.numOfPurchases}} buyers are in. This deal needs minimum
                                         {{model.discounts[i].groupCount}} buyers.</small>
+                                    <small *ngIf="model.numOfPurchases >= model.discounts[i].groupCount" class="text-success">
+                                        The required minimum buyers is met. This deal is LIVE.</small>
                                 </div>
                                 <div class="float-right" [hidden]="!isAuthor">
                                     <button type="button" class="btn btn-success btn-sm" (click)="makeDeal(dealConfirmation, i)">DEAL</button>
@@ -435,6 +438,7 @@
             </div>
             <div class="mx-auto">
                 <button type="submit" [disabled]="loading" class="btn btn-primary" translate>Login</button>
+                <small class="text-danger">{{loginResponseMsg}}</small>
             </div>            
         </form>
     </div>

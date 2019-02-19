@@ -86,6 +86,8 @@ export class ClaimDetailComponent implements OnInit {
   @Input() selectedDiscount: any; // user selected offer
   TokenponGroupBuyPrint: string;
   iXinMobileAppMessage: string;
+  modalLoginRef: any;
+  loginResponseMsg: string;
 
   constructor(private http: Http, private route: ActivatedRoute, private globals: Globals, private oothService: OothService,
     private lightbox: Lightbox, private toasterService: ToasterService, private titleService: Title, private googleGeoService: GoogleGeoService,
@@ -923,27 +925,30 @@ export class ClaimDetailComponent implements OnInit {
       console.log(modalRef);
     }
     else {
-      this.modalService.open(loginModal).result.then((result) => {
-        this.closeResult = `Closed with: ${result}`;
-      }, (reason) => {
-        if (reason === 'Login') {
-          this.login()
-            .then(res => {//console.log(this.model.email + " " + this.model.password)
-              console.log(res)
-              if (res.status === 'error') {
-                // console.log("error: "+res.status)
-                this.toasterService.pop("error", res.message.message);
-                this.loading = false;
-              }
-              else {
-                this.currentUserId = sessionStorage.getItem("currentUserId");              
-              }
-            })
-            .catch(error => {
-              this.toasterService.pop("error", error);
-            });
-        }
-      });
+      this.modalLoginRef = this.modalService.open(loginModal);
+      //closing login modal if login successfully
+      // modalLoginRef.result.then((result) => {
+      //   this.closeResult = `Closed with: ${result}`;
+      // }, (reason) => {
+      //   if (reason === 'Login') {
+      //     this.login()
+      //       .then(res => {//console.log(this.model.email + " " + this.model.password)
+      //         console.log(res)
+      //         if (res.status === 'error') {
+      //           // console.log("error: "+res.status)                
+      //           this.toasterService.pop("error", res.message.message);
+      //           this.loading = false;
+      //         }
+      //         else {
+      //           modalRef.close();
+      //           this.currentUserId = sessionStorage.getItem("currentUserId");              
+      //         }
+      //       })
+      //       .catch(error => {
+      //         this.toasterService.pop("error", error);
+      //       });
+      //   }
+      // });
     }
   }
   private getDismissReason(reason: any, i: number, finalConfirm): string {
@@ -1016,6 +1021,14 @@ export class ClaimDetailComponent implements OnInit {
     else {
       userid = this.model.loginphone.substring(1);
     }
-    return this.oothService.Login(userid, this.model.loginpassword, this.phoneLogin);
+    this.oothService.Login(userid, this.model.loginpassword, this.phoneLogin)
+      .then(response => {
+        if(response.status !== "error"){
+          this.modalLoginRef.close();
+        }
+        else{
+          this.loginResponseMsg = response.message.message;
+        }
+      })
   }
 }
