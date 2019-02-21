@@ -124,3 +124,26 @@ body {
   .card-head h4 {
     color: #ff8f00
   }
+
+  .listPage {
+    border-bottom: 1px solid#DBDBDB;
+    /* border-top: 1px solid#DBDBDB; */
+    padding: 10px;
+    overflow: auto;
+    font-family: Helvetica;
+    color: #707070;
+    width: 160%;
+}
+
+.listPage:hover {
+    background: #F5F5F5;     
+}
+
+.listPage h5 a {
+    font-family: Helvetica;
+    color: #707070;
+    cursor: pointer;
+}
+.listPage h5 a:hover {
+   color: #FF8F00
+}

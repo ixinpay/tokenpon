@@ -1,6 +1,8 @@
 <div class="container">
     <div class="row">
-        <span class="col-9 text-info">{{iXinMobileAppMessage}}</span>
+        <span class="col-9 text-info">{{iXinMobileAppMessage}} 
+            <a style="cursor: pointer" (click)="setQrValue(QRModal, 1)">Android: <i class='fa fa-android fa-2x' aria-hidden='true'></i></a> 
+            <a style="cursor: pointer" (click)="setQrValue(QRModal, 2)"> iOS: <i class='fa fa-apple fa-2x' aria-hidden='true'></i></a></span>
     </div>
     <div class="row">
         <div class="form-group col-md-9 no-gutters">
@@ -8,13 +10,13 @@
             <label for="businessCategory" class="inline" translate>{{model.businessSubCategory}}</label>
             <div class="col-11 text-center">
                 <button class="btn defaultbtn btn-md" [hidden]="!isAuthor" translate [routerLink]="['/home/claim']"
-                    [queryParams]="{id: claimId, from: published}" [disabled]="model.numOfPurchases > 0">Edit</button>
+                    [queryParams]="{id: claimId, from: published}" [disabled]="dealInProgress">Edit</button>
                 <button class="btn btn-danger btn-md" [hidden]="!isAuthor" translate (click)="Remove_Listing(claimId, deleteConfirmation)">Delete</button>
                 <a class="float-right" (click)="shareDeal(shareModal);">
                     <i class="fa fa-share-alt fa-lg" aria-hidden="true" matTooltip="share this deal"></i>
                     <small>Share</small>
                 </a>
-                <div class="text-center text-danger" *ngIf="model.numOfPurchases > 0">
+                <div class="text-center text-danger" *ngIf="dealInProgress">
                     Someone has already purchased this tokenpon. No more update can be made.
                 </div>
                 <!--
@@ -127,10 +129,10 @@
 
                                 </div>
                                 <div class="col text-center">
-                                    <small *ngIf="model.discounts[i].groupCount > model.numOfPurchases" class="text-info">
-                                        In NEED {{model.discounts[i].groupCount - model.numOfPurchases}} more buyer. Currently {{model.numOfPurchases}} buyers are in. This deal needs minimum
+                                    <small *ngIf="model.discounts[i].groupCount > model.discounts[i].numOfPurchases" class="text-info">
+                                        In NEED {{model.discounts[i].groupCount - model.discounts[i].numOfPurchases}} more buyer. Currently {{model.discounts[i].numOfPurchases}} buyers are in. This deal needs minimum
                                         {{model.discounts[i].groupCount}} buyers.</small>
-                                    <small *ngIf="model.numOfPurchases >= model.discounts[i].groupCount" class="text-success">
+                                    <small *ngIf="model.discounts[i].numOfPurchases >= model.discounts[i].groupCount" class="text-success">
                                         The required minimum buyers is met. This deal is LIVE.</small>
                                 </div>
                                 <div class="float-right" [hidden]="!isAuthor">
@@ -155,7 +157,7 @@
                                 <label>{{model.discounts[i].groupCount}}</label>
                             </div>
                             <div class="row col-12">
-                                <label class="mr-2">Expiration Date:</label>
+                                <label class="mr-2">Sale Ends:</label>
                                 <label>{{model.discounts[i].expirationDate | date: 'MM/dd/yyyy'}}</label>
                             </div>
                             <div class="col-12 mb-2 text-center">
@@ -318,7 +320,7 @@
                 <label>{{selectedDiscount.token}} iXin</label>
             </div>
             <div class="row col-12">
-                <label class="mr-2">Expiration Date:</label>
+                <label class="mr-2">Sale Ends:</label>
                 <label>{{selectedDiscount.expirationDate | date: 'MM/dd/yyyy'}}</label>
             </div>
             <div class="row col-12 mb-2">
@@ -330,8 +332,7 @@
         </div>
         <p class="mt-2" translate>Total <label class="font-weight-bold">{{selectedDiscount.token *
                 tokenponPurchaseCount}}</label> iXin coins will be withdrawn from your account. Your purchase will be
-            shown
-            on Your iXin Pay Mobile App.
+            shown on Your iXin Pay Mobile App.
         </p>
     </div>
     <div class="modal-footer">
@@ -347,7 +348,8 @@
                 </button>
             </div> -->
     <div class="modal-body">
-        <p *ngIf="modalSuccess" translate>Success! Enjoy your discount!.
+        <p *ngIf="modalSuccess" translate>Success! Enjoy your discount!. Your purchase will be
+                shown on Your iXin Pay Mobile App.
         </p>
         <p *ngIf="!modalSuccess" translate>{{failMessage}}
         </p>
@@ -441,5 +443,15 @@
                 <small class="text-danger">{{loginResponseMsg}}</small>
             </div>            
         </form>
+    </div>
+</ng-template>
+<!-- QR modal -->
+<ng-template #QRModal let-d="dismiss">
+    <div class="modal-body text-center">
+        <ngx-qrcode [qrc-element-type]="img" qrc-class="qrSize" [qrc-element-type]="elementType" [qrc-value]="qrValue">
+        </ngx-qrcode>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="d('No')">OK</button>
     </div>
 </ng-template>

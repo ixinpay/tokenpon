@@ -36,11 +36,11 @@
                                 <i class="fa fa-building" aria-hidden="true"></i> {{profilePages[1]}}
                             </a>
                         </li>
-                        <li class="col-12" [ngClass]="{'active': selectedPage == profilePages[2]}">
+                        <!-- <li class="col-12" [ngClass]="{'active': selectedPage == profilePages[2]}">
                             <a (click)="onPageClick(profilePages[2])" translate>
                                 <i class="fa fa-cog" aria-hidden="true"></i> {{profilePages[2]}}
                             </a>
-                        </li>
+                        </li> -->
                         <li class="col-12" [ngClass]="{'active': selectedPage == profilePages[3]}">
                             <a (click)="onPageClick(profilePages[3])" translate>
                                 <i class="fa fa-connectdevelop" aria-hidden="true"></i> {{profilePages[3]}}
@@ -289,19 +289,25 @@
                                                 </div>
                                                 <div class="row">
                                                     <div class="form-group col-sm-12">
-                                                        <label for="image_uploads" translate>Choose a business logo(<2MB) to upload (PNG, JPG) <span class="btn btn-mdb-color btn-sm"
+                                                        <label for="image_uploads" translate>Choose a business logo(<2MB)
+                                                                to upload (PNG, JPG) <span class="btn btn-mdb-color btn-sm"
                                                                 translate>Browse</span>
                                                         </label>
-                                                        <input style="display: none;" type="file" id="image_uploads" accept=".jpg, .jpeg, .png" multiple (change)="detectFiles($event)"
+                                                        <input style="display: none;" type="file" id="image_uploads"
+                                                            accept=".jpg, .jpeg, .png" multiple (change)="detectFiles($event)"
                                                             title="Choose">
-                                                        <div *ngIf="isOversize"><small translate class="show-error" translate>* picture(s) too large</small></div>
-                                                        <div *ngIf="isAlreadyAdded"><small translate class="show-error" translate>* picture(s) already added</small></div>
-                                                        <div *ngIf="isOverTotal"><small translate class="show-error" translate>* you have reached the max allowable
+                                                        <div *ngIf="isOversize"><small translate class="show-error"
+                                                                translate>* picture(s) too large</small></div>
+                                                        <div *ngIf="isAlreadyAdded"><small translate class="show-error"
+                                                                translate>* picture(s) already added</small></div>
+                                                        <div *ngIf="isOverTotal"><small translate class="show-error"
+                                                                translate>* you have reached the max allowable
                                                                 uploads</small></div>
                                                         <div>
                                                             <div class="img-wrap text-center" *ngFor="let url of urls">
                                                                 <span class="close" (click)="deleteFile(url)">&times;</span>
-                                                                <img [src]="url.url" class="rounded" width="150" height="150" data-id="{{url.id}}">
+                                                                <img [src]="url.url" class="rounded" width="150" height="150"
+                                                                    data-id="{{url.id}}">
                                                             </div>
                                                         </div>
                                                     </div>
@@ -589,7 +595,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>                                                
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -636,9 +642,18 @@
                                 <div *ngIf="publishedTokenpons.length == 0">
                                     You have not published any Tokenpon yet.
                                 </div>
-                                <ul class="col-sm-12 col-md-9 col-lg-9 col-xl-8">
-                                    <li class="row listPage" *ngFor="let tokenpon of publishedTokenpons">
-                                        {{tokenpon.type}} - {{tokenpon.redeemLocation}}
+                                <ul class="col-12">
+                                    <li class="col-12 listPage" *ngFor="let tokenpon of publishedTokenpons">
+                                        <div class="row col-12">
+                                            <a (click)="selectTokenpon(tokenpon._id)">
+                                                {{tokenpon.businessName}} - {{tokenpon.city}}
+                                                <div class="col-12" *ngIf="tokenpon.discounts != null && tokenpon.discounts != undefined">
+                                                    <div *ngFor="let discount of tokenpon.discounts">
+                                                        {{discount.title}}
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
                                     </li>
                                 </ul>
                             </div>
@@ -648,9 +663,18 @@
                                 <div *ngIf="draftTokenpons.length == 0">
                                     You have no draft Tokenpon yet.
                                 </div>
-                                <ul class="col-sm-12 col-md-9 col-lg-9 col-xl-8">
-                                    <li class="row listPage" *ngFor="let tokenpon of draftTokenpons">
-                                        {{tokenpon.type}} - {{tokenpon.redeemLocation}}
+                                <ul class="col-12">
+                                    <li class="col-12 listPage" *ngFor="let tokenpon of draftTokenpons">
+                                        <div class="row col-12">
+                                            <a (click)="selectTokenpon(tokenpon._id)">
+                                                {{tokenpon.businessName}} - {{tokenpon.city}}
+                                                <div class="col-12" *ngIf="tokenpon.discounts != null && tokenpon.discounts != undefined">
+                                                    <div *ngFor="let discount of tokenpon.discounts">
+                                                        {{discount.title}}
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
                                     </li>
                                 </ul>
                             </div>
@@ -661,7 +685,7 @@
                                     You have not purchased any Tokenpon yet.
                                 </div>
                                 <ul class="col-sm-12 col-md-9 col-lg-9 col-xl-8">
-                                    <li class="row listPage" *ngFor="let tokenpon of purchasedTokenpons">
+                                    <li class="col-12 listPage" *ngFor="let tokenpon of purchasedTokenpons">
                                         {{tokenpon.type}} - {{tokenpon.redeemLocation}}
                                     </li>
                                 </ul>

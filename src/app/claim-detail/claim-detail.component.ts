@@ -86,8 +86,12 @@ export class ClaimDetailComponent implements OnInit {
   @Input() selectedDiscount: any; // user selected offer
   TokenponGroupBuyPrint: string;
   iXinMobileAppMessage: string;
+  iXinAndroid: string;
+  iXiniOS: string;
+  qrValue: string;
   modalLoginRef: any;
   loginResponseMsg: string;
+  dealInProgress: boolean = false; //indicate whether deal is currentlly in progress
 
   constructor(private http: Http, private route: ActivatedRoute, private globals: Globals, private oothService: OothService,
     private lightbox: Lightbox, private toasterService: ToasterService, private titleService: Title, private googleGeoService: GoogleGeoService,
@@ -102,6 +106,8 @@ export class ClaimDetailComponent implements OnInit {
     // config.pauseOnHover = false;
 
     this.iXinMobileAppMessage = this.globals.iXinMobileAppMessage;
+    this.iXinAndroid = this.globals.iXinAndroid;
+    this.iXiniOS = this.globals.iXiniOS;
     this.TokenponGroupBuyPrint = this.globals.TokenponGroupBuyPrint;
     this.currentUrl = window.location.href;
     this.account = sessionStorage.getItem("currentUserAccount");
@@ -155,6 +161,14 @@ export class ClaimDetailComponent implements OnInit {
           console.log(this.model);
           //get discounts
           this.discountArray = this.model.discounts;
+          //deal in progress if any discount contains purchaser
+          if (this.discountArray != null && this.discountArray != undefined) {
+            this.discountArray.forEach(element => {
+              if (element.numOfPurchases > 0) {
+                return this.dealInProgress = true;
+              }
+            });
+          };
           console.log("discount: " + this.discountArray);
           //get map geo
           this.googleGeoService.getGoogleGeoData(this.model.street, this.model.city, this.model.state, this.model.zip)
@@ -223,7 +237,7 @@ export class ClaimDetailComponent implements OnInit {
           //check if current user is the author of the listing
           // console.log("current user: " + this.currentUser + " author: " + this.model.postedBy)
           // if author is not available, hide Edit button
-          if (this.model.postedBy == null || this.model.postedBy == undefined) {
+          if (this.model.userId == null || this.model.userId == undefined) {
             this.isAuthor = false;
           }
           else {
@@ -232,7 +246,7 @@ export class ClaimDetailComponent implements OnInit {
               this.isAuthor = false;
             }
             else {
-              if (this.currentUserId == this.model.postedBy) {
+              if (this.currentUserId == this.model.userId) {
                 this.isAuthor = true;
               }
               else {
@@ -880,31 +894,38 @@ export class ClaimDetailComponent implements OnInit {
   }
 
   purchaseCoupon(i, finalConfirm) {
-    this.oothService.onCouponPurchase(this.model.merchantAccountAddress, this.account, this.discountArray[i]._id, this.discountArray[i].token)
-      .then(response => {
+    // this.oothService.onCouponPurchase(this.model.merchantAccountAddress, this.account, this.discountArray[i]._id, this.discountArray[i].token)
+    let data = {
+      merchant: this.model.merchantAccountAddress,
+      tokenponId: this.model._id,
+      discountId: this.discountArray[i]._id,
+      uAddr: this.account,
+      numberOfCoupons: this.tokenponPurchaseCount
+    };
+    this.mongoService.purchaseTokenpon(data)
+    .subscribe(response => {
         if (response.status == 200) {
           console.log(response);
           this.modalSuccess = true;
           this.modalService.open(finalConfirm);
         }
-        if (response.status === 'error') {
-          console.log(response.message);
-          this.modalSuccess = false;
-          this.failMessage = response.message;
-          this.modalService.open(finalConfirm);
-        }
+        // if (response.status === 'error') {
+        //   console.log(response.message);
+        //   this.modalSuccess = false;
+        //   this.failMessage = response.message;
+        //   this.modalService.open(finalConfirm);
+        // }
         else {
           console.log(response);
-          this.modalSuccess = true;
+          this.modalSuccess = false;
           this.modalService.open(finalConfirm);
         }
       })
-      .catch(error => {
-        console.log(error);
-        this.modalSuccess = false;
-        this.modalService.open(finalConfirm);
-      });
-
+      // .catch(error => {
+      //   console.log(error);
+      //   this.modalSuccess = false;
+      //   this.modalService.open(finalConfirm);
+      // });
   }
   displayBuyModal(content, i, finalConfirm, loginModal) {
     if (this.currentUserId !== null && this.currentUserId !== undefined && this.currentUserId.trim() !== "") {
@@ -1030,5 +1051,14 @@ export class ClaimDetailComponent implements OnInit {
           this.loginResponseMsg = response.message.message;
         }
       })
+  }
+  setQrValue(qrModal, value){
+    if(value == 1){
+      this.qrValue = this.iXinAndroid;
+    }
+    else{
+      this.qrValue = this.iXiniOS;
+    }
+    this.modalService.open(qrModal, { size: 'sm' });
   }
 }

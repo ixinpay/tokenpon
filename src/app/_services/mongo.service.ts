@@ -123,4 +123,7 @@ export class MongoService {
     getTokenponPurchasesByUser(address){
         return this.http.get(this.API + 'getTokenponPurchasesByUser/' + address)
     }
+    getTokenponByMerchant(address){
+        return this.http.get(this.API + 'getTokenponByMerchant/' + address)
+    }
 }

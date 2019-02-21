@@ -83,17 +83,27 @@ export class ProfileComponent implements OnInit {
     this.accountTypeOriginal = this.accountType;
     this.accountTypeList = this.globals.TokenponAccountType;
     this.purchasedTokenpons = [];
-    this.publishedTokenpons =[];
+    this.publishedTokenpons = [];
     this.draftTokenpons = [];
-    
+
     //get purchased tokenpon
     this.mongoService.getTokenponPurchasesByUser(this.accountNumber)
-      .subscribe(response =>{
-        if(response.status == 200){
+      .subscribe(response => {
+        if (response.status == 200) {
           this.purchasedTokenpons = response.json().data;
           console.log(this.purchasedTokenpons);
         }
       });
+    //get published/draft tokenpons
+    this.mongoService.getTokenponByMerchant(this.accountNumber)
+      .subscribe(response => {
+        if (response.status == 200) {
+          this.publishedTokenpons = response.json().filter(element => element.published == true);
+          this.draftTokenpons = response.json().filter(element => element.published == false);
+          console.log(this.publishedTokenpons);
+        }
+      });
+
     // this.route.queryParams.subscribe(params => {
     //   this.userName = params["user"];
     //   this.getProfileData();
@@ -595,4 +605,8 @@ export class ProfileComponent implements OnInit {
     console.log(this.inBusinessEdit);
   }
   //end of update merchant profile
+
+  selectTokenpon(id){
+    this.router.navigate(['/home/claim'], { queryParams: { id: id, from: "draft" } });
+  }
 }

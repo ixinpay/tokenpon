@@ -12,6 +12,8 @@ import { ToasterModule, ToasterService, ToasterConfig } from 'angular2-toaster';
 import { Validators, AbstractControl, NG_VALIDATORS } from '@angular/forms';
 import { forEach } from '@angular/router/src/utils/collection';
 import { environment } from 'environments/environment.prod';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ISubscription } from 'rxjs/Subscription';
 // import { HttpHeaders } from '@angular/common/http';
 
 @Component({
@@ -24,6 +26,7 @@ import { environment } from 'environments/environment.prod';
 
 export class ClaimComponent implements OnInit {
 
+  private subscription: ISubscription;
   isOversize: boolean = false;
   isOverTotal: boolean = false;
   isAlreadyAdded: boolean = false;
@@ -56,11 +59,12 @@ export class ClaimComponent implements OnInit {
   private showNewOfferUI: boolean = true;
   private discountValueList: number[];
   fromPage: string; //navigation source 
+  alreadyPublished: boolean = false; //indicate whether the deal is already
 
   constructor(
     private router: Router, private route: ActivatedRoute, private translate: TranslateService,
     private userService: UserService, private bigchaindbService: BigchanDbService,
-    private globals: Globals, private mongoService: MongoService,
+    private globals: Globals, private mongoService: MongoService, private modalService: NgbModal,
     private alertService: AlertService, private toasterService: ToasterService,
     private http: Http, private swarmService: SwarmService
   ) {
@@ -232,6 +236,7 @@ export class ClaimComponent implements OnInit {
         // console.log(response)
         this.model = response.json();
         this.discountArray = this.model.discounts;
+        this.alreadyPublished = this.model.published;
         console.log(this.discountArray);
         this.discountArray.forEach(element => {
           element.discount = element.discount * 100;
@@ -295,7 +300,7 @@ export class ClaimComponent implements OnInit {
     // }
     this.model.merchantAccountAddress = sessionStorage.getItem("currentUserAccount");
     this.model.appId = this.globals.TokenponAppId;
-    this.model.merchantId = this.profileModel.userId;
+    this.model.userId = this.currentUserId;
     this.model.businessName = this.profileModel.businessName;
     this.model.street = this.profileModel.street;
     this.model.city = this.profileModel.city;
@@ -310,7 +315,7 @@ export class ClaimComponent implements OnInit {
     this.model.businessHour = this.profileModel.businessHour;
     this.model.businessMainCategory = this.profileModel.businessMainCategory;
     this.model.businessSubCategory = this.profileModel.businessSubCategory;
-    this.model.postedBy = this.currentUserId;
+    this.model.postedBy = sessionStorage.getItem('currentUser');
     this.model.pictures = this.urls.map(e => e.url);
     this.model.notification = this.profileModel.notification;
     this.model.discounts = this.discountArray;
@@ -325,48 +330,51 @@ export class ClaimComponent implements OnInit {
     this.model.published = isPublish;
     //this.model.notification = this.toNotify;    
     console.log(this.model)
-    if (this.isUpdate == true) {
+    // if (this.isUpdate == true) {
       // console.log(this.model);
       this.model.appId = this.globals.TokenponAppId;
-      this.mongoService.updateListing(this.model)
+      // this.mongoService.updateListing(this.model)
+      this.mongoService.publishTokenpon(this.model)
         .subscribe(response => {
           // console.log(response);
           if(isPublish){
             this.toasterService.pop('success', 'Publish successful');
+            this.router.navigate(['/home/claim-detail'], { queryParams: { id: this.claimId } });
           }
           else{
             this.toasterService.pop('success', 'Draft was saved successfully');
-          }
-          this.router.navigate(['/home/claim-detail'], { queryParams: { id: this.claimId } });
+            this.router.navigate(['/home']);
+          }          
         },
           err => {
-            this.toasterService.pop("error", "fail to update listing");
+            this.toasterService.pop("error", "fail to publish the listing");
           }
         );
-    }
-    else {
-      //upload to mongodb
-      console.log(this.model);
+    // }
+    // else {
+    //   //upload to mongodb
+    //   console.log(this.model);
 
-      this.mongoService.saveListing(this.model)
-        .subscribe(
-          response => {
-            console.log(response);
-            if (response.status === 200) {
-              let id: String = JSON.parse(JSON.stringify(response))._body;
-              id = id.replace(/"/g, "");
-              this.toasterService.pop('success', 'Submit successful');
-              this.router.navigate(['/home/claim-detail'], { queryParams: { id: id } });
-            }
-            else {
-              this.toasterService.pop("error", "fail to submit listing");
-            }
-          },
-          err => {
-            this.toasterService.pop("error", "fail to submit listing");
-          }
-        );
-    }
+    //   // this.mongoService.saveListing(this.model)
+    //   this.mongoService.publishTokenpon(this.model)
+    //     .subscribe(
+    //       response => {
+    //         console.log(response);
+    //         if (response.status === 200) {
+    //           let id: String = JSON.parse(JSON.stringify(response))._body;
+    //           id = id.replace(/"/g, "");
+    //           this.toasterService.pop('success', 'Submit successful');
+    //           this.router.navigate(['/home/claim-detail'], { queryParams: { id: id } });
+    //         }
+    //         else {
+    //           this.toasterService.pop("error", "fail to submit listing");
+    //         }
+    //       },
+    //       err => {
+    //         this.toasterService.pop("error", "fail to submit listing");
+    //       }
+    //     );
+    // }
   }
   // isPublish: true = publish, false = draf
   async onSubmit(isPublish: boolean) {
@@ -420,4 +428,27 @@ export class ClaimComponent implements OnInit {
     // this.loadAllClaims();
   }
 
+  Remove_Listing(id, deleteConfirmation) {
+    this.modalService.open(deleteConfirmation).result.then((result) => {
+      
+    }, (reason) => {
+      if (reason === "Yes") {
+        this.subscription = this.mongoService.deleteListing(id, this.globals.TokenponAppId)
+          .subscribe(response => {
+            if (response.status == 200) {
+              this.toasterService.pop("success", "Listing deleted")
+              if(this.fromPage == 'draft'){
+                this.router.navigate(['/profile']);
+              }
+              else{
+                this.router.navigate(['/home']);
+              }
+            }
+            else {
+              this.toasterService.pop("error", response.statusText)
+            }
+          });
+      }
+    });
+  }
 }
