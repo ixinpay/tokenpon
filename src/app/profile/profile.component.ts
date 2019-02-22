@@ -606,7 +606,13 @@ export class ProfileComponent implements OnInit {
   }
   //end of update merchant profile
 
-  selectTokenpon(id){
-    this.router.navigate(['/home/claim'], { queryParams: { id: id, from: "draft" } });
+  selectTokenpon(id, option){
+    // 1 = published 2 = draft
+    if(option == 1) {
+      this.router.navigate(['/home/claim-detail'], { queryParams: { id: id } });
+    }
+    else{
+      this.router.navigate(['/home/claim'], { queryParams: { id: id, from: "draft" } });
+    }    
   }
 }

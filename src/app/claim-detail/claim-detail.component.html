@@ -11,7 +11,8 @@
             <div class="col-11 text-center">
                 <button class="btn defaultbtn btn-md" [hidden]="!isAuthor" translate [routerLink]="['/home/claim']"
                     [queryParams]="{id: claimId, from: published}" [disabled]="dealInProgress">Edit</button>
-                <button class="btn btn-danger btn-md" [hidden]="!isAuthor" translate (click)="Remove_Listing(claimId, deleteConfirmation)">Delete</button>
+                <button class="btn btn-danger btn-md" [hidden]="!isAuthor" translate 
+                    (click)="Remove_Listing(claimId, deleteConfirmation)" [disabled]="dealInProgress">Delete</button>
                 <a class="float-right" (click)="shareDeal(shareModal);">
                     <i class="fa fa-share-alt fa-lg" aria-hidden="true" matTooltip="share this deal"></i>
                     <small>Share</small>

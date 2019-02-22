@@ -645,7 +645,7 @@
                                 <ul class="col-12">
                                     <li class="col-12 listPage" *ngFor="let tokenpon of publishedTokenpons">
                                         <div class="row col-12">
-                                            <a (click)="selectTokenpon(tokenpon._id)">
+                                            <a (click)="selectTokenpon(tokenpon._id, 1)">
                                                 {{tokenpon.businessName}} - {{tokenpon.city}}
                                                 <div class="col-12" *ngIf="tokenpon.discounts != null && tokenpon.discounts != undefined">
                                                     <div *ngFor="let discount of tokenpon.discounts">
@@ -666,7 +666,7 @@
                                 <ul class="col-12">
                                     <li class="col-12 listPage" *ngFor="let tokenpon of draftTokenpons">
                                         <div class="row col-12">
-                                            <a (click)="selectTokenpon(tokenpon._id)">
+                                            <a (click)="selectTokenpon(tokenpon._id, 2)">
                                                 {{tokenpon.businessName}} - {{tokenpon.city}}
                                                 <div class="col-12" *ngIf="tokenpon.discounts != null && tokenpon.discounts != undefined">
                                                     <div *ngFor="let discount of tokenpon.discounts">

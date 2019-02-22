@@ -906,6 +906,8 @@ export class ClaimDetailComponent implements OnInit {
     .subscribe(response => {
         if (response.status == 200) {
           console.log(response);
+          // add the new count to purchase count
+          this.discountArray[i].numOfPurchases += this.tokenponPurchaseCount;
           this.modalSuccess = true;
           this.modalService.open(finalConfirm);
         }
