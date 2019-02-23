@@ -1,8 +1,8 @@
 <div class="container">
     <div class="row">
         <span class="col-9 text-info">{{iXinMobileAppMessage}} 
-            <a style="cursor: pointer" (click)="setQrValue(QRModal, 1)">Android: <i class='fa fa-android fa-2x' aria-hidden='true'></i></a> 
-            <a style="cursor: pointer" (click)="setQrValue(QRModal, 2)"> iOS: <i class='fa fa-apple fa-2x' aria-hidden='true'></i></a></span>
+            <a style="cursor: pointer" (click)="setQrValue(QRModal, 1)">Android: <i class='fa fa-android fa-2x text-success' aria-hidden='true'></i></a> 
+            <a style="cursor: pointer" (click)="setQrValue(QRModal, 2)"> iOS: <i class='fa fa-apple fa-2x' style="color:silver" aria-hidden='true'></i></a></span>
     </div>
     <div class="row">
         <div class="form-group col-md-9 no-gutters">
@@ -134,7 +134,7 @@
                                         In NEED {{model.discounts[i].groupCount - model.discounts[i].numOfPurchases}} more buyer. Currently {{model.discounts[i].numOfPurchases}} buyers are in. This deal needs minimum
                                         {{model.discounts[i].groupCount}} buyers.</small>
                                     <small *ngIf="model.discounts[i].numOfPurchases >= model.discounts[i].groupCount" class="text-success">
-                                        The required minimum buyers is met. This deal is LIVE.</small>
+                                        {{globals.iXinDealLive}}</small>
                                 </div>
                                 <div class="float-right" [hidden]="!isAuthor">
                                     <button type="button" class="btn btn-success btn-sm" (click)="makeDeal(dealConfirmation, i)">DEAL</button>

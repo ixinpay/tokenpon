@@ -900,7 +900,7 @@ export class ClaimDetailComponent implements OnInit {
       tokenponId: this.model._id,
       discountId: this.discountArray[i]._id,
       uAddr: this.account,
-      numberOfCoupons: this.tokenponPurchaseCount
+      numberOfTokenpons: this.tokenponPurchaseCount
     };
     this.mongoService.purchaseTokenpon(data)
     .subscribe(response => {

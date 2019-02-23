@@ -11,14 +11,14 @@
             <international-phone-number id="intPhone" [(ngModel)]="model.phone" placeholder="Enter phone number" [maxlength]="20" [defaultCountry]="'us'" [required]="true" #phone="ngModel" name="phone" ></international-phone-number>
             
             <!-- <input type="small" class="form-control" name="phone" [(ngModel)]="model.phone" #phone="ngModel" required /> -->
-            <div *ngIf="f.submitted && phoneLogin && !phone.valid" class="alert alert-danger" translate>required</div>
+            <div *ngIf="f.submitted && phoneLogin && !phone.valid" class="alert alert-danger" translate>invalid number</div>
         </div>
         <div *ngIf="!phoneLogin" class="form-group" [ngClass]="{ 'has-error': f.submitted && !email.valid }">
             <label for="email" translate>Username</label>            
             <a class="ml-3 text-primary" (click)="toggleLogin(); f.resetForm();"><small translate>or use Phone Number</small></a>
             <input type="text" class="form-control" name="email" [(ngModel)]="model.email" #email="ngModel" required />
            
-            <div *ngIf="f.submitted && !email.valid" class="alert alert-danger" translate>required</div>
+            <div *ngIf="f.submitted && !email.valid" class="alert alert-danger" translate>invalid email</div>
         </div>
         <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !password.valid }">
             <label for="password" translate>Password</label>
