@@ -162,7 +162,7 @@
                             </div>
                             <div class="row col-12">
                                 <label class="mr-2">Sale Ends:</label>
-                                <label>{{model.discounts[i].expirationDate | date: 'short'}}</label>
+                                <label>{{model.discounts[i].expirationDate | date: 'short' : 'locale'}}</label>
                             </div>
                             <div class="col-12 mb-2 text-center">
                                 <button type="button" class="btn defaultbtn" (click)="displayBuyModal(content, i, finalConfirm, loginModal);">BUY</button>
@@ -325,7 +325,7 @@
             </div>
             <div class="row col-12">
                 <label class="mr-2">Sale Ends:</label>
-                <label>{{selectedDiscount.expirationDate | date: 'MM/dd/yyyy'}}</label>
+                <label>{{selectedDiscount.expirationDate | date: 'short' : 'locale'}}</label>
             </div>
             <div class="row col-12 mb-2">
                 <label class="form-label mr-2">How many tokenpon would you like to purchase?</label>
