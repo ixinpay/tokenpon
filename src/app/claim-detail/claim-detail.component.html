@@ -99,7 +99,7 @@
                     </div>
 
                 </div> -->
-            <div class="row mt-2 mb-2">
+            <div *ngIf="albums.length > 0" class="row mt-2 mb-2">
                 <ngu-carousel #myCarousels1 class="col-sm-12 col-md-10 col-lg-9 mx-auto" [inputs]="carouselBanner"
                     (carouselLoad)="carouselTileOneLoad()" (onMove)="onMoveData($event)" [reset]="rsts" (initData)="getCarouselData($event)">
                     <ngu-tile NguCarouselItem *ngFor="let image of albums; let i=index">
