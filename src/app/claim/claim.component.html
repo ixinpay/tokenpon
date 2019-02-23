@@ -151,7 +151,7 @@
                                     <div class="row mt-1">
                                         <div class="col-xs-12 col-sm-12 col-md-3">Sale Ends: </div>
                                         <div class="col-xs-12 col-sm-12 col-md-4">
-                                            <input class="form-control" type="date" [(ngModel)]="newDiscount.expirationDate"
+                                            <input class="form-control" type="datetime-local" [(ngModel)]="newDiscount.expirationDate"
                                                 name="newAttributeExpirationDate" required />
                                         </div>
                                         <div *ngIf="!newDiscount.expirationDate" class="col-xs-12 col-sm-12 col-md-2">
@@ -316,7 +316,7 @@
                                 <div class="row mt-1">
                                     <div class="col-xs-12 col-sm-12 col-md-3">Sale Ends: </div>
                                     <div class="col-xs-12 col-sm-12 col-md-4">
-                                        <input class="form-control" type="date" [(ngModel)]="field.expirationDate" name="expirationDate-{{i}}"
+                                        <input class="form-control" type="datetime-local" [(ngModel)]="field.expirationDate" name="expirationDate-{{i}}"
                                             required />
                                     </div>
                                     <div *ngIf="!field.expirationDate" class="col-xs-12 col-sm-12 col-md-2">
@@ -411,7 +411,7 @@
                                         <div class="row mt-1">
                                             <div class="col-xs-12 col-sm-12 col-md-3">Sale Ends: </div>
                                             <div class="col-xs-12 col-sm-12 col-md-4">
-                                                <input class="form-control" type="date" [(ngModel)]="newDiscount.expirationDate" name="newAttributeExpirationDate"
+                                                <input class="form-control" type="datetime-local" [(ngModel)]="newDiscount.expirationDate" name="newAttributeExpirationDate"
                                                     required />
                                             </div>
                                             <div *ngIf="!newDiscount.expirationDate" class="col-xs-12 col-sm-12 col-md-2">

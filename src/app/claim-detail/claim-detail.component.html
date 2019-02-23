@@ -29,6 +29,7 @@
             <a [href]="formatURL(model.webPage)" target="_blank">{{model.webPage}}</a> -->
             </div>
             <div>
+                <div *ngIf="logoUrl != ''" class="col-xs-12 col-sm-12 col-md-3"><img [src]="logoUrl" style="height:50px"></div>
                 <h5>{{model.businessName}} - {{model.city}}</h5>
                 <!-- <small class="ml-3">follow</small> -->
             </div>
@@ -135,12 +136,12 @@
                                     <small *ngIf="model.discounts[i].groupCount > model.discounts[i].numOfPurchases" class="text-info">
                                         In NEED {{model.discounts[i].groupCount - model.discounts[i].numOfPurchases}} more buyer. Currently {{model.discounts[i].numOfPurchases}} buyers are in. This deal needs minimum
                                         {{model.discounts[i].groupCount}} buyers.</small>
-                                    <small *ngIf="model.discounts[i].numOfPurchases >= model.discounts[i].groupCount" class="text-success">
-                                        {{globals.iXinDealLive}}</small>
+                                    <h5 *ngIf="model.discounts[i].numOfPurchases >= model.discounts[i].groupCount" class="text-success">
+                                        {{globals.iXinDealLive}}</h5>
                                 </div>
-                                <div class="float-right" [hidden]="!isAuthor">
+                                <!-- <div class="float-right" [hidden]="!isAuthor">
                                     <button type="button" class="btn btn-success btn-sm" (click)="makeDeal(dealConfirmation, i)">DEAL</button>
-                                </div>
+                                </div> -->
                             </div>
                             <div class="row">
                                 <h5 class="col-xs-12 col-sm-12 col-md-10 font-weight-bold">
@@ -161,7 +162,7 @@
                             </div>
                             <div class="row col-12">
                                 <label class="mr-2">Sale Ends:</label>
-                                <label>{{model.discounts[i].expirationDate | date: 'MM/dd/yyyy'}}</label>
+                                <label>{{model.discounts[i].expirationDate | date: 'short'}}</label>
                             </div>
                             <div class="col-12 mb-2 text-center">
                                 <button type="button" class="btn defaultbtn" (click)="displayBuyModal(content, i, finalConfirm, loginModal);">BUY</button>
@@ -334,8 +335,8 @@
             </div>
         </div>
         <p class="mt-2" translate>Total <label class="font-weight-bold">{{selectedDiscount.token *
-                tokenponPurchaseCount}}</label> iXin coins will be withdrawn from your account. Your purchase will be
-            shown on Your iXin Pay Mobile App.
+                tokenponPurchaseCount}}</label> iXin will be withdrawn from your account. Your purchase will be
+            shown on Your iXin Buy Mobile App.
         </p>
     </div>
     <div class="modal-footer">
@@ -352,7 +353,7 @@
             </div> -->
     <div class="modal-body">
         <p *ngIf="modalSuccess" translate>Success! Enjoy your discount!. Your purchase will be
-                shown on Your iXin Pay Mobile App.
+                shown on Your iXin Buy Mobile App.
         </p>
         <p *ngIf="!modalSuccess" translate>{{failMessage}}
         </p>

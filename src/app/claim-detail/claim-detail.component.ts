@@ -74,7 +74,7 @@ export class ClaimDetailComponent implements OnInit {
   lat: number;
   lng: number;
   modalSuccess: boolean = false;
-  failMessage: string = "There was an error. iXin coin was not deducted from your account. Sorry for the inconvenience.";
+  failMessage: string = "There was an error. iXin was not deducted from your account. Sorry for the inconvenience.";
   closeResult: string;
   loading = false;
   returnUrl: string;
@@ -92,6 +92,7 @@ export class ClaimDetailComponent implements OnInit {
   modalLoginRef: any;
   loginResponseMsg: string;
   dealInProgress: boolean = false; //indicate whether deal is currentlly in progress
+  logoUrl: string;
 
   constructor(private http: Http, private route: ActivatedRoute, private globals: Globals, private oothService: OothService,
     private lightbox: Lightbox, private toasterService: ToasterService, private titleService: Title, private googleGeoService: GoogleGeoService,
@@ -907,7 +908,8 @@ export class ClaimDetailComponent implements OnInit {
         if (response.status == 200) {
           console.log(response);
           // add the new count to purchase count
-          this.discountArray[i].numOfPurchases += this.tokenponPurchaseCount;
+          this.model.discounts[i].numOfPurchases += this.tokenponPurchaseCount;
+          console.log(this.discountArray[i].numOfPurchases)
           this.modalSuccess = true;
           this.modalService.open(finalConfirm);
         }
