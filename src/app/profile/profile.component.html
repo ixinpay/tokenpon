@@ -638,10 +638,14 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="mb-5">
+                                <div class="text-left text-danger"> 
+                                    NOTES: You can not change published tokenpon if customer(s) have started purchasing it.
+                                </div><br />
                                 <h4 class="text-primary" translate>Published Tokenpons</h4>
                                 <div *ngIf="publishedTokenpons.length == 0">
                                     You have not published any Tokenpon yet.
                                 </div>
+                            
                                 <ul class="col-12">
                                     <li class="col-12 listPage" *ngFor="let tokenpon of publishedTokenpons">
                                         <div class="row col-12">

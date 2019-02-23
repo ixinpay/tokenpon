@@ -17,9 +17,11 @@
                     <i class="fa fa-share-alt fa-lg" aria-hidden="true" matTooltip="share this deal"></i>
                     <small>Share</small>
                 </a>
-                <div class="text-center text-danger" *ngIf="dealInProgress">
-                    Someone has already purchased this tokenpon. No more update can be made.
-                </div>
+                <!-- <div class="text-center text-danger"> 
+                <small *ngIf="dealInProgress">
+                    You can not change this tokenpon anymore since customer(s) have already purchased it.
+                </small>
+                </div> -->
                 <!--
             <br>
             <label for="email">{{model.email}}</label>
