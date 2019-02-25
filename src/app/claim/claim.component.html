@@ -15,8 +15,8 @@
                             <h4 class="col-12">{{profileModel.businessName}}</h4>
                         </div>
                         <a class="col-xs-12 col-sm-12 col-md-3 btn btn-danger btn-md" translate 
-                            *ngIf="claimId != '' && claimId != null && claimId != undefined"
-                            (click)="Remove_Listing(claimId, deleteConfirmation)">Delete Listing</a>
+                            *ngIf="(claimId != '' && claimId != null && claimId != undefined) && fromPage == 'draft'"
+                            (click)="Remove_Listing(claimId, deleteConfirmation)">Delete Draft</a>
                     </div>
                 </div>
                 <!-- <div class="col-12 mt-3">
@@ -83,7 +83,7 @@
                                 <div class="row">
                                     <div class="col-xs-12 col-sm-12 col-md-2">Sale Ends:</div>
                                     <div class="col-xs-12 col-sm-12 col-md-10">
-                                        {{field.expirationDate}}
+                                        {{field.expirationDate | date : 'short' : 'locale'}}
                                     </div>
                                 </div>
                                 <div class="divTable darkTable">

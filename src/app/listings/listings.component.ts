@@ -171,7 +171,7 @@ export class ListingsComponent implements OnInit {
         productDescription: this.claims[j].productDescription,
         businessMainCategory: this.claims[j].businessMainCategory,
         businessName: this.claims[j].businessName,
-        offers: this.claims[j].discounts,
+        offers: this.claims[j].discounts.slice(0, 2), //only show the first 2 deals
         service: this.claims[j].service,
         phone: this.claims[j].phone,
         street: this.claims[j].street,
@@ -240,7 +240,8 @@ export class ListingsComponent implements OnInit {
               productDescription: this.claims[j].productDescription,
               businessMainCategory: this.claims[j].businessMainCategory,
               businessName: this.claims[j].businessName,
-              offers: this.claims[j].discounts,
+              // offers: this.claims[j].discounts,
+              offers: this.claims[j].discounts.slice(0, 2), //only show the first 2 deals
               service: this.claims[j].service,
               phone: this.claims[j].phone,
               street: this.claims[j].street,
@@ -305,7 +306,7 @@ export class ListingsComponent implements OnInit {
                 productDescription: this.claims[j].productDescription,
                 businessMainCategory: this.claims[j].businessMainCategory,
                 businessName: this.claims[j].businessName,
-                offers: this.claims[j].discounts,
+                offers: this.claims[j].discounts.slice(0, 2), //only show the first 2 deals
                 service: this.claims[j].service,
                 phone: this.claims[j].phone,
                 street: this.claims[j].street,

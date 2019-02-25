@@ -147,3 +147,7 @@ body {
 .listPage h5 a:hover {
    color: #FF8F00
 }
+/* pagination link color fix */
+.page-link:focus {
+  background-color: #4285f4 !important;
+}

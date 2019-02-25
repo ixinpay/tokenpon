@@ -296,7 +296,7 @@
                     </div>
                 </li>
             </ul>
-            <ngb-pagination [collectionSize]="totalItems" [(page)]="page" [maxSize]="maxSize" [pageSize]="pageSize"
+            <ngb-pagination *ngIf="comments.length > pageSize" [collectionSize]="totalItems" [(page)]="page" [maxSize]="maxSize" [pageSize]="pageSize"
                 [rotate]="true" (pageChange)="loadPage($event)"></ngb-pagination>
         </div>
     </div>

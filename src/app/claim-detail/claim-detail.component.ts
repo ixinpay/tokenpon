@@ -113,7 +113,7 @@ export class ClaimDetailComponent implements OnInit {
     this.currentUrl = window.location.href;
     this.account = sessionStorage.getItem("currentUserAccount");
     this.page = 1;
-    this.maxSize = 100;
+    this.maxSize = 5;
     this.pageSize = 5;
     this.currentUser = sessionStorage.getItem("currentUser");
     this.currentUserId = sessionStorage.getItem("currentUserId");
@@ -276,7 +276,8 @@ export class ClaimDetailComponent implements OnInit {
           // });
           this.model.commentsNum = this.model.comments.length;
           // this.commentsPage = this.comments.slice(0, this.pageSize);
-          this.commentsPage = this.model.comments.slice(0, this.pageSize);
+          this.comments = this.model.comments;
+          this.commentsPage = this.comments.slice(0, this.pageSize);
           // console.log("comments: " + this.commentsPage);
           //retrieve votes
           this.model.votes.forEach(element => {

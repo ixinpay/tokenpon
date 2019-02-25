@@ -153,3 +153,8 @@ div.darkTable {
         position: sticky;
         top: 0;
       }
+
+      international-phone-number /deep/ .input-group .input-group-addon .dropdown .dropbtn.btn {
+        height: 35px !important;
+        padding-top: 10px !important;
+    }

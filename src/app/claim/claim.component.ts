@@ -14,6 +14,8 @@ import { forEach } from '@angular/router/src/utils/collection';
 import { environment } from 'environments/environment.prod';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ISubscription } from 'rxjs/Subscription';
+import { DatePipe } from '@angular/common';
+
 // import { HttpHeaders } from '@angular/common/http';
 
 @Component({
@@ -66,12 +68,12 @@ export class ClaimComponent implements OnInit {
     private userService: UserService, private bigchaindbService: BigchanDbService,
     private globals: Globals, private mongoService: MongoService, private modalService: NgbModal,
     private alertService: AlertService, private toasterService: ToasterService,
-    private http: Http, private swarmService: SwarmService
+    private http: Http, private swarmService: SwarmService, private datePipe: DatePipe
   ) {
     // this.expireDays = Array.from(new Array(90),(val,index)=>index+30);
     this.currentUserId = sessionStorage.getItem('currentUserId');
     // this.model.submitBy = this.currentUser;
-    this.discountValueList = Array.from(new Array(85),(val,index)=>index+15);
+    this.discountValueList = Array.from(new Array(85), (val, index) => index + 15);
     this.route.queryParams.subscribe(params => {
       // console.log(params['id']);
       this.claimId = params['id'];
@@ -91,10 +93,10 @@ export class ClaimComponent implements OnInit {
       .subscribe(response => {
         if (response.status == 200) {
           // console.log(response);
-          try{
+          try {
             this.profileModel = response.json();
           }
-          catch(e){
+          catch (e) {
             this.toasterService.pop("error", "Please complete your 'Account Profile' before posting a new deal!");
             this.router.navigate(["/profile"]);
           }
@@ -240,11 +242,14 @@ export class ClaimComponent implements OnInit {
         console.log(this.discountArray);
         this.discountArray.forEach(element => {
           element.discount = element.discount * 100;
+          let date = new Date(element.expirationDate);
+          element.expirationDate = this.datePipe.transform(date, 'yyyy-MM-ddTHH:mm') //+ "T" + new Date(element.expirationDate).toTimeString().slice(0, 5);
         });
-        if(this.discountArray.length > 0){
+        console.log(this.discountArray);
+        if (this.discountArray.length > 0) {
           this.showNewOfferUI = false;
         }
-        else{
+        else {
           this.showNewOfferUI = true;
         }
         this.finePrint = this.model.finePrint;
@@ -325,31 +330,37 @@ export class ClaimComponent implements OnInit {
     //convert discount rate to %
     this.model.discounts.forEach(element => {
       element.discount = (element.discount / 100).toFixed(2);
+      element.expirationDate = new Date(element.expirationDate).toISOString();
     });
     this.model.postedTime = Date.now();
     this.model.published = isPublish;
     //this.model.notification = this.toNotify;    
     console.log(this.model)
     // if (this.isUpdate == true) {
-      // console.log(this.model);
-      this.model.appId = this.globals.TokenponAppId;
-      // this.mongoService.updateListing(this.model)
-      this.mongoService.publishTokenpon(this.model)
-        .subscribe(response => {
-          // console.log(response);
-          if(isPublish){
+    // console.log(this.model);
+    this.model.appId = this.globals.TokenponAppId;
+    // this.mongoService.updateListing(this.model)
+    this.mongoService.publishTokenpon(this.model)
+      .subscribe(response => {
+        // console.log(response);
+        if (response.status == 200) {
+          if (isPublish) {
             this.toasterService.pop('success', 'Publish successful');
-            this.router.navigate(['/home/claim-detail'], { queryParams: { id: this.claimId } });
+            this.router.navigate(['/home/claim-detail'], { queryParams: { id: response.json().tokenponId } });
           }
-          else{
+          else {
             this.toasterService.pop('success', 'Draft was saved successfully');
             this.router.navigate(['/home']);
-          }          
-        },
-          err => {
-            this.toasterService.pop("error", "fail to publish the listing");
           }
-        );
+        }
+        else{
+          this.toasterService.pop("error", "fail to publish the listing");
+        }
+      },
+        err => {
+          this.toasterService.pop("error", "fail to publish the listing");
+        }
+      );
     // }
     // else {
     //   //upload to mongodb
@@ -381,7 +392,7 @@ export class ClaimComponent implements OnInit {
     console.log("is publish?" + isPublish);
     this.submitted = true;
     //upload pictures to Mongo
-    
+
     this.uploadData(isPublish);
 
     // update pictures to Swarm
@@ -400,10 +411,10 @@ export class ClaimComponent implements OnInit {
 
   addDiscount() {
     this.discountArray.push(this.newDiscount);
-    if(this.discountArray.length > 0){
+    if (this.discountArray.length > 0) {
       this.showNewOfferUI = false;
     }
-    else{
+    else {
       this.showNewOfferUI = true;
     }
     this.newDiscount = {};
@@ -411,17 +422,17 @@ export class ClaimComponent implements OnInit {
 
   deleteDiscount(index) {
     this.discountArray.splice(index, 1);
-    if(this.discountArray.length > 0){
+    if (this.discountArray.length > 0) {
       this.showNewOfferUI = false;
     }
-    else{
+    else {
       this.showNewOfferUI = true;
     }
   }
-  showOfferUI(){
+  showOfferUI() {
     this.showNewOfferUI = true;
   }
-  hideOfferUI(){
+  hideOfferUI() {
     this.showNewOfferUI = false;
   }
   ngOnInit() {
@@ -430,17 +441,17 @@ export class ClaimComponent implements OnInit {
 
   Remove_Listing(id, deleteConfirmation) {
     this.modalService.open(deleteConfirmation).result.then((result) => {
-      
+
     }, (reason) => {
       if (reason === "Yes") {
         this.subscription = this.mongoService.deleteListing(id, this.globals.TokenponAppId)
           .subscribe(response => {
             if (response.status == 200) {
               this.toasterService.pop("success", "Listing deleted")
-              if(this.fromPage == 'draft'){
+              if (this.fromPage == 'draft') {
                 this.router.navigate(['/profile']);
               }
-              else{
+              else {
                 this.router.navigate(['/home']);
               }
             }

@@ -47,6 +47,7 @@ import { AgmJsMarkerClustererModule } from '@agm/js-marker-clusterer';
 import {MegaMenuModule} from 'primeng/megamenu';
 import { InternationalPhoneNumberModule } from 'ngx-international-phone-number';
 import { NewestComponent } from './newest/newest.component';
+import { DatePipe } from '@angular/common';
 // const SERVICES = [
 //   MetaCoinService,
 //   Web3Service,
@@ -126,7 +127,8 @@ import { NewestComponent } from './newest/newest.component';
     GoogleGeoService,
     // provider used to create fake backend
     // fakeBackendProvider,
-    Title
+    Title,
+    DatePipe
   ],
   entryComponents: [ModalContent],
   bootstrap: [AppComponent]

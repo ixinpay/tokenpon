@@ -7,7 +7,8 @@ import { ToasterModule, ToasterService, ToasterConfig } from 'angular2-toaster';
 import { InternationalPhoneNumberModule } from 'ngx-international-phone-number';
 @Component({
     moduleId: module.id.toString(),
-    templateUrl: 'login.component.html'
+    templateUrl: 'login.component.html',
+    styleUrls: ['./login.component.css']
 })
 
 export class LoginComponent implements OnInit {

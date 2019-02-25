@@ -21,6 +21,15 @@ export class ProfileComponent implements OnInit {
   public carouselTileOneItems: Array<any> = [];
   storeCarouselData: NguCarouselStore;
 
+  totalItems: number;
+  page: number;
+  previousPage: any;
+  pageSize: number;
+  maxSize: number;
+  tokenponPagePurchased: any[] = [];
+  tokenponPageDraft: any[] = [];
+  tokenponPagePublished: any[] = [];
+
   regionDisplayName: string = null;
   inBusinessEdit = false;
   model: any = {};
@@ -75,6 +84,11 @@ export class ProfileComponent implements OnInit {
     private alertService: AlertService,
     private http: Http, private swarmService: SwarmService) {
 
+    // pagination setup
+    this.page = 1;
+    this.maxSize = 5;
+    this.pageSize = 5;
+
     this.checkIsRegularAccount();
     this.accountNumber = sessionStorage.getItem("currentUserAccount");
     this.phoneNumber = sessionStorage.getItem("phoneNumber");
@@ -91,7 +105,9 @@ export class ProfileComponent implements OnInit {
       .subscribe(response => {
         if (response.status == 200) {
           this.purchasedTokenpons = response.json().data;
-          console.log(this.purchasedTokenpons);
+          //ini first page
+          this.tokenponPagePurchased = this.purchasedTokenpons.slice(0, this.pageSize);
+          // console.log(this.purchasedTokenpons);
         }
       });
     //get published/draft tokenpons
@@ -100,7 +116,9 @@ export class ProfileComponent implements OnInit {
         if (response.status == 200) {
           this.publishedTokenpons = response.json().filter(element => element.published == true);
           this.draftTokenpons = response.json().filter(element => element.published == false);
-          console.log(this.publishedTokenpons);
+          this.tokenponPagePublished = this.publishedTokenpons;
+          this.tokenponPageDraft = this.draftTokenpons;
+          // console.log(this.publishedTokenpons);
         }
       });
 
@@ -112,7 +130,14 @@ export class ProfileComponent implements OnInit {
     this.getProfileData();
 
     this.profilePages = new Array("Account Information", "Account Profile", "Account Settings", "Your Tokenpon");
-    this.selectedPage = this.profilePages[0];
+    if (sessionStorage.getItem("currentSelectedPage") != null
+      && sessionStorage.getItem("currentSelectedPage") != undefined) {
+      this.selectedPage = sessionStorage.getItem("currentSelectedPage");
+    }
+    else {
+      this.selectedPage = this.profilePages[0];
+    }
+    
     //get user data
     // this.oothService.getUser()
     //   .then(res => {
@@ -183,10 +208,10 @@ export class ProfileComponent implements OnInit {
     this.mongoService.GetProfile(sessionStorage.getItem("currentUserId"), this.globals.TokenponAppId)
       .subscribe(response => {
         if (response.status == 200) {
-          console.log(response);
+          // console.log(response);
           this.profileModel = response.json();
           this.profileModelOriginal = response.json();
-          console.log(this.profileModel);
+          // console.log(this.profileModel);
           this.onChange(this.profileModel.country);
           this.MainCategoryDropDownChanged(this.profileModel.businessMainCategory);
           // retrieve pictures from SWARM
@@ -260,6 +285,7 @@ export class ProfileComponent implements OnInit {
   onPageClick(value) {
     // console.log(value);
     this.selectedPage = value.trim();
+    sessionStorage.setItem("currentSelectedPage", this.selectedPage);
   }
   // updateProfile(){
   //   this.inEdit = !this.inEdit;
@@ -606,13 +632,52 @@ export class ProfileComponent implements OnInit {
   }
   //end of update merchant profile
 
-  selectTokenpon(id, option){
+  selectTokenpon(id, option) {
     // 1 = published 2 = draft
-    if(option == 1) {
+    if (option == 1) {
       this.router.navigate(['/home/claim-detail'], { queryParams: { id: id } });
     }
-    else{
+    else {
       this.router.navigate(['/home/claim'], { queryParams: { id: id, from: "draft" } });
-    }    
+    }
+  }
+  //pagination
+  /**
+   *
+   * @param pageNum : The number of page selected by users
+   * check if we need load a new page
+   */
+  loadPagePurchased(pageNum: number) {
+    if (pageNum !== this.previousPage) {
+      this.previousPage = pageNum;
+      this.loadDataPurchased(pageNum);
+    }
+  }
+  loadPagePublished(pageNum: number) {
+    if (pageNum !== this.previousPage) {
+      this.previousPage = pageNum;
+      this.loadDataPublished(pageNum);
+    }
+  }
+  loadPageDraft(pageNum: number) {
+    if (pageNum !== this.previousPage) {
+      this.previousPage = pageNum;
+      this.loadDataDraft(pageNum);
+    }
+  }
+
+  /**
+   *
+   * @param pageNum : The number of page
+   * load new page data
+   */
+  loadDataPurchased(pageNum: number) {
+    this.tokenponPagePurchased = this.purchasedTokenpons.slice(this.pageSize * (pageNum - 1), this.pageSize * (pageNum - 1) + this.pageSize)
+  }
+  loadDataPublished(pageNum: number) {
+    this.tokenponPagePublished = this.publishedTokenpons.slice(this.pageSize * (pageNum - 1), this.pageSize * (pageNum - 1) + this.pageSize)
+  }
+  loadDataDraft(pageNum: number) {
+    this.tokenponPageDraft = this.draftTokenpons.slice(this.pageSize * (pageNum - 1), this.pageSize * (pageNum - 1) + this.pageSize)
   }
 }
