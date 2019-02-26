@@ -28,9 +28,9 @@
             <br>
             <a [href]="formatURL(model.webPage)" target="_blank">{{model.webPage}}</a> -->
             </div>
-            <div>
-                <div *ngIf="logoUrl != ''" class="col-xs-12 col-sm-12 col-md-3"><img [src]="logoUrl" style="height:50px"></div>
-                <h5>{{model.businessName}} - {{model.city}}</h5>
+            <div class="row">
+                <div *ngIf="logoUrl != ''" class="col-3"><img [src]="logoUrl" style="height:50px"></div>
+                <h5 class="col-9">{{model.businessName}} - {{model.city}}</h5>
                 <!-- <small class="ml-3">follow</small> -->
             </div>
             <!-- <div class="mt-3">
@@ -132,7 +132,7 @@
                                             class="fa fa-users" aria-hidden="true"></i></h6>
 
                                 </div>
-                                <div class="col text-center">
+                                <div *ngIf="model.discounts[i].groupCount > 1" class="col text-center">
                                     <small *ngIf="model.discounts[i].groupCount > model.discounts[i].numOfPurchases" class="text-info">
                                         In NEED {{model.discounts[i].groupCount - model.discounts[i].numOfPurchases}} more buyer. Currently {{model.discounts[i].numOfPurchases}} buyers are in. This deal needs minimum
                                         {{model.discounts[i].groupCount}} buyers.</small>
@@ -168,7 +168,7 @@
                                 <button type="button" class="btn defaultbtn" (click)="displayBuyModal(content, i, finalConfirm, loginModal);">BUY</button>
 
                             </div>
-                            <div class="text-warning">
+                            <div *ngIf="model.discounts[i].groupCount > 1" class="text-warning">
                                 {{TokenponGroupBuyPrint}}
                             </div>
                         </div>
@@ -191,17 +191,17 @@
                 <ul class="small">
                     <li>
                         <i class="fas fa-map-marker-alt"></i>
-                        <span style="padding-left:10px">{{model.street}} {{model.city}},
-                            {{model.state}} {{model.zip}}</span>
+                        <span style="padding-left:10px">{{profileModel?.street}} {{profileModel?.city}},
+                            {{profileModel?.state}} {{profileModel?.zip}}</span>
                     </li>
                     <li>
-                        <i class="fas fa-phone"></i><span style="padding-left:10px">{{model.phone}}</span>
+                        <i class="fas fa-phone"></i><span style="padding-left:10px">{{profileModel?.phone}}</span>
                     </li>
                     <li>
-                        <i class="fas fa-envelope"></i><span style="padding-left:10px">{{model.email}}</span>
+                        <i class="fas fa-envelope"></i><span style="padding-left:10px">{{profileModel?.email}}</span>
                     </li>
                     <li>
-                        <i class="fas fa-globe"></i><span style="padding-left:10px"><a [href]="model.webPage" target="_blank ">{{model.webPage}}</a></span>
+                        <i class="fas fa-globe"></i><span style="padding-left:10px"><a [href]="profileModel?.webPage" target="_blank ">{{profileModel?.webPage}}</a></span>
                     </li>
                     <!-- <li>
                         <i class="fas fa-globe"></i><span style="padding-left:10px"><a [href]=" formatURL(model.webPage) "

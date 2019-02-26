@@ -93,6 +93,7 @@ export class ClaimDetailComponent implements OnInit {
   loginResponseMsg: string;
   dealInProgress: boolean = false; //indicate whether deal is currentlly in progress
   logoUrl: string;
+  profileModel: any;
 
   constructor(private http: Http, private route: ActivatedRoute, private globals: Globals, private oothService: OothService,
     private lightbox: Lightbox, private toasterService: ToasterService, private titleService: Title, private googleGeoService: GoogleGeoService,
@@ -160,6 +161,8 @@ export class ClaimDetailComponent implements OnInit {
           // console.log(response);
           this.model = response.json();
           console.log(this.model);
+          //get merchant profile data
+          this.getProfileData();
           //get discounts
           this.discountArray = this.model.discounts;
           //deal in progress if any discount contains purchaser
@@ -171,38 +174,7 @@ export class ClaimDetailComponent implements OnInit {
             });
           };
           console.log("discount: " + this.discountArray);
-          //get map geo
-          this.googleGeoService.getGoogleGeoData(this.model.street, this.model.city, this.model.state, this.model.zip)
-            .subscribe(response => {
-              if (response.status === 200) {
-                if (response.json().results[0] !== undefined) {
-                  // console.log(response.json().results[0].geometry.location);
-                  if (this.lat == undefined) {
-                    this.lat = parseFloat(response.json().results[0].geometry.location.lat);
-                    this.lng = parseFloat(response.json().results[0].geometry.location.lng);
-                  }
-                  console.log("lat = " + this.lat + " lng = " + this.lng)
-                  // const bounds = new google.maps.LatLngBounds();
-                  // for (const mm of this.markers) {
-                  //   bounds.extend(new google.maps.LatLng(mm.lat, mm.lng));
-                  // }
-                  // // @ts-ignore
-                  // this.agmMap.fitBounds(bounds);
 
-                  let marker = {
-                    lat: parseFloat(response.json().results[0].geometry.location.lat),
-                    lng: parseFloat(response.json().results[0].geometry.location.lng),
-                    label: '',
-                    tooltip: '',
-                    draggable: false
-                  };
-                  this.markers.push(marker);
-                  console.log(this.markers);
-                }
-              }
-            });
-          //set title
-          this.titleService.setTitle(this.model.businessName + " " + this.model.city + " " + (this.model.discounts[0].discount * 100) + "% off");
           //get pictures from SWARM
           // this.swarmService.getFileUrls(this.model.pictures)
           //   .forEach(img => {
@@ -312,6 +284,54 @@ export class ClaimDetailComponent implements OnInit {
       });
   }
 
+  //get user profile data
+  getProfileData() {
+    this.mongoService.GetProfile(this.model.userId, this.globals.TokenponAppId)
+      .subscribe(response => {
+        if (response.status == 200) {
+          // console.log(response);
+          try {
+            this.profileModel = response.json();
+            //get map geo
+            this.googleGeoService.getGoogleGeoData(this.profileModel.street, this.profileModel.city, this.profileModel.state, this.profileModel.zip)
+              .subscribe(response => {
+                if (response.status === 200) {
+                  if (response.json().results[0] !== undefined) {
+                    // console.log(response.json().results[0].geometry.location);
+                    if (this.lat == undefined) {
+                      this.lat = parseFloat(response.json().results[0].geometry.location.lat);
+                      this.lng = parseFloat(response.json().results[0].geometry.location.lng);
+                    }
+                    console.log("lat = " + this.lat + " lng = " + this.lng)
+                    // const bounds = new google.maps.LatLngBounds();
+                    // for (const mm of this.markers) {
+                    //   bounds.extend(new google.maps.LatLng(mm.lat, mm.lng));
+                    // }
+                    // // @ts-ignore
+                    // this.agmMap.fitBounds(bounds);
+
+                    let marker = {
+                      lat: parseFloat(response.json().results[0].geometry.location.lat),
+                      lng: parseFloat(response.json().results[0].geometry.location.lng),
+                      label: '',
+                      tooltip: '',
+                      draggable: false
+                    };
+                    this.markers.push(marker);
+                    console.log(this.markers);
+                  }
+                }
+              });
+            //set title
+            this.titleService.setTitle(this.profileModel.businessName + " " + this.profileModel.city + " " + (this.model.discounts[0].discount * 100) + "% off");
+          }
+          catch (e) {
+          }
+          //get pictures from Mongo
+          this.logoUrl = this.profileModel.pictures[0] == undefined ? "" : this.profileModel.pictures[0];
+        }
+      });
+  }
   loadPage(pageNum: number) {
     if (pageNum !== this.previousPage) {
       this.previousPage = pageNum;
@@ -905,7 +925,7 @@ export class ClaimDetailComponent implements OnInit {
       numberOfTokenpons: this.tokenponPurchaseCount
     };
     this.mongoService.purchaseTokenpon(data)
-    .subscribe(response => {
+      .subscribe(response => {
         if (response.status == 200) {
           console.log(response);
           // add the new count to purchase count
@@ -927,11 +947,11 @@ export class ClaimDetailComponent implements OnInit {
           this.modalService.open(finalConfirm);
         }
       })
-      // .catch(error => {
-      //   console.log(error);
-      //   this.modalSuccess = false;
-      //   this.modalService.open(finalConfirm);
-      // });
+    // .catch(error => {
+    //   console.log(error);
+    //   this.modalSuccess = false;
+    //   this.modalService.open(finalConfirm);
+    // });
   }
   displayBuyModal(content, i, finalConfirm, loginModal) {
     if (this.currentUserId !== null && this.currentUserId !== undefined && this.currentUserId.trim() !== "") {
@@ -1050,19 +1070,19 @@ export class ClaimDetailComponent implements OnInit {
     }
     this.oothService.Login(userid, this.model.loginpassword, this.phoneLogin)
       .then(response => {
-        if(response.status !== "error"){
+        if (response.status !== "error") {
           this.modalLoginRef.close();
         }
-        else{
+        else {
           this.loginResponseMsg = response.message.message;
         }
       })
   }
-  setQrValue(qrModal, value){
-    if(value == 1){
+  setQrValue(qrModal, value) {
+    if (value == 1) {
       this.qrValue = this.iXinAndroid;
     }
-    else{
+    else {
       this.qrValue = this.iXiniOS;
     }
     this.modalService.open(qrModal, { size: 'sm' });
