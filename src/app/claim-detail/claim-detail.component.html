@@ -29,7 +29,7 @@
             <a [href]="formatURL(model.webPage)" target="_blank">{{model.webPage}}</a> -->
             </div>
             <div class="row">
-                <div *ngIf="logoUrl != ''" class="col-3"><img [src]="logoUrl" style="height:50px"></div>
+                <div *ngIf="logoUrl != '' && logoUrl != null" class="col-3"><img [src]="logoUrl" style="height:50px"></div>
                 <h5 class="col-9">{{model.businessName}} - {{model.city}}</h5>
                 <!-- <small class="ml-3">follow</small> -->
             </div>
