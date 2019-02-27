@@ -73,8 +73,8 @@
                     <!-- second card -->
                     <div class="card">
                         <div class="card-body card-head">
-                            <button *ngIf="!inBusinessEdit" class="btn btn-blue-grey btn-sm float-right" (click)="toggleBusinessEdit()"
-                                translate>Edit</button>
+                            <button *ngIf="!inBusinessEdit" class="btn btn-blue-grey float-right" (click)="toggleBusinessEdit()"
+                                translate>Edit Profile</button>
                             <!-- <h4>Update Profile</h4> -->
                             <form *ngIf="!inBusinessEdit">
                                 <div class="form-group">
@@ -480,21 +480,25 @@
                                                 </div>
                                                 <div class="row">
                                                     <div class="form-group col-sm-6">
-                                                        <div [ngClass]="{ 'has-error': profileForm.submitted && !webPage.valid }">
-                                                            <label for="webPage" class="required" translate>WebPage</label>
+                                                        <div [ngClass]="{ 'has-error': !webPage.valid }">
+                                                            <label for="webPage" translate>WebPage</label>
                                                             <input type="text" id="webPage" class="form-control" id="webPage"
                                                                 pattern="^((http|https):\/\/[w|W]+(\.[a-zA-Z0-9]+)+.*)$"
                                                                 [(ngModel)]="profileModel.webPage" [ngClass]="{ 'show-error-border': profileForm.submitted && !webPage.dirty }"
                                                                 name="webPage" #webPage="ngModel">
-                                                            <!-- <div class="col-sm-6">
-                                                                <small *ngIf="profileForm.submitted && !webPage.dirty"
-                                                                    translate class="" [ngClass]="{ 'show-error': profileForm.submitted && !webPage.dirty }">*
-                                                                    required</small>
-                                                                <small *ngIf="webPage.errors?.pattern && webPage.touched"
+                                                            <div class="col-sm-6">
+                                                                <!-- <small *ngIf="!webPage.dirty"
+                                                                    translate class="" [ngClass]="{ 'show-error': !webPage.dirty }">*
+                                                                    required</small> -->
+                                                                <!-- <small *ngIf="webPage.errors?.pattern && webPage.touched"
                                                                     [ngClass]="{'show-error': webPage.errors?.pattern && webPage.touched}"
                                                                     translate>* Please enter valid URL
+                                                                    (eg.http://www.google.com)</small> -->
+                                                                <small *ngIf="webPage.errors?.pattern"
+                                                                    [ngClass]="{'show-error': webPage.errors?.pattern}"
+                                                                    translate>* Please enter valid URL
                                                                     (eg.http://www.google.com)</small>
-                                                            </div> -->
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -693,6 +697,7 @@
                             <hr>
                             <div class="mb-5">
                                 <h4 class="text-success" translate>Purchased Tokenpons</h4>
+                                <label class="text-info">View tokenpon details in your iXin mobile app</label>
                                 <div *ngIf="purchasedTokenpons.length == 0">
                                     You have not purchased any Tokenpon yet.
                                 </div>

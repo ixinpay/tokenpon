@@ -133,9 +133,9 @@
 
                                 </div>
                                 <div *ngIf="model.discounts[i].groupCount > 1" class="col text-center">
-                                    <small *ngIf="model.discounts[i].groupCount > model.discounts[i].numOfPurchases" class="text-info">
+                                    <h5 *ngIf="model.discounts[i].groupCount > model.discounts[i].numOfPurchases" class="text-info">
                                         In NEED {{model.discounts[i].groupCount - model.discounts[i].numOfPurchases}} more buyer. Currently {{model.discounts[i].numOfPurchases}} buyers are in. This deal needs minimum
-                                        {{model.discounts[i].groupCount}} buyers.</small>
+                                        {{model.discounts[i].groupCount}} buyers.</h5>
                                     <h5 *ngIf="model.discounts[i].numOfPurchases >= model.discounts[i].groupCount" class="text-success">
                                         {{globals.iXinDealLive}}</h5>
                                 </div>
@@ -223,14 +223,14 @@
             </div>
             <div *ngIf="currentUserId != undefined">
                 <div class="row col-12">
-                    <i (click)="thumbsUp()" [ngClass]="{ 'fa-thumbs-up-clicked': alreadyLiked }" class="far fa-thumbs-up fa-lg col-6"
-                        placement="top" ngbTooltip="you liked it">
+                    <i (click)="thumbsUp()" [ngClass]="{ 'fa-thumbs-up-clicked': alreadyLiked }" class="far fa-thumbs-up fa-lg col-sm-6 col-md-3"
+                        placement="top" ngbTooltip="you liked it" [style.cursor]="!alreadyDisliked ? 'pointer' : 'auto'">
                         <i style="font-size: medium;">{{likes}} likes</i>
                         <br>
                         <label style="font-size: small" translate>(earn 5 tokens)</label>
                     </i>
-                    <i (click)="thumbsDown()" [ngClass]="{ 'fa-thumbs-down-clicked': alreadyDisliked }" class="far fa-thumbs-down fa-lg col-6"
-                        placement="top" ngbTooltip="you didn't like it">
+                    <i (click)="thumbsDown()" [ngClass]="{ 'fa-thumbs-down-clicked': alreadyDisliked }" class="far fa-thumbs-down fa-lg col-sm-6 col-md-3"
+                        placement="top" ngbTooltip="you didn't like it"  [style.cursor]="!alreadyLiked ? 'pointer' : 'auto'">
                         <i style="font-size: medium;">{{dislikes}} dislikes</i>
                         <br>
                         <label style="font-size: small" translate>(to dislike costs 10 tokens)</label>

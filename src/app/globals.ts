@@ -18,7 +18,7 @@ export class Globals {
   // readonly ChainPostNewCommentSubject = "New comment posted";
   // readonly ChainPostNewCommentMessageToAuthor = "A new comment has been posted for your post<br/>";
   // readonly ChainPostNewCommentMessageToProvider = "Thank you for your comment on<br/>";
-  readonly TokenponDiscountList = [5, 10, 15, 20] ;
+  readonly TokenponDiscount = [10, 99] ;
   readonly TokenponAccountType = ["individual", "merchant"];
   readonly MaxTokenponPurchaseAllowable = 10;
   readonly iXinMobileAppMessage = "Download the iXin mobile app in order to take advantage of this deal.";

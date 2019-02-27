@@ -59,7 +59,7 @@ export class ClaimComponent implements OnInit {
   logoUrl: string = "";
   // expireDays: number[];
   private showNewOfferUI: boolean = true;
-  private discountValueList: number[];
+  private discountValueList: number[] = [];
   fromPage: string; //navigation source 
   alreadyPublished: boolean = false; //indicate whether the deal is already
 
@@ -73,7 +73,10 @@ export class ClaimComponent implements OnInit {
     // this.expireDays = Array.from(new Array(90),(val,index)=>index+30);
     this.currentUserId = sessionStorage.getItem('currentUserId');
     // this.model.submitBy = this.currentUser;
-    this.discountValueList = Array.from(new Array(85), (val, index) => index + 10);
+    for(let i = this.globals.TokenponDiscount[0]; i <= this.globals.TokenponDiscount[1]; i++) {
+      this.discountValueList.push(i);
+    };
+    // this.discountValueList = Array.from(new Array(85), (val, index) => index + 10);
     this.route.queryParams.subscribe(params => {
       // console.log(params['id']);
       this.claimId = params['id'];
