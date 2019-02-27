@@ -5,9 +5,9 @@ export class Globals {
   readonly chainFormName = "mrofTest2";
   readonly chainPageComment = "mrofTestComment2";
   readonly chainPageVote = "mrofTestVote2";
-  readonly tokenDeductAmmount_TokenponComment = 5;
+  readonly tokenDeductAmmount_TokenponComment = 10;
   readonly tokenDeductAmmount_TokenponUpVote = 5;
-  readonly tokenDeductAmmount_TokenponDownVote = 10;
+  readonly tokenDeductAmmount_TokenponDownVote = 5;
   readonly TokenponAppId = 1;
   readonly ChainpostAppId = 2;
   readonly action = { comment: "comment", like: "like", dislike: "dislike", post: "post", login: "login" };
