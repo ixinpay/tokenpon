@@ -651,7 +651,7 @@
                                 </div>
                             
                                 <ul class="col-12">
-                                    <li class="col-12 listPage" *ngFor="let tokenpon of publishedTokenpons">
+                                    <li class="col-12 listPage" *ngFor="let tokenpon of tokenponPagePublished">
                                         <div class="row col-12">
                                             <a (click)="selectTokenpon(tokenpon._id, 1)">
                                                 {{tokenpon.businessName}} - {{tokenpon.city}}
@@ -665,7 +665,7 @@
                                     </li>
                                 </ul>
                                 <div *ngIf="publishedTokenpons.length > pageSize" class="col-12 row">
-                                    <ngb-pagination [collectionSize]="publishedTokenpons.length" [(page)]="page" [maxSize]="maxSize" [pageSize]="pageSize"
+                                    <ngb-pagination [collectionSize]="publishedTokenpons.length" [(page)]="pagePublished" [maxSize]="maxSize" [pageSize]="pageSize"
                                         [rotate]="true" (pageChange)="loadPagePublished($event)"></ngb-pagination>
                                 </div> 
                             </div>
@@ -676,7 +676,7 @@
                                     You have no draft Tokenpon yet.
                                 </div>
                                 <ul class="col-12">
-                                    <li class="col-12 listPage" *ngFor="let tokenpon of draftTokenpons">
+                                    <li class="col-12 listPage" *ngFor="let tokenpon of tokenponPageDraft">
                                         <div class="row col-12">
                                             <a (click)="selectTokenpon(tokenpon._id, 2)">
                                                 {{tokenpon.businessName}} - {{tokenpon.city}}
@@ -690,7 +690,7 @@
                                     </li>
                                 </ul>
                                 <div *ngIf="draftTokenpons.length > pageSize" class="col-12 row">
-                                    <ngb-pagination [collectionSize]="draftTokenpons.length" [(page)]="page" [maxSize]="maxSize" [pageSize]="pageSize"
+                                    <ngb-pagination [collectionSize]="draftTokenpons.length" [(page)]="pageDraft" [maxSize]="maxSize" [pageSize]="pageSize"
                                         [rotate]="true" (pageChange)="loadPageDraft($event)"></ngb-pagination>
                                 </div>                              
                             </div>
@@ -701,13 +701,20 @@
                                 <div *ngIf="purchasedTokenpons.length == 0">
                                     You have not purchased any Tokenpon yet.
                                 </div>
-                                <ul class="col-sm-12 col-md-9 col-lg-9 col-xl-8">
+                                <ul class="col-12">
                                     <li class="col-12 listPage" *ngFor="let tokenpon of tokenponPagePurchased">
                                         {{tokenpon.businessName}} - {{tokenpon.description}}
+                                        <div>
+                                            <small>{{tokenpon.street}} {{tokenpon.state}} {{tokenpon.zip}}</small>
+                                        </div>
+                                        <div>
+                                            <small >Bought: {{tokenpon.numOfTokenpons}}</small>
+                                            <small >Redeemed: {{tokenpon.numOfRedeems}}</small>
+                                        </div>
                                     </li>
                                 </ul>
                                 <div *ngIf="purchasedTokenpons.length > pageSize" class="col-12 row">
-                                    <ngb-pagination [collectionSize]="purchasedTokenpons.length" [(page)]="page" [maxSize]="maxSize" [pageSize]="pageSize"
+                                    <ngb-pagination [collectionSize]="purchasedTokenpons.length" [(page)]="pageTokenpon" [maxSize]="maxSize" [pageSize]="pageSize"
                                         [rotate]="true" (pageChange)="loadPagePurchased($event)"></ngb-pagination>
                                 </div>
                             </div>

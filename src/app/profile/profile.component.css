@@ -132,7 +132,7 @@ body {
     overflow: auto;
     font-family: Helvetica;
     color: #707070;
-    width: 160%;
+    /* width: 160%; */
 }
 
 .listPage:hover {
@@ -150,4 +150,24 @@ body {
 /* pagination link color fix */
 .page-link:focus {
   background-color: #4285f4 !important;
+}
+
+ngb-pagination /deep/ .pagination {
+  margin-bottom: 0 !important;
+}
+
+ngb-pagination /deep/ .pagination .page-item.active a {
+  box-shadow: none !important;
+  background-color: transparent;
+  color: #FF8F00;
+  font: bold
+}
+
+ngb-pagination /deep/ .pagination .page-item.active .page-link:hover {
+  background-color: transparent;
+  color: #FF8F00;
+}
+
+ngb-pagination /deep/ .pagination {
+  float: right !important;
 }

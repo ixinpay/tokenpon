@@ -22,8 +22,12 @@ export class ProfileComponent implements OnInit {
   storeCarouselData: NguCarouselStore;
 
   totalItems: number;
-  page: number;
-  previousPage: any;
+  pagePublished: number;
+  pageDraft: number;
+  pageTokenpon: number;
+  previousPagePublished: any;
+  previousPageDraft: any;
+  previousPageTokenpon: any;
   pageSize: number;
   maxSize: number;
   tokenponPagePurchased: any[] = [];
@@ -85,7 +89,9 @@ export class ProfileComponent implements OnInit {
     private http: Http, private swarmService: SwarmService) {
 
     // pagination setup
-    this.page = 1;
+    this.pagePublished = 1;
+    this.pageDraft = 1;
+    this.pageTokenpon = 1;
     this.maxSize = 5;
     this.pageSize = 5;
 
@@ -116,8 +122,8 @@ export class ProfileComponent implements OnInit {
         if (response.status == 200) {
           this.publishedTokenpons = response.json().filter(element => element.published == true);
           this.draftTokenpons = response.json().filter(element => element.published == false);
-          this.tokenponPagePublished = this.publishedTokenpons;
-          this.tokenponPageDraft = this.draftTokenpons;
+          this.tokenponPagePublished = this.publishedTokenpons.slice(0, this.pageSize);;
+          this.tokenponPageDraft = this.draftTokenpons.slice(0, this.pageSize);;
           // console.log(this.publishedTokenpons);
         }
       });
@@ -648,20 +654,20 @@ export class ProfileComponent implements OnInit {
    * check if we need load a new page
    */
   loadPagePurchased(pageNum: number) {
-    if (pageNum !== this.previousPage) {
-      this.previousPage = pageNum;
+    if (pageNum !== this.previousPageTokenpon) {
+      this.previousPageTokenpon = pageNum;
       this.loadDataPurchased(pageNum);
     }
   }
   loadPagePublished(pageNum: number) {
-    if (pageNum !== this.previousPage) {
-      this.previousPage = pageNum;
+    if (pageNum !== this.previousPagePublished) {
+      this.previousPagePublished = pageNum;
       this.loadDataPublished(pageNum);
     }
   }
   loadPageDraft(pageNum: number) {
-    if (pageNum !== this.previousPage) {
-      this.previousPage = pageNum;
+    if (pageNum !== this.previousPageDraft) {
+      this.previousPageDraft = pageNum;
       this.loadDataDraft(pageNum);
     }
   }
