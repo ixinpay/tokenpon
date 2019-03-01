@@ -17,6 +17,8 @@ import { AgmCoreModule, MouseEvent, GoogleMapsAPIWrapper, AgmMap, LatLngBounds, 
 import { } from 'googlemaps';
 import { Marker } from '../_models/index'
 import { NgbModal, NgbActiveModal, ModalDismissReasons, NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
+import { DateTime } from 'aws-sdk/clients/rekognition';
+import { DatePipe } from '@angular/common';
 
 @Component({
   moduleId: module.id.toString(),
@@ -95,11 +97,12 @@ export class ClaimDetailComponent implements OnInit {
   dealInProgress: boolean = false; //indicate whether deal is currentlly in progress
   logoUrl: string;
   profileModel: any;
+  today: string;
 
   constructor(private http: Http, private route: ActivatedRoute, private globals: Globals, private oothService: OothService,
     private lightbox: Lightbox, private toasterService: ToasterService, private titleService: Title, private googleGeoService: GoogleGeoService,
     private router: Router, private mongoService: MongoService, private swarmService: SwarmService, private modalService: NgbModal,
-    private config: NgbCarouselConfig) {
+    private config: NgbCarouselConfig, private datePipe: DatePipe) {
 
     //ng-bootstrap carousel config
     // customize default values of carousels used by this component tree
@@ -107,7 +110,7 @@ export class ClaimDetailComponent implements OnInit {
     config.wrap = false;
     config.keyboard = false;
     // config.pauseOnHover = false;
-
+    this.today = this.datePipe.transform(new Date(), 'yyyy-MM-ddTHH:mm');
     this.iXinMobileAppMessage = this.globals.iXinMobileAppMessage;
     this.iXinAndroid = this.globals.iXinAndroid;
     this.iXiniOS = this.globals.iXiniOS;

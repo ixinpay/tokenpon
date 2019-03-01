@@ -136,7 +136,7 @@
                                             class="fa fa-users" aria-hidden="true"></i></h6>
 
                                 </div>
-                                <div *ngIf="model.discounts[i].groupCount > 1" class="col text-center">
+                                <div *ngIf="model.discounts[i].groupCount > 1 && model.discounts[i].expirationDate > today" class="col text-center">
                                     <h5 *ngIf="model.discounts[i].groupCount > model.discounts[i].numOfPurchases" class="text-info">
                                         In NEED {{model.discounts[i].groupCount - model.discounts[i].numOfPurchases}} more buyer. Currently {{model.discounts[i].numOfPurchases}} buyers are in. This deal needs minimum
                                         {{model.discounts[i].groupCount}} buyers.</h5>
@@ -169,8 +169,10 @@
                                 <label>{{model.discounts[i].expirationDate | date: 'short' : 'locale'}}</label>
                             </div>
                             <div class="col-12 mb-2 text-center">
-                                <button type="button" class="btn defaultbtn" (click)="displayBuyModal(content, i, finalConfirm, loginModal);">BUY</button>
-
+                                <button type="button" class="btn defaultbtn" (click)="displayBuyModal(content, i, finalConfirm, loginModal);"
+                                    *ngIf="model.discounts[i].expirationDate > today">BUY</button>
+                                <button type="button" class="btn btn-light" disabled
+                                    *ngIf="today > model.discounts[i].expirationDate">SALES ENDED</button>
                             </div>
                             <div *ngIf="model.discounts[i].groupCount > 1" class="text-warning">
                                 {{TokenponGroupBuyPrint}}
