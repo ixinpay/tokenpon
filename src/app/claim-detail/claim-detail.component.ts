@@ -88,6 +88,7 @@ export class ClaimDetailComponent implements OnInit {
   iXinMobileAppMessage: string;
   iXinAndroid: string;
   iXiniOS: string;
+  iXinHub: string;
   qrValue: string;
   modalLoginRef: any;
   loginResponseMsg: string;
@@ -110,6 +111,7 @@ export class ClaimDetailComponent implements OnInit {
     this.iXinMobileAppMessage = this.globals.iXinMobileAppMessage;
     this.iXinAndroid = this.globals.iXinAndroid;
     this.iXiniOS = this.globals.iXiniOS;
+    this.iXinHub = this.globals.iXinHub;
     this.TokenponGroupBuyPrint = this.globals.TokenponGroupBuyPrint;
     this.currentUrl = window.location.href;
     this.account = sessionStorage.getItem("currentUserAccount");
@@ -1079,7 +1081,10 @@ export class ClaimDetailComponent implements OnInit {
       })
   }
   setQrValue(qrModal, value) {
-    if (value == 1) {
+    if (value == 3) {
+      this.qrValue = this.iXinHub;
+    }
+    else if (value == 1) {
       this.qrValue = this.iXinAndroid;
     }
     else {

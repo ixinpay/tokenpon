@@ -1,8 +1,12 @@
 <div class="container">
     <div class="row">
         <span class="col-9 text-info">{{iXinMobileAppMessage}} 
-            <a style="cursor: pointer" (click)="setQrValue(QRModal, 1)">Android: <i class='fa fa-android fa-2x text-success' aria-hidden='true'></i></a> 
-            <a style="cursor: pointer" (click)="setQrValue(QRModal, 2)"> iOS: <i class='fa fa-apple fa-2x' style="color:silver" aria-hidden='true'></i></a></span>
+            <a class="text-success" style="cursor: pointer" (click)="setQrValue(QRModal, 3)">
+                Download Here
+            </a> 
+            <!-- <a style="cursor: pointer" (click)="setQrValue(QRModal, 1)">Android: <i class='fa fa-android fa-2x text-success' aria-hidden='true'></i></a> 
+            <a style="cursor: pointer" (click)="setQrValue(QRModal, 2)"> iOS: <i class='fa fa-apple fa-2x' style="color:silver" aria-hidden='true'></i></a> -->
+        </span>
     </div>
     <div class="row">
         <div class="form-group col-md-9 no-gutters">
@@ -455,7 +459,10 @@
         <ngx-qrcode [qrc-element-type]="img" qrc-class="qrSize" [qrc-element-type]="elementType" [qrc-value]="qrValue">
         </ngx-qrcode>
     </div>
+    <div class="modal-body text-center">
+        <a [href]="qrValue" target="_blank">{{qrValue}}</a>
+    </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="d('No')">OK</button>
+        <button type="button" class="btn btn-secondary" (click)="d('OK')">OK</button>
     </div>
 </ng-template>
