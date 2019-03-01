@@ -35,7 +35,8 @@ export class AppComponent {
     new ToasterConfig({
       showCloseButton: true,
       tapToDismiss: false,
-      timeout: 0
+      positionClass: "toast-bottom-full-width",
+      timeout: 0      
     });
 
   constructor(

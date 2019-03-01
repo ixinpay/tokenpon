@@ -292,6 +292,7 @@ export class ProfileComponent implements OnInit {
   onPageClick(value) {
     // console.log(value);
     this.selectedPage = value.trim();
+    this.checkIsRegularAccount();
     sessionStorage.setItem("currentSelectedPage", this.selectedPage);
   }
   // updateProfile(){

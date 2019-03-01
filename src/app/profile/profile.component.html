@@ -642,7 +642,7 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="mb-5">
-                                <div class="text-left text-danger"> 
+                                <div *ngIf="!isRegularAccount" class="text-left text-danger"> 
                                     NOTES: You can not change published tokenpon if customer(s) have started purchasing it.
                                 </div><br />
                                 <h4 class="text-primary" translate>Published Tokenpons</h4>
