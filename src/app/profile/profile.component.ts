@@ -132,7 +132,8 @@ export class ProfileComponent implements OnInit {
     //   this.userName = params["user"];
     //   this.getProfileData();
     // });
-    this.userName = sessionStorage.getItem("currentUser");
+    this.userName = sessionStorage.getItem("currentUser") == null || sessionStorage.getItem("currentUser") == undefined ?
+                      "" : sessionStorage.getItem("currentUser");
     this.getProfileData();
 
     this.profilePages = new Array("Account Information", "Account Profile", "Account Settings", "Your Tokenpon");
