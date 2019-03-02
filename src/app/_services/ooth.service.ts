@@ -100,9 +100,13 @@ export class OothService {
                 this.getLoggedInUserName.emit(body.user.local.dname);
                 sessionStorage.setItem('currentUser', body.user.local.dname);
             }
-            else {
+            else if(body.user.local.email) {
                 this.getLoggedInUserName.emit(body.user.local.email);
                 sessionStorage.setItem('currentUser', body.user.local.email);
+            }
+            else{
+                this.getLoggedInUserName.emit(body.user._id);
+                sessionStorage.setItem('currentUser', body.user._id);
             }
             sessionStorage.setItem("currentUserId", body.user._id);
             sessionStorage.setItem('currentUserEmail', body.user.local.email);
