@@ -15,7 +15,7 @@ import { environment } from 'environments/environment.prod';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ISubscription } from 'rxjs/Subscription';
 import { DatePipe } from '@angular/common';
-// import { ImageCompressService, ResizeOptions, ImageUtilityService, IImage, SourceImage } from  'ng2-image-compress';
+import { ImageCompressService, ResizeOptions, ImageUtilityService, IImage, SourceImage } from  'ng2-image-compress';
 // import { HttpHeaders } from '@angular/common/http';
 
 @Component({
@@ -63,12 +63,12 @@ export class ClaimComponent implements OnInit {
   fromPage: string; //navigation source 
   alreadyPublished: boolean = false; //indicate whether the deal is already
   processedImages: any = [];
-
+  
   constructor(
     private router: Router, private route: ActivatedRoute, private translate: TranslateService,
     private userService: UserService, private bigchaindbService: BigchanDbService,
     private globals: Globals, private mongoService: MongoService, private modalService: NgbModal,
-    private alertService: AlertService, private toasterService: ToasterService, //private imgCompressService: ImageCompressService,
+    private alertService: AlertService, private toasterService: ToasterService, private imgCompressService: ImageCompressService,
     private http: Http, private swarmService: SwarmService, private datePipe: DatePipe
   ) {
     // this.expireDays = Array.from(new Array(90),(val,index)=>index+30);

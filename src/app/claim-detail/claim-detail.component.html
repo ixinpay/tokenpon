@@ -172,7 +172,7 @@
                                 <button type="button" class="btn defaultbtn" (click)="displayBuyModal(content, i, finalConfirm, loginModal);"
                                     *ngIf="model.discounts[i].expirationDate > today">BUY</button>
                                 <button type="button" class="btn btn-light" disabled
-                                    *ngIf="today > model.discounts[i].expirationDate">SALES ENDED</button>
+                                    *ngIf="today > model.discounts[i].expirationDate">SALE ENDED</button>
                             </div>
                             <div *ngIf="model.discounts[i].groupCount > 1" class="text-warning">
                                 {{TokenponGroupBuyPrint}}

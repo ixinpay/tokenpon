@@ -48,7 +48,7 @@ import {MegaMenuModule} from 'primeng/megamenu';
 import { InternationalPhoneNumberModule } from 'ngx-international-phone-number';
 import { NewestComponent } from './newest/newest.component';
 import { DatePipe } from '@angular/common';
-// import { ImageCompressService,ResizeOptions,ImageUtilityService } from 'ng2-image-compress';
+import { ImageCompressService,ResizeOptions,ImageUtilityService } from 'ng2-image-compress';
 // const SERVICES = [
 //   MetaCoinService,
 //   Web3Service,
@@ -129,8 +129,8 @@ import { DatePipe } from '@angular/common';
     // provider used to create fake backend
     // fakeBackendProvider,
     Title,
-    DatePipe
-    // ImageCompressService,ResizeOptions
+    DatePipe,
+    ImageCompressService,ResizeOptions
   ],
   entryComponents: [ModalContent],
   bootstrap: [AppComponent]
