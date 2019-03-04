@@ -27,7 +27,9 @@ export class OothService {
     @Output() getAccountBalance: EventEmitter<any> = new EventEmitter();
     @Output() logginStatus: EventEmitter<any> = new EventEmitter();
     //readonly API_PATH = 'http://linkcryptocoin.com:8091/auth/';
-    readonly API_PATH = getApiPath();
+    //readonly API_PATH = getApiPath();
+    readonly API_PATH = environment.IxinAPI;
+    
     conn: any;
     //user: any;
     authenticated: boolean;
