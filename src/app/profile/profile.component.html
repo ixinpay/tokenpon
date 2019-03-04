@@ -289,12 +289,12 @@
                                                 </div>
                                                 <div class="row">
                                                     <div class="form-group col-sm-12">
-                                                        <label for="image_uploads" translate>Choose a business logo(<2MB)
-                                                                to upload (PNG, JPG) <span class="btn btn-mdb-color btn-sm"
+                                                        <label for="image_uploads" translate>Choose a business logo
+                                                                to upload <span class="btn btn-mdb-color btn-sm"
                                                                 translate>Browse</span>
                                                         </label>
                                                         <input style="display: none;" type="file" id="image_uploads"
-                                                            accept=".jpg, .jpeg, .png" multiple (change)="detectFiles($event)"
+                                                            accept="image/*" (change)="detectFiles($event)"
                                                             title="Choose">
                                                         <div *ngIf="isOversize"><small translate class="show-error"
                                                                 translate>* picture(s) too large</small></div>

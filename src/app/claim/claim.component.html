@@ -20,6 +20,9 @@
                     </div>
                 </div>
                 <!-- <div class="col-12 mt-3">
+                    <input type="checkbox">
+                </div> -->
+                <!-- <div class="col-12 mt-3">
                         <div class="col-xs-12 col-sm-12">
                             <label for="productTextarea" translate>Title of Discount Offering:</label>
                         </div>
@@ -497,10 +500,10 @@
             <div class="col-12">
                 <div class="form-group col-sm-12">
                     <div class="col-12">
-                        <label for="image_uploads" translate>Choose images(<2MB, up to 5 images) to upload (PNG, JPG)
+                        <label for="image_uploads" translate>Choose images(up to 5 images) to upload 
                                 <span class="btn btn-mdb-color btn-sm" translate>Browse</span>
                         </label>
-                        <input style="display: none;" type="file" id="image_uploads" accept=".jpg, .jpeg, .png"
+                        <input style="display: none;" type="file" id="image_uploads" accept="image/*"
                             multiple (change)="detectFiles($event)" title="Choose">
                         <div *ngIf="isOversize"><small translate class="show-error" translate>* picture(s) too large</small></div>
                         <div *ngIf="isAlreadyAdded"><small translate class="show-error" translate>* picture(s) already

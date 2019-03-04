@@ -45,7 +45,7 @@
 
 .nav-log {
     border: 2px solid #FF8F00;
-    font-family: Helvetica;
+    /* font-family: Helvetica; */
     font-weight: bold;
     border-radius: 100px;
     background-color: #3c3d41!important;
@@ -61,12 +61,12 @@
 .nav-lang {
     margin-right: 15px;
     margin-top: 15px;
-    font-family: Helvetica;
+    /* font-family: Helvetica; */
 }
 
 .nav-profile {
     color: #FFFFFF;
-    font-family: Helvetica;
+    /* font-family: Helvetica; */
     padding-right: 10px;
     padding-top: 15px;
 }

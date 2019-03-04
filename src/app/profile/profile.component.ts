@@ -10,6 +10,7 @@ import { Http, Response, RequestOptions, Headers } from '@angular/http';
 import { environment } from 'environments/environment';
 import { NguCarousel, NguCarouselStore } from '@ngu/carousel';
 import { Lightbox } from 'ngx-lightbox';
+import { ImageCompressService, ResizeOptions, ImageUtilityService, IImage, SourceImage } from 'ng2-image-compress';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
@@ -85,7 +86,7 @@ export class ProfileComponent implements OnInit {
     private router: Router, private lightbox: Lightbox,
     private userService: UserService, private bigchaindbService: BigchanDbService,
     private globals: Globals, private mongoService: MongoService,
-    private alertService: AlertService,
+    private alertService: AlertService, private imgCompressService: ImageCompressService,
     private http: Http, private swarmService: SwarmService) {
 
     // pagination setup
@@ -133,7 +134,7 @@ export class ProfileComponent implements OnInit {
     //   this.getProfileData();
     // });
     this.userName = sessionStorage.getItem("currentUser") == null || sessionStorage.getItem("currentUser") == undefined ?
-                      "" : sessionStorage.getItem("currentUser");
+      "" : sessionStorage.getItem("currentUser");
     this.getProfileData();
 
     this.profilePages = new Array("Account Information", "Account Profile", "Account Settings", "Your Tokenpon");
@@ -144,7 +145,7 @@ export class ProfileComponent implements OnInit {
     else {
       this.selectedPage = this.profilePages[0];
     }
-    
+
     //get user data
     // this.oothService.getUser()
     //   .then(res => {
@@ -419,42 +420,36 @@ export class ProfileComponent implements OnInit {
           this.isOverTotal = true;
           return;
         }
-        //skip file >2M
-        if (file.size > environment.chainPageImageMaxSize) {
-          console.log("file size: " + file.size)
-          this.isOversize = true;
-          continue;
-        }
-        else {
-          let id: number;
-          //if no files are selected yet, just insert the files to array
-          if (this.files === undefined || this.files.length === 0) {
-            id = 0;
-            this.files.push({ "id": id, "file": file });
-            this.fileNames.push({ "id": id, "filename": file.name });
-            let reader = new FileReader();
-            reader.onload = (e: any) => {
-              // console.log(e.target.result);
-              this.urls.push({ "id": id, "url": e.target.result });
-            }
-            reader.readAsDataURL(file);
-          }
-          else {
-            //get set id = max(id) + 1
-            console.log(Math.max.apply(Math, this.files.map(function (obj) { return obj.id; })))
-            id = Math.max.apply(Math, this.files.map(function (obj) { return obj.id; })) + 1;
-            //only add files which are not in the array yet
-            if (!this.fileAlreadyAdded(file.name)) {
-              this.files.push({ "id": id, "file": file });
-              this.fileNames.push({ "id": id, "filename": file.name });
-              let reader = new FileReader();
-              reader.onload = (e: any) => {
-                this.urls.push({ "id": id, "url": e.target.result });
+        let images: Array<IImage> = [];
+
+        ImageCompressService.filesToCompressedImageSource(filesToUpload).then(observableImages => {
+          observableImages.subscribe((image) => {
+            images.push(image);
+          }, (error) => {
+            console.log("Error while converting");
+          }, () => {
+            for (let file of images) {
+              let id: number;
+              //if no files are selected yet, just insert the files to array
+              if (this.files === undefined || this.files.length === 0) {
+                id = 0;
+                this.files.push({ "id": id, "file": file });
+                this.fileNames.push({ "id": id, "filename": file.fileName });
+                this.urls.push({ "id": id, "url": file.compressedImage.imageDataUrl });
               }
-              reader.readAsDataURL(file);
+              else {
+                console.log(Math.max.apply(Math, this.files.map(function (obj) { return obj.id; })))
+                id = Math.max.apply(Math, this.files.map(function (obj) { return obj.id; })) + 1;
+                //only add files which are not in the array yet
+                if (!this.fileAlreadyAdded(file.fileName)) {
+                  this.files.push({ "id": id, "file": file });
+                  this.fileNames.push({ "id": id, "filename": file.fileName });
+                  this.urls.push({ "id": id, "url": file.compressedImage.imageDataUrl });
+                }
+              }
             }
-          }
-        }
+          });
+        });
       }
     }
     // console.log(this.urls);
@@ -540,6 +535,12 @@ export class ProfileComponent implements OnInit {
             .subscribe(res => {
               if (res.status === 200) {
                 this.toasterService.pop('success', 'Update successful');
+                // update albums to display in carousel
+                this.albums = [];
+                this.urls.forEach(element => {
+                  let album = { src: element.url, thumb: element.url};
+                  this.albums.push(album);
+                });                
               }
               else {
                 this.toasterService.pop("error", res.statusText);

@@ -15,7 +15,7 @@ import { environment } from 'environments/environment.prod';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ISubscription } from 'rxjs/Subscription';
 import { DatePipe } from '@angular/common';
-import { ImageCompressService, ResizeOptions, ImageUtilityService, IImage, SourceImage } from  'ng2-image-compress';
+import { ImageCompressService, ResizeOptions, ImageUtilityService, IImage, SourceImage } from 'ng2-image-compress';
 // import { HttpHeaders } from '@angular/common/http';
 
 @Component({
@@ -62,8 +62,7 @@ export class ClaimComponent implements OnInit {
   private discountValueList: number[] = [];
   fromPage: string; //navigation source 
   alreadyPublished: boolean = false; //indicate whether the deal is already
-  processedImages: any = [];
-  
+
   constructor(
     private router: Router, private route: ActivatedRoute, private translate: TranslateService,
     private userService: UserService, private bigchaindbService: BigchanDbService,
@@ -74,7 +73,7 @@ export class ClaimComponent implements OnInit {
     // this.expireDays = Array.from(new Array(90),(val,index)=>index+30);
     this.currentUserId = sessionStorage.getItem('currentUserId');
     // this.model.submitBy = this.currentUser;
-    for(let i = this.globals.TokenponDiscount[0]; i <= this.globals.TokenponDiscount[1]; i++) {
+    for (let i = this.globals.TokenponDiscount[0]; i <= this.globals.TokenponDiscount[1]; i++) {
       this.discountValueList.push(i);
     };
     // this.discountValueList = Array.from(new Array(85), (val, index) => index + 10);
@@ -135,52 +134,64 @@ export class ClaimComponent implements OnInit {
     let filesToUpload = event.target.files || event.srcElement.files;
 
     if (filesToUpload) {
-      for (let file of filesToUpload) {
-        //reach max image allowed
-        if (this.files.length >= environment.chainPageImageMaxCount) {
-          this.isOverTotal = true;
-          return;
-        }
-        //skip file >2M
-        if (file.size > environment.chainPageImageMaxSize) {
-          console.log("file size: " + file.size)
-          this.isOversize = true;
-          continue;
-        }
-        else {
-          let id: number;
-          //if no files are selected yet, just insert the files to array
-          if (this.files === undefined || this.files.length === 0) {
-            id = 0;
-            this.files.push({ "id": id, "file": file });
-            this.fileNames.push({ "id": id, "filename": file.name });
-            let reader = new FileReader();
-            reader.onload = (e: any) => {
-              this.urls.push({ "id": id, "url": e.target.result });
+      let images: Array<IImage> = [];
+
+      ImageCompressService.filesToCompressedImageSource(filesToUpload).then(observableImages => {
+        observableImages.subscribe((image) => {
+          images.push(image);
+        }, (error) => {
+          console.log("Error while converting");
+        }, () => {
+          for (let file of images) {
+            //reach max image allowed
+            if (this.files.length >= environment.chainPageImageMaxCount) {
+              this.isOverTotal = true;
+              return;
             }
-            reader.readAsDataURL(file);
-          }
-          else {
-            //get set id = max(id) + 1
-            console.log(Math.max.apply(Math, this.files.map(function (obj) { return obj.id; })))
-            id = Math.max.apply(Math, this.files.map(function (obj) { return obj.id; })) + 1;
-            //only add files which are not in the array yet
-            if (!this.fileAlreadyAdded(file.name)) {
-              this.files.push({ "id": id, "file": file });
-              this.fileNames.push({ "id": id, "filename": file.name });
-              let reader = new FileReader();
-              reader.onload = (e: any) => {
-                this.urls.push({ "id": id, "url": e.target.result });
+            // //skip file >2M
+            // if (file.size > environment.chainPageImageMaxSize) {
+            //   console.log("file size: " + file.size)
+            //   this.isOversize = true;
+            //   continue;
+            // }
+            // else {
+              let id: number;
+              //if no files are selected yet, just insert the files to array
+              if (this.files === undefined || this.files.length === 0) {
+                id = 0;
+                this.files.push({ "id": id, "file": file });
+                this.fileNames.push({ "id": id, "filename": file.fileName });
+                this.urls.push({ "id": id, "url": file.compressedImage.imageDataUrl });
+                // let reader = new FileReader();
+                // reader.onload = (e: any) => {
+                //   this.urls.push({ "id": id, "url": e.target.result });
+                // }
+                // reader.readAsDataURL(file);
               }
-              reader.readAsDataURL(file);
-            }
+              else {
+                //get set id = max(id) + 1
+                console.log(Math.max.apply(Math, this.files.map(function (obj) { return obj.id; })))
+                id = Math.max.apply(Math, this.files.map(function (obj) { return obj.id; })) + 1;
+                //only add files which are not in the array yet
+                if (!this.fileAlreadyAdded(file.fileName)) {
+                  this.files.push({ "id": id, "file": file });
+                  this.fileNames.push({ "id": id, "filename": file.fileName });
+                  this.urls.push({ "id": id, "url": file.compressedImage.imageDataUrl });
+                  // let reader = new FileReader();
+                  // reader.onload = (e: any) => {
+                  //   this.urls.push({ "id": id, "url": e.target.result });
+                  // }
+                  // reader.readAsDataURL(file);
+                }
+              }
+            // }
           }
-        }
-      }
+        });
+      });
     }
-    console.log(this.urls);
-    console.log(this.files);
-    console.log(this.fileNames);
+    // console.log(this.urls);
+    // console.log(this.files);
+    // console.log(this.fileNames);
   }
   fileAlreadyAdded(fileName: String): boolean {
     // console.log(fileName)
@@ -190,7 +201,7 @@ export class ClaimComponent implements OnInit {
     else {
       for (var i = 0; i < this.fileNames.length; i++) {
         if (this.fileNames[i].filename == fileName) {
-          console.log(this.fileNames[i].filename + " : " + fileName)
+          // console.log(this.fileNames[i].filename + " : " + fileName)
           return this.isAlreadyAdded = true;
         }
       }
@@ -243,13 +254,13 @@ export class ClaimComponent implements OnInit {
         this.model = response.json();
         this.discountArray = this.model.discounts;
         this.alreadyPublished = this.model.published;
-        console.log(this.discountArray);
+        // console.log(this.discountArray);
         this.discountArray.forEach(element => {
           element.discount = element.discount * 100;
           let date = new Date(element.expirationDate);
           element.expirationDate = this.datePipe.transform(date, 'yyyy-MM-ddTHH:mm') //+ "T" + new Date(element.expirationDate).toTimeString().slice(0, 5);
         });
-        console.log(this.discountArray);
+        // console.log(this.discountArray);
         if (this.discountArray.length > 0) {
           this.showNewOfferUI = false;
         }
@@ -339,7 +350,7 @@ export class ClaimComponent implements OnInit {
     this.model.postedTime = Date.now();
     this.model.published = isPublish;
     //this.model.notification = this.toNotify;    
-    console.log(this.model)
+    // console.log(this.model)
     // if (this.isUpdate == true) {
     // console.log(this.model);
     this.model.appId = this.globals.TokenponAppId;
@@ -357,7 +368,7 @@ export class ClaimComponent implements OnInit {
             this.router.navigate(['/home']);
           }
         }
-        else{
+        else {
           this.toasterService.pop("error", "fail to publish the listing");
         }
       },
@@ -466,4 +477,5 @@ export class ClaimComponent implements OnInit {
       }
     });
   }
+
 }

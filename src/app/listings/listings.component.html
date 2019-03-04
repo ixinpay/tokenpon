@@ -1,7 +1,7 @@
 <div>
 
     <div class="nopadding col-sm-12 col-md-10 col-lg-10 row">
-        <div class="input-group searchBox align-middle col-xs-12 col-sm-4 col-md-4">
+        <div class="input-group searchBox align-middle col-4 col-sm-4 col-md-4">
             <input type="text" id="search" #searchTxt class="form-control">
             <a class="text-primary ml-1 mt-1" (click)="Search(searchTxt.value)">
                 <i class="fa fa-search" aria-hidden="true"></i>
@@ -13,10 +13,11 @@
                 <button class="btn btn-info  btn-md" (click)="addListing(content);" translate>New Listing</button>
             </span> -->
         </div>
-        <div class="col-xs-12 col-sm-6 col-md-6">
-            <button class="btn btn-info  btn-md" [routerLink]="[ '/home'] " translate>All Listing</button>
-            <button *ngIf="currentUser" class="btn btn-info  btn-md" (click)="addListing(content);" translate>New
-                Listing</button>
+        <div class="col-5 noLeftPadding">
+            <button class="btn btn-info btn-md" [routerLink]="[ '/home']" ngbTooltip="Show all listing" translate>All</button>
+            <button *ngIf="currentUser" class="btn btn-info btn-md" ngbTooltip="Add new listing" (click)="addListing(content);">
+                <i class="fa fa-plus-square fa-lg" aria-hidden="true"></i>
+            </button>
         </div>
     </div>
     <!-- <div id="btnContainer">
@@ -29,19 +30,23 @@
     </div> -->
     <div *ngIf="listView">
         <div id="products" class="row nopadding">
-            <div class="card card-padding item col-xs-12 col-sm-6 col-md-3 col-lg-3" (click)="selectOffer(claim._id)"
-                *ngFor="let claim of claimsPage">
+            <div class="card card-padding item col-6 col-md-3 col-lg-3" (click)="selectOffer(claim._id)" *ngFor="let claim of claimsPage">
                 <div class="thumbnail clearfix text-center nopadding">
                     <img *ngIf="claim.imgUrl != ''" class="card-img-top img-fluid cusHeight" src="{{claim.imgUrl}}" alt="" />
                     <div *ngIf="claim.imgUrl == ''" class="mt-5 mb-5 cusHeight">
                         <h3>{{claim.businessName}}</h3>
                     </div>
-                    <div *ngFor="let discount of claim.offers" class="caption card-body">
-                        <h5 class="group card-title inner list-group-item-heading text-left">
-                            {{discount.title}} 
-                            <small [class]="discount.numOfPurchases >= discount.groupCount ? 'float-right text-success' : 'float-right text-danger'" #ratio>
-                                {{discount.numOfPurchases == null? 0 : discount.numOfPurchases}}/{{discount.groupCount == null?1 : discount.groupCount}}</small>
-                        </h5>
+                    <div *ngFor="let discount of claim.offers" class="caption card-body row">
+                        <div class="col-10 nopadding text-left">
+                            <label class="inner list-group-item-heading">
+                                {{discount.title}}
+                            </label>
+                        </div>
+                        <div class="col-2 nopadding text-right">
+                            <small [class]="discount.numOfPurchases >= discount.groupCount ? 'float-right text-success' : 'float-right text-danger'">
+                                {{discount.numOfPurchases == null? 0 : discount.numOfPurchases}}/{{discount.groupCount
+                                == null?1 : discount.groupCount}}</small>
+                        </div>
                     </div>
                     <!-- <div class="caption card-body">
                         <p class="group card-title inner list-group-item-heading">

@@ -33,6 +33,10 @@
      padding: 0 !important;
      margin: 0 !important;
  }
+ .noLeftPadding {
+    padding-left: 0 !important;
+    margin-left: 0 !important;
+ }
  /*  */
  
  .btn {
@@ -112,9 +116,10 @@
     cursor: pointer;
   }
   .cusHeight{
-      min-height: 120px;
-      max-height: 200px;
+      min-height: 10vh;
+      max-height: 16vh;
   }
+
   ngb-pagination /deep/ .pagination {
     margin-bottom: 0 !important;
 }
