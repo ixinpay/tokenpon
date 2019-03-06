@@ -6,6 +6,7 @@ import { Router, ActivatedRoute, Params, ParamMap } from '@angular/router';
 import { ISubscription } from 'rxjs/Subscription';
 import { Globals } from '../globals'
 import { ToasterService } from 'angular2-toaster';
+import { NotifierService } from 'angular-notifier';
 
 @Component({
   selector: 'app-newest',
@@ -35,7 +36,7 @@ export class NewestComponent implements OnInit {
 
   constructor(private router: Router, private route: ActivatedRoute, private userService: UserService, private titleService: Title,
     private mongoService: MongoService, private http: Http, private globals: Globals,
-    private toasterService: ToasterService ) { }
+    private toasterService: ToasterService, private notifier: NotifierService ) { }
 
   ngOnInit() {
     this.titleService.setTitle("Tokenpon");
@@ -74,7 +75,8 @@ export class NewestComponent implements OnInit {
               console.log(response.json());
               this.getListings(response);
             } else {
-              this.toasterService.pop("error", response.statusText);
+              // this.toasterService.pop("error", response.statusText);
+              this.notifier.notify("error", response.statusText);
             }
           })
       } else if (this.subcatPram) {
@@ -84,7 +86,8 @@ export class NewestComponent implements OnInit {
               console.log(response.json());
               this.getListings(response);
             } else {
-              this.toasterService.pop("error", response.statusText);
+              // this.toasterService.pop("error", response.statusText);
+              this.notifier.notify("error", response.statusText);
             }
           })
       } else {
@@ -94,7 +97,8 @@ export class NewestComponent implements OnInit {
               // this.postedTime = response.json()[0].postedTime;
               this.getListings(response);
             } else {
-              this.toasterService.pop("error", response.statusText);
+              // this.toasterService.pop("error", response.statusText);
+              this.notifier.notify("error", response.statusText);
             }
         });
       }

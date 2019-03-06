@@ -37,6 +37,7 @@
     "@types/googlemaps": "^3.30.16",
     "alasql": "^0.4.11",
     "angular-bootstrap-md": "^6.1.2",
+    "angular-notifier": "^3.0.0",
     "angular2-moment": "^1.8.0",
     "angular2-toaster": "5.0.1",
     "aws-sdk": "^2.310.0",

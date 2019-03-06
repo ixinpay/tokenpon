@@ -5,6 +5,7 @@ import { AuthenticationService, OothService } from '../_services/index';
 import { Globals } from '../globals'
 import { ToasterModule, ToasterService, ToasterConfig } from 'angular2-toaster';
 import { InternationalPhoneNumberModule } from 'ngx-international-phone-number';
+import { NotifierService } from 'angular-notifier';
 @Component({
     moduleId: module.id.toString(),
     templateUrl: 'login.component.html',
@@ -18,7 +19,7 @@ export class LoginComponent implements OnInit {
     phoneLogin: boolean = true; // true = phone number, false = username/email
 
     constructor(
-        private globals: Globals, private oothService: OothService,
+        private globals: Globals, private oothService: OothService, private notifier: NotifierService,
         private route: ActivatedRoute,
         private router: Router,
         private authenticationService: AuthenticationService,
@@ -48,7 +49,8 @@ export class LoginComponent implements OnInit {
                 console.log(res)
                 if (res.status === 'error') {
                     // console.log("error: "+res.status)
-                    this.toasterService.pop("error", res.message.message);
+                    // this.toasterService.pop("error", res.message.message);
+                    this.notifier.notify("error", res.message.message);
                     this.loading = false;
                 }
                 else {
@@ -63,7 +65,8 @@ export class LoginComponent implements OnInit {
                 }
             })
             .catch(error => {
-                this.toasterService.pop("error", error);
+                // this.toasterService.pop("error", error);
+                this.notifier.notify("error", error);
             });
     }
 }

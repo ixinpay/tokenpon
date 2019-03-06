@@ -11,6 +11,7 @@ import { environment } from 'environments/environment';
 import { NguCarousel, NguCarouselStore } from '@ngu/carousel';
 import { Lightbox } from 'ngx-lightbox';
 import { ImageCompressService, ResizeOptions, ImageUtilityService, IImage, SourceImage } from 'ng2-image-compress';
+import { NotifierService } from 'angular-notifier';
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
@@ -87,7 +88,7 @@ export class ProfileComponent implements OnInit {
     private userService: UserService, private bigchaindbService: BigchanDbService,
     private globals: Globals, private mongoService: MongoService,
     private alertService: AlertService, private imgCompressService: ImageCompressService,
-    private http: Http, private swarmService: SwarmService) {
+    private http: Http, private swarmService: SwarmService, private notifier: NotifierService) {
 
     // pagination setup
     this.pagePublished = 1;

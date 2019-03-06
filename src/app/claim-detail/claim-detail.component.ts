@@ -19,6 +19,7 @@ import { Marker } from '../_models/index'
 import { NgbModal, NgbActiveModal, ModalDismissReasons, NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
 import { DateTime } from 'aws-sdk/clients/rekognition';
 import { DatePipe } from '@angular/common';
+import { NotifierService } from 'angular-notifier';
 
 @Component({
   moduleId: module.id.toString(),
@@ -102,7 +103,7 @@ export class ClaimDetailComponent implements OnInit {
   constructor(private http: Http, private route: ActivatedRoute, private globals: Globals, private oothService: OothService,
     private lightbox: Lightbox, private toasterService: ToasterService, private titleService: Title, private googleGeoService: GoogleGeoService,
     private router: Router, private mongoService: MongoService, private swarmService: SwarmService, private modalService: NgbModal,
-    private config: NgbCarouselConfig, private datePipe: DatePipe) {
+    private config: NgbCarouselConfig, private datePipe: DatePipe, private notifier: NotifierService) {
 
     //ng-bootstrap carousel config
     // customize default values of carousels used by this component tree
@@ -284,7 +285,8 @@ export class ClaimDetailComponent implements OnInit {
           });
         }
         else {
-          this.toasterService.pop("error", response.statusText);
+          // this.toasterService.pop("error", response.statusText);
+          this.notifier.notify("error", response.statusText);
         }
       });
   }
@@ -373,7 +375,8 @@ export class ClaimDetailComponent implements OnInit {
         .subscribe(response => {
           console.log(response);
           if (response.status == 200) {
-            this.toasterService.pop('success', 'Thanks for you comment!');
+            // this.toasterService.pop('success', 'Thanks for you comment!');
+            this.notifier.notify('success', 'Thanks for you comment!');
             this.submitted = true;
             console.log("account: " + this.account);
             //email author about new comment if allowed
@@ -400,7 +403,8 @@ export class ClaimDetailComponent implements OnInit {
             return true;
           }
           else {
-            this.toasterService.pop("error", response.statusText);
+            // this.toasterService.pop("error", response.statusText);
+            this.notifier.notify("error", response.statusText);
           }
         })
       // }
@@ -472,7 +476,8 @@ export class ClaimDetailComponent implements OnInit {
               return true;
             }
             else {
-              this.toasterService.pop("error", response.statusText);
+              // this.toasterService.pop("error", response.statusText);
+              this.notifier.notify("error", response.statusText);
             }
           })
       }
@@ -505,7 +510,8 @@ export class ClaimDetailComponent implements OnInit {
               return true;
             }
             else {
-              this.toasterService.pop("error", response.statusText);
+              // this.toasterService.pop("error", response.statusText);
+              this.notifier.notify("error", response.statusText);
             }
           })
         // }
@@ -543,7 +549,8 @@ export class ClaimDetailComponent implements OnInit {
               return true;
             }
             else {
-              this.toasterService.pop("error", response.statusText);
+              // this.toasterService.pop("error", response.statusText);
+              this.notifier.notify("error", response.statusText);
             }
           })
       }
@@ -575,7 +582,8 @@ export class ClaimDetailComponent implements OnInit {
               return true;
             }
             else {
-              this.toasterService.pop("error", response.statusText);
+              // this.toasterService.pop("error", response.statusText);
+              this.notifier.notify("error", response.statusText);
             }
           })
         // }
@@ -1022,11 +1030,13 @@ export class ClaimDetailComponent implements OnInit {
         this.subscription = this.mongoService.deleteListing(id, this.globals.TokenponAppId)
           .subscribe(response => {
             if (response.status == 200) {
-              this.toasterService.pop("success", "Listing deleted")
+              // this.toasterService.pop("success", "Listing deleted")
+              this.notifier.notify("success", "Listing deleted");
               this.router.navigate(['/home']);
             }
             else {
-              this.toasterService.pop("error", response.statusText)
+              // this.toasterService.pop("error", response.statusText)
+              this.notifier.notify("error", response.statusText);
             }
           });
       }
@@ -1040,17 +1050,21 @@ export class ClaimDetailComponent implements OnInit {
         this.oothService.sendEmail(this.shareWith, this.globals.TokenponShareDealSubject, this.globals.TokenponShareDealBody + this.currentUrl)
           .then(response => {
             if (response.status === 200) {
-              this.toasterService.pop("success", "Your invite was sent successfully!");
+              // this.toasterService.pop("success", "Your invite was sent successfully!");
+              this.notifier.notify("success", "Your invite was sent successfully!");
             }
             else if (response.result === true) {
-              this.toasterService.pop("success", "Your invite was sent successfully!");
+              // this.toasterService.pop("success", "Your invite was sent successfully!");
+              this.notifier.notify("success", "Your invite was sent successfully!");
             }
             else {
-              this.toasterService.pop("error", "Sorry, there was an error sending your invite. Please try again later.");
+              // this.toasterService.pop("error", "Sorry, there was an error sending your invite. Please try again later.");
+              this.notifier.notify("error", "Sorry, there was an error sending your invite. Please try again later.");
             }
           })
           .catch(reason => {
-            this.toasterService.pop("error", "Sorry, there was an error sending your invite. Please try again later.");
+            // this.toasterService.pop("error", "Sorry, there was an error sending your invite. Please try again later.");
+            this.notifier.notify("error", "Sorry, there was an error sending your invite. Please try again later.");
           })
       }
     });

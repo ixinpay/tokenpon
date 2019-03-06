@@ -17,6 +17,7 @@ import { ISubscription } from 'rxjs/Subscription';
 import { DatePipe } from '@angular/common';
 import { ImageCompressService, ResizeOptions, ImageUtilityService, IImage, SourceImage } from 'ng2-image-compress';
 // import { HttpHeaders } from '@angular/common/http';
+import { NotifierService } from 'angular-notifier';
 
 @Component({
   moduleId: module.id.toString(),
@@ -68,7 +69,8 @@ export class ClaimComponent implements OnInit {
     private userService: UserService, private bigchaindbService: BigchanDbService,
     private globals: Globals, private mongoService: MongoService, private modalService: NgbModal,
     private alertService: AlertService, private toasterService: ToasterService, private imgCompressService: ImageCompressService,
-    private http: Http, private swarmService: SwarmService, private datePipe: DatePipe
+    private http: Http, private swarmService: SwarmService, private datePipe: DatePipe,
+    private notifier: NotifierService
   ) {
     // this.expireDays = Array.from(new Array(90),(val,index)=>index+30);
     this.currentUserId = sessionStorage.getItem('currentUserId');
@@ -100,7 +102,8 @@ export class ClaimComponent implements OnInit {
             this.profileModel = response.json();
           }
           catch (e) {
-            this.toasterService.pop("error", "Please complete your 'Account Profile' before posting a new deal!");
+            // this.toasterService.pop("error", "Please complete your 'Account Profile' before posting a new deal!");
+            this.notifier.notify("error", "Please complete your 'Account Profile' before posting a new deal!");
             this.router.navigate(["/profile"]);
           }
           //get pictures from Mongo
@@ -307,7 +310,8 @@ export class ClaimComponent implements OnInit {
         this.uploadData(isPublish);
       },
         err => {
-          this.toasterService.pop("error", "fail to upload pictures")
+          // this.toasterService.pop("error", "fail to upload pictures")
+          this.notifier.notify("error", "fail to upload pictures");
         }
       );
   }
@@ -360,20 +364,24 @@ export class ClaimComponent implements OnInit {
         // console.log(response);
         if (response.status == 200) {
           if (isPublish) {
-            this.toasterService.pop('success', 'Publish successful');
+            // this.toasterService.pop('success', 'Publish successful');
+            this.notifier.notify('success', 'Publish successful');
             this.router.navigate(['/home/claim-detail'], { queryParams: { id: response.json().tokenponId } });
           }
           else {
-            this.toasterService.pop('success', 'Draft was saved successfully');
+            // this.toasterService.pop('success', 'Draft was saved successfully');
+            this.notifier.notify('success', 'Draft was saved successfully');
             this.router.navigate(['/home']);
           }
         }
         else {
-          this.toasterService.pop("error", "fail to publish the listing");
+          // this.toasterService.pop("error", "fail to publish the listing");
+          this.notifier.notify("error", "fail to publish the listing");
         }
       },
         err => {
-          this.toasterService.pop("error", "fail to publish the listing");
+          // this.toasterService.pop("error", "fail to publish the listing");
+          this.notifier.notify("error", "fail to publish the listing");
         }
       );
     // }
@@ -462,7 +470,8 @@ export class ClaimComponent implements OnInit {
         this.subscription = this.mongoService.deleteListing(id, this.globals.TokenponAppId)
           .subscribe(response => {
             if (response.status == 200) {
-              this.toasterService.pop("success", "Listing deleted")
+              // this.toasterService.pop("success", "Listing deleted")
+              this.notifier.notify("success", "Listing deleted");
               if (this.fromPage == 'draft') {
                 this.router.navigate(['/profile']);
               }
@@ -471,7 +480,8 @@ export class ClaimComponent implements OnInit {
               }
             }
             else {
-              this.toasterService.pop("error", response.statusText)
+              // this.toasterService.pop("error", response.statusText)
+              this.notifier.notify("error", response.statusText);
             }
           });
       }

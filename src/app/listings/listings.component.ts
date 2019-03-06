@@ -22,6 +22,7 @@ import { MouseEvent, GoogleMapsAPIWrapper, AgmMap, LatLngBounds, LatLngBoundsLit
 import { } from 'googlemaps';
 import { Marker } from '../_models/index'
 import { NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NotifierService } from 'angular-notifier';
 
 @Component({
   moduleId: module.id.toString(),
@@ -74,7 +75,8 @@ export class ListingsComponent implements OnInit {
     private router: Router, private globals: Globals, private mongoService: MongoService,
     private userService: UserService, private toasterService: ToasterService,
     private alertService: AlertService, private titleService: Title,
-    private http: Http, private translate: TranslateService, private modalService: NgbModal
+    private http: Http, private translate: TranslateService, private modalService: NgbModal, 
+    private notifier: NotifierService
   ) {
     // this.accountType = sessionStorage.getItem("accountType");
     this.route.queryParams.subscribe(params => {
@@ -325,7 +327,8 @@ export class ListingsComponent implements OnInit {
             //console.log("listings:"+JSON.stringify(this.listings));
           }
           else {
-            this.toasterService.pop("error", response.statusText);
+            // this.toasterService.pop("error", response.statusText);
+            this.notifier.notify("error", response.statusText);
           }
         });
       //
@@ -441,7 +444,8 @@ export class ListingsComponent implements OnInit {
               this.showListings(response);
             }
             else {
-              this.toasterService.pop("error", response.statusText);
+              // this.toasterService.pop("error", response.statusText);
+              this.notifier.notify("error", response.statusText);
             }
           })
       }
@@ -453,7 +457,8 @@ export class ListingsComponent implements OnInit {
               this.showListings(response);
             }
             else {
-              this.toasterService.pop("error", response.statusText);
+              // this.toasterService.pop("error", response.statusText);
+              this.notifier.notify("error", response.statusText);
             }
           })
       }
@@ -466,7 +471,8 @@ export class ListingsComponent implements OnInit {
               this.showListings(response);
             }
             else {
-              this.toasterService.pop("error", response.statusText);
+              // this.toasterService.pop("error", response.statusText);
+              this.notifier.notify("error", response.statusText);
             }
           });
       }
@@ -521,11 +527,13 @@ export class ListingsComponent implements OnInit {
         if (response.status == 200) {
           //remove it from array
           this.claimsPage = this.claimsPage.filter(element => element.id != id);
-          this.toasterService.pop("success", "Listing deleted")
+          // this.toasterService.pop("success", "Listing deleted")
+          this.notifier.notify("success", "Listing deleted");
           this.router.navigate(['/home']);
         }
         else {
-          this.toasterService.pop("error", response.statusText)
+          // this.toasterService.pop("error", response.statusText)
+          this.notifier.notify("error", response.statusText);
         }
       });
     //await this.bigchaindbService.DeleteTransaction()
@@ -563,7 +571,8 @@ export class ListingsComponent implements OnInit {
           // console.log(response.json());
         }
         else {
-          this.toasterService.pop("error", response.statusText);
+          // this.toasterService.pop("error", response.statusText);
+          this.notifier.notify("error", response.statusText);
         }
       });
   }

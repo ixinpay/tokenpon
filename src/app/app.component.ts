@@ -54,57 +54,57 @@ export class AppComponent {
         titleService.setTitle(res);
       });
     });
-    idle.onIdleStart.subscribe(() => {
-      if (this.modalRef != undefined) {
-        this.modalRef.close();
-      }
-      console.log("in onIdleStart()");
-      this.openModal();
-    });
-    this.oothservice.logginStatus
-      .subscribe(status => {
-        if (status) {
-          // this.reset();
-          if (this.modalRef != undefined) {
-            this.modalRef.close();
-          }
-          console.log(status);
-          // sets an idle timeout of 5 seconds, for testing purposes.
-          idle.setIdle(environment.inactivitySec);
-          // sets a timeout period of 5 seconds. after 10 seconds of inactivity, the user will be considered timed out.
-          idle.setTimeout(30);
-          // sets the default interrupts, in this case, things like clicks, scrolls, touches to the document
-          idle.setInterrupts(DEFAULT_INTERRUPTSOURCES);
-          idle.setAutoResume(AutoResume.notIdle);
+    // idle.onIdleStart.subscribe(() => {
+    //   if (this.modalRef != undefined) {
+    //     this.modalRef.close();
+    //   }
+    //   console.log("in onIdleStart()");
+    //   this.openModal();
+    // });
+    // this.oothservice.logginStatus
+    //   .subscribe(status => {
+    //     if (status) {
+    //       // this.reset();
+    //       if (this.modalRef != undefined) {
+    //         this.modalRef.close();
+    //       }
+    //       console.log(status);
+    //       // sets an idle timeout of 5 seconds, for testing purposes.
+    //       idle.setIdle(environment.inactivitySec);
+    //       // sets a timeout period of 5 seconds. after 10 seconds of inactivity, the user will be considered timed out.
+    //       idle.setTimeout(30);
+    //       // sets the default interrupts, in this case, things like clicks, scrolls, touches to the document
+    //       idle.setInterrupts(DEFAULT_INTERRUPTSOURCES);
+    //       idle.setAutoResume(AutoResume.notIdle);
 
-          // idle.onIdleEnd.subscribe(() => {
-          //   if (this.modalRef != undefined) {
-          //     this.modalRef.close();
-          //   }
-          //   console.log("in onIdleEnd()");
-          // });
-          idle.onTimeout.subscribe(() => {
-            if (this.modalRef != undefined) {
-              this.modalRef.close();
-            }
-            // console.log("in onTimeout()");
-            this.oothservice.Logout();
-            this.router.navigate(['/login']);
-          });
+    //       // idle.onIdleEnd.subscribe(() => {
+    //       //   if (this.modalRef != undefined) {
+    //       //     this.modalRef.close();
+    //       //   }
+    //       //   console.log("in onIdleEnd()");
+    //       // });
+    //       idle.onTimeout.subscribe(() => {
+    //         if (this.modalRef != undefined) {
+    //           this.modalRef.close();
+    //         }
+    //         // console.log("in onTimeout()");
+    //         this.oothservice.Logout();
+    //         this.router.navigate(['/login']);
+    //       });
 
-          // sets the ping interval to 15 seconds          
-          keepalive.interval(environment.pingIntervalSec);
-          keepalive.onPing.subscribe(() => {
-            this.lastPing = new Date();
-            console.log("keep active called")
-          });
-          this.reset();
-        }
-        else {
-          // console.log(status);
-          this.idle.stop();
-        }
-      });
+    //       // sets the ping interval to 15 seconds          
+    //       keepalive.interval(environment.pingIntervalSec);
+    //       keepalive.onPing.subscribe(() => {
+    //         this.lastPing = new Date();
+    //         console.log("keep active called")
+    //       });
+    //       this.reset();
+    //     }
+    //     else {
+    //       // console.log(status);
+    //       this.idle.stop();
+    //     }
+    //   });
   }
   reset() {
     this.idle.watch();
@@ -133,20 +133,4 @@ export class AppComponent {
       this.reset();
     });
   }
-  // open(content) {
-  //   this.modalService.open(content).result.then((result) => {
-  //     this.closeResult = `Closed with: ${result}`;
-  //   }, (reason) => {
-  //     this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-  //   });
-  // }
-  // private getDismissReason(reason: any): string {
-  //   if (reason === ModalDismissReasons.ESC) {
-  //     return 'by pressing ESC';
-  //   } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-  //     return 'by clicking on a backdrop';
-  //   } else {
-  //     return `with: ${reason}`;
-  //   }
-  // }
 }
