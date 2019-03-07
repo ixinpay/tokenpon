@@ -75,7 +75,7 @@ export class ListingsComponent implements OnInit {
     private router: Router, private globals: Globals, private mongoService: MongoService,
     private userService: UserService, private toasterService: ToasterService,
     private alertService: AlertService, private titleService: Title,
-    private http: Http, private translate: TranslateService, private modalService: NgbModal, 
+    private http: Http, private translate: TranslateService, private modalService: NgbModal,
     private notifier: NotifierService
   ) {
     // this.accountType = sessionStorage.getItem("accountType");
@@ -203,6 +203,10 @@ export class ListingsComponent implements OnInit {
           this.claims = response.json();
           //filter published = true
           this.claims = this.claims.filter(m => m.published == true);
+          //filter scope if logged in, show all, otherwise only show public ones (scope = 0)
+          if (this.currentUser.trim() != "" && this.currentUser != null && this.currentUser != undefined) {
+            this.claims = this.claims.filter(m => m.scope == 0);
+          }
           this.totalItems = this.claims.length;
           // console.log(this.claims)
           this.model = this.claims;
@@ -272,6 +276,10 @@ export class ListingsComponent implements OnInit {
             this.claims = response.json();
             //filter published = true
             this.claims = this.claims.filter(m => m.published == true);
+            //filter scope if logged in, show all, otherwise only show public ones (scope = 0)
+            if (this.currentUser.trim() != "" && this.currentUser != null && this.currentUser != undefined) {
+              this.claims = this.claims.filter(m => m.scope == 0);
+            }
             this.totalItems = this.claims.length;
             this.model = this.claims;
             // console.log( JSON.stringify(this.model));

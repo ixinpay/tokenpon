@@ -57,6 +57,7 @@ export class ClaimComponent implements OnInit {
   productDescription: string;
   overallTitle: string;
   finePrint: string;
+  scope: number;
   logoUrl: string = "";
   // expireDays: number[];
   private showNewOfferUI: boolean = true;
@@ -270,6 +271,7 @@ export class ClaimComponent implements OnInit {
         else {
           this.showNewOfferUI = true;
         }
+        this.scope = this.model.scope;
         this.finePrint = this.model.finePrint;
         this.productDescription = this.model.productDescription;
         this.overallTitle = this.model.overallTitle;
@@ -346,6 +348,7 @@ export class ClaimComponent implements OnInit {
     this.model.productDescription = this.productDescription;
     this.model.overallTitle = this.overallTitle;
     this.model.finePrint = this.finePrint;
+    this.model.scope = this.scope;
     //convert discount rate to %
     this.model.discounts.forEach(element => {
       element.discount = (element.discount / 100).toFixed(2);
