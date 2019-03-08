@@ -63,6 +63,7 @@ export class ListingsComponent implements OnInit {
   listView: boolean = true;
   showModal: boolean = false;
   // accountType: string;
+  isAdmin: boolean = false;
 
   markers: Marker[] = []
   zoom: number = 10;
@@ -78,6 +79,9 @@ export class ListingsComponent implements OnInit {
     private http: Http, private translate: TranslateService, private modalService: NgbModal,
     private notifier: NotifierService
   ) {
+    if((sessionStorage.getItem("isAdmin") == null? '' : sessionStorage.getItem("isAdmin").toLowerCase()) == 'true'){
+      this.isAdmin = true;
+    }
     // this.accountType = sessionStorage.getItem("accountType");
     this.route.queryParams.subscribe(params => {
       // console.log(params['id']);
@@ -524,37 +528,30 @@ export class ListingsComponent implements OnInit {
   }
 
 
-  Remove_Listing(id) {
+  Remove_Listing(id, deleteConfirmation) {
 
-    // setTimeout(() =>
-    // {
-    // this.subscription = this.route.queryParams.subscribe(params => {
-    //console.log(params['cat']);
-    // this.IDparam = params['id2Delete'];
-
-    console.log("----ID Param Value---------" + id);
-
-    this.subscription = this.mongoService.deleteListing(id, this.globals.TokenponAppId)
-      .subscribe(response => {
-        if (response.status == 200) {
-          //remove it from array
-          this.claimsPage = this.claimsPage.filter(element => element.id != id);
-          // this.toasterService.pop("success", "Listing deleted")
-          this.notifier.notify("success", "Listing deleted");
-          this.router.navigate(['/home']);
-        }
-        else {
-          // this.toasterService.pop("error", response.statusText)
-          this.notifier.notify("error", response.statusText);
-        }
-      });
-    //await this.bigchaindbService.DeleteTransaction()
-
-    // });
-    // },
-    // 1000);
-
-
+    this.modalService.open(deleteConfirmation).result.then((result) => {
+      
+    }, (reason) => {
+      if (reason === "Yes") {
+        this.subscription = this.mongoService.deleteListing(id, this.globals.TokenponAppId)
+          .subscribe(response => {
+            if (response.status == 200) {
+              //remove it from array
+              console.log(this.claimsPage)
+              this.claimsPage = this.claimsPage.filter(element => element.id != id);
+              console.log(this.claimsPage)
+              // this.toasterService.pop("success", "Listing deleted")
+              this.notifier.notify("success", "Listing deleted");
+              // this.router.navigate(['/home']);
+            }
+            else {
+              // this.toasterService.pop("error", response.statusText)
+              this.notifier.notify("error", response.statusText);
+            }
+          });
+      }
+    });
   }
 
   // getVotes(id: string) {

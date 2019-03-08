@@ -129,4 +129,7 @@ export class MongoService {
     isAdminUser(phone: number) {
         return this.http.get(this.API + 'isAdminUser/' + phone);
     }
+    getUserByKey(id: string){
+        return this.http.get(this.API + 'getUserByKey/' + id);
+    }
 }

@@ -255,6 +255,15 @@ export class ClaimDetailComponent implements OnInit {
           this.model.commentsNum = this.model.comments.length;
           // this.commentsPage = this.comments.slice(0, this.pageSize);
           this.comments = this.model.comments;
+          //workaround: get dname
+          this.comments.forEach(element =>{
+            this.mongoService.getUserByKey(element.postedBy)
+            .subscribe(response=> {
+              if(response.status == 200){
+                element.dname = response.json().local.dname;
+              }
+            });
+          });
           this.commentsPage = this.comments.slice(0, this.pageSize);
           // console.log("comments: " + this.commentsPage);
           //retrieve votes

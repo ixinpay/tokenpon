@@ -39,12 +39,12 @@
  }
  /*  */
  
- .btn {
+ .defaultbtn {
      background-color: #FF8F00 !important;
      box-shadow: none!important;
  }
  
- .btn:hover {
+ .defaultbtn:hover {
      background-color: #FF6600 !important;
  }
  
@@ -138,4 +138,9 @@ ngb-pagination /deep/ .pagination .page-item.active .page-link:hover {
 
 ngb-pagination /deep/ .pagination {
     float: right !important;
+}
+
+.onAdmin:hover{
+    color: red;
+    cursor: pointer;
 }

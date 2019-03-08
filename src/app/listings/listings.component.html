@@ -14,8 +14,8 @@
             </span> -->
         </div>
         <div class="col-5 noLeftPadding">
-            <button class="btn btn-info btn-md" [routerLink]="[ '/home']" ngbTooltip="Show all listing" translate>All</button>
-            <button *ngIf="currentUser" class="btn btn-info btn-md" ngbTooltip="Add new listing" (click)="addListing(content);">
+            <button class="btn defaultbtn btn-md" [routerLink]="[ '/home']" ngbTooltip="Show all listing" translate>All</button>
+            <button *ngIf="currentUser" class="btn defaultbtn btn-md" ngbTooltip="Add new listing" (click)="addListing(content);">
                 <i class="fa fa-plus-square fa-lg" aria-hidden="true"></i>
             </button>
         </div>
@@ -30,8 +30,12 @@
     </div> -->
     <div *ngIf="listView">
         <div id="products" class="row nopadding">
-            <div class="card card-padding item col-6 col-md-3 col-lg-3" (click)="selectOffer(claim._id)" *ngFor="let claim of claimsPage">
-                <div class="thumbnail clearfix text-center nopadding">
+            <div class="card card-padding item col-6 col-md-3 col-lg-3" *ngFor="let claim of claimsPage">
+                <div *ngIf="isAdmin" class="row nopadding" style="cursor:default;">
+                    <i class="fa fa-trash-o fa-lg onAdmin" (click)="Remove_Listing(claim._id, deleteConfirmation)" ngbTooltip="delete listing" aria-hidden="true"></i>
+                    <i class="fa fa-eye fa-lg onAdmin" ngbTooltip="move to review" aria-hidden="true"></i>
+                </div>
+                <div class="thumbnail clearfix text-center nopadding" (click)="selectOffer(claim._id)">
                     <div *ngIf="claim.imgUrl != ''">
                         <img class="card-img-top img-fluid cusHeight" src="{{claim.imgUrl}}" alt="" />
                         <h5>{{claim.businessName}}</h5>
@@ -100,5 +104,16 @@
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-primary btn-sm" (click)="d()">OK</button>
+    </div>
+</ng-template>
+<!-- delete listing modal -->
+<ng-template #deleteConfirmation let-d="dismiss">
+    <div class="modal-body">
+        <p translate>Are you sure you want to delete this listing?
+        </p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btn-md" (click)="d('No')">No</button>
+        <button type="button" class="btn btn-danger btn-md" (click)="d('Yes');">Yes</button>
     </div>
 </ng-template>
