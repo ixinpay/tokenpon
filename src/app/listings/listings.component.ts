@@ -107,6 +107,10 @@ export class ListingsComponent implements OnInit {
     this.claims = response.json();
     //filter published = true
     this.claims = this.claims.filter(m => m.published == true || m.published == null || m.published == undefined);
+    //filter scope if logged in, show all, otherwise only show public ones (scope = 0)
+    if ( this.currentUser == null && this.currentUser == undefined) {
+      this.claims = this.claims.filter(m => m.scope == 0 || m.scope == null || m.scope == undefined);
+    }
 
     //sort by business name first
     // this.claims.sort((obj1, obj2) => {
@@ -204,8 +208,8 @@ export class ListingsComponent implements OnInit {
           //filter published = true
           this.claims = this.claims.filter(m => m.published == true);
           //filter scope if logged in, show all, otherwise only show public ones (scope = 0)
-          if (this.currentUser.trim() != "" && this.currentUser != null && this.currentUser != undefined) {
-            this.claims = this.claims.filter(m => m.scope == 0);
+          if ( this.currentUser == null && this.currentUser == undefined ) {
+            this.claims = this.claims.filter(m => m.scope == 0 || m.scope == null || m.scope == undefined);
           }
           this.totalItems = this.claims.length;
           // console.log(this.claims)
@@ -277,8 +281,8 @@ export class ListingsComponent implements OnInit {
             //filter published = true
             this.claims = this.claims.filter(m => m.published == true);
             //filter scope if logged in, show all, otherwise only show public ones (scope = 0)
-            if (this.currentUser.trim() != "" && this.currentUser != null && this.currentUser != undefined) {
-              this.claims = this.claims.filter(m => m.scope == 0);
+            if ( this.currentUser == null && this.currentUser == undefined) {
+              this.claims = this.claims.filter(m => m.scope == 0 || m.scope == null || m.scope == undefined);
             }
             this.totalItems = this.claims.length;
             this.model = this.claims;
