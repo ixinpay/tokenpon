@@ -1,7 +1,7 @@
 ﻿import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import { AuthenticationService, OothService } from '../_services/index';
+import { AuthenticationService, OothService, MongoService } from '../_services/index';
 import { Globals } from '../globals'
 import { ToasterModule, ToasterService, ToasterConfig } from 'angular2-toaster';
 import { InternationalPhoneNumberModule } from 'ngx-international-phone-number';
@@ -20,7 +20,7 @@ export class LoginComponent implements OnInit {
 
     constructor(
         private globals: Globals, private oothService: OothService, private notifier: NotifierService,
-        private route: ActivatedRoute,
+        private route: ActivatedRoute, private mongoService: MongoService,
         private router: Router,
         private authenticationService: AuthenticationService,
         private toasterService: ToasterService) { }
@@ -32,16 +32,16 @@ export class LoginComponent implements OnInit {
         // get return url from route parameters or default to '/'
         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
     }
-    toggleLogin(){
+    toggleLogin() {
         this.phoneLogin = !this.phoneLogin;
     }
     login() {
         this.oothService.Logout();
         let userid = "";
-        if(!this.phoneLogin){
+        if (!this.phoneLogin) {
             userid = this.model.email
         }
-        else{
+        else {
             userid = this.model.phone.substring(1);
         }
         this.oothService.Login(userid, this.model.password, this.phoneLogin)
@@ -54,6 +54,15 @@ export class LoginComponent implements OnInit {
                     this.loading = false;
                 }
                 else {
+                    if (sessionStorage.getItem("phoneNumber") != null && sessionStorage.getItem("phoneNumber") != undefined) {
+                        this.mongoService.isAdminUser(parseInt(sessionStorage.getItem("phoneNumber")))
+                            .subscribe(response => {
+                                if(response.status == 200){
+                                    let result = response.json();
+                                    sessionStorage.setItem("isAdmin", result.admin);
+                                }
+                            });
+                    }
                     console.log("redirect to: " + this.returnUrl);
                     // var arr = this.returnUrl.split("?");
                     // if(arr.length == 1){
