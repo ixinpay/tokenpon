@@ -1,26 +1,26 @@
 [
  {
   "Category": 1000,
-  "Description": "Food"
+  "Description": "Organic Food"
 },
 {
   "Category": 1001,
-  "Description": "Restaurants"
+  "Description": "Cosmetics"
 },
 {
   "Category": 1002,
-  "Description": "Goods"
+  "Description": "Luxury Goods"
 },
 {
   "Category": 1003,
-  "Description": "Things To Do"
-},
-{
-  "Category": 1004,
   "Description": "Travels"
 },
 {
-  "Category": 1005,
+  "Category": 1004,
   "Description": "Services"
+},
+{
+  "Category": 1005,
+  "Description": "Things To Do"
 }
 ]
