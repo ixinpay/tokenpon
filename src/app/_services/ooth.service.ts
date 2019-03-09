@@ -120,7 +120,7 @@ export class OothService {
             return { status: "error", message: body };
         }
         // generate token and save to session
-        await this.onGenerateVerificationToken();
+        //await this.onGenerateVerificationToken();
         // console.log('body console---' + body.user.local);
         // console.log('-----Account.local---' + body.user.local.account);
         // console.log('-----Username.local---' + body.user.local.dname);

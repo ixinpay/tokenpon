@@ -36,7 +36,7 @@ export class LoginComponent implements OnInit {
         this.phoneLogin = !this.phoneLogin;
     }
     login() {
-        this.oothService.Logout();
+        //this.oothService.Logout();
         let userid = "";
         if (!this.phoneLogin) {
             userid = this.model.email
