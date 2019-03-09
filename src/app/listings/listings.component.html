@@ -14,8 +14,8 @@
             </span> -->
         </div>
         <div class="col-5 noLeftPadding">
-            <button class="btn defaultbtn btn-md" [routerLink]="[ '/home']" ngbTooltip="Show all listing" translate>All</button>
-            <button *ngIf="currentUser" class="btn defaultbtn btn-md" ngbTooltip="Add new listing" (click)="addListing(content);">
+            <button class="btn btn-md" [routerLink]="[ '/home']" ngbTooltip="Show all listing" translate>All</button>
+            <button *ngIf="currentUser" class="btn btn-md" ngbTooltip="Add new listing" (click)="addListing(content);">
                 <i class="fa fa-plus-square fa-lg" aria-hidden="true"></i>
             </button>
         </div>
@@ -30,7 +30,7 @@
     </div> -->
     <div *ngIf="listView">
         <div id="products" class="row nopadding">
-            <div class="card card-padding item col-6 col-md-3 col-lg-3" *ngFor="let claim of claimsPage">
+            <div class="card card-padding item col-6 col-md-3 col-lg-3" style="border:none;" *ngFor="let claim of claimsPage">
                 <div *ngIf="isAdmin" class="row nopadding" style="cursor:default;">
                     <i class="fa fa-trash-o fa-lg onAdmin" (click)="Remove_Listing(claim._id, deleteConfirmation)" ngbTooltip="delete listing" aria-hidden="true"></i>
                     <i class="fa fa-eye fa-lg onAdmin" ngbTooltip="move to review" aria-hidden="true"></i>

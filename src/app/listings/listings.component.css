@@ -39,12 +39,12 @@
  }
  /*  */
  
- .defaultbtn {
+ .btn {
      background-color: #FF8F00 !important;
      box-shadow: none!important;
  }
  
- .defaultbtn:hover {
+ .btn:hover {
      background-color: #FF6600 !important;
  }
  
@@ -108,8 +108,8 @@
   }
 
   .card-padding {
-    padding: 0 0 15px 0 !important;
-    margin: 0 0 15px 0 !important;
+    padding: 0 0px 15px 0 !important;
+    margin: 0 0px 15px 0 !important;
 }
   .item:hover {
     box-shadow: 0 20px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
