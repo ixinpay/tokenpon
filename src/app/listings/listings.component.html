@@ -14,8 +14,8 @@
             </span> -->
         </div>
         <div class="col-5 noLeftPadding">
-            <button class="btn btn-md" [routerLink]="[ '/home']" ngbTooltip="Show all listing" translate>All</button>
-            <button *ngIf="currentUser" class="btn btn-md" ngbTooltip="Add new listing" (click)="addListing(content);">
+            <button id="btnGetAll" class="btn btn-info btn-md" [routerLink]="[ '/home']" ngbTooltip="Show all listing" translate>All</button>
+            <button id="btnAddListing" *ngIf="currentUser" class="btn btn-info btn-md" ngbTooltip="Add new listing" (click)="addListing(content);">
                 <i class="fa fa-plus-square fa-lg" aria-hidden="true"></i>
             </button>
         </div>
