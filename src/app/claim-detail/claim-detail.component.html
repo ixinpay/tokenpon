@@ -341,9 +341,9 @@
             </div>
         </div>
         <p class="mt-2" translate>Total <label class="font-weight-bold">{{selectedDiscount.token *
-                tokenponPurchaseCount}}</label> iXin will be withdrawn from your account. Your purchase will be
-            shown on Your iXin Buy Mobile App.
-        </p>
+                tokenponPurchaseCount}}</label> iXin will be withdrawn from your account. </p>
+        <p>When redeem, for each tokenpon, combined with this credit of <label class="font-weight-bold"> {{selectedDiscount.amount * selectedDiscount.discount | currency:"$"}}</label>, you will pay the remaining <label class="font-weight-bold"> {{selectedDiscount.amount * (1-selectedDiscount.discount) | currency:"$"}} </label> or more. </p>
+        <p>Your purchase will be shown on Your iXin Buy Mobile App.</p>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" (click)="d('Cancel')">Cancel</button>
@@ -358,7 +358,7 @@
                 </button>
             </div> -->
     <div class="modal-body">
-        <p *ngIf="modalSuccess" translate>Success! Enjoy your discount!. Your purchase will be
+        <p *ngIf="modalSuccess" translate>Success! Enjoy your discount!. Your purchased credit will be
                 shown on Your iXin Buy Mobile App.
         </p>
         <p *ngIf="!modalSuccess" translate>{{failMessage}}
