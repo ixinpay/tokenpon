@@ -360,7 +360,8 @@ export class ClaimDetailComponent implements OnInit {
   }
   async onSubmit(commentText: string) {
     // console.log("onSubmit: " + this.claimId)
-    if (sessionStorage.getItem("oothtoken") != undefined && sessionStorage.getItem("oothtoken").toString().trim() != "") {
+    if (this.currentUserId !== null && this.currentUserId !== undefined && this.currentUserId.trim() !== "") {
+    //if (sessionStorage.getItem("oothtoken") != undefined && sessionStorage.getItem("oothtoken").toString().trim() != "") {
       // console.log(this.oothService.getUser());
       // console.log("calling onSubmit()");
       // console.log(sessionStorage.getItem("oothtoken"));

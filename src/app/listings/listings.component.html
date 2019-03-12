@@ -13,9 +13,11 @@
                 <button class="btn btn-info  btn-md" (click)="addListing(content);" translate>New Listing</button>
             </span> -->
         </div>
-        <div class="col-5 noLeftPadding">
-            <button id="btnGetAll" class="btn btn-info btn-md" [routerLink]="[ '/home']" ngbTooltip="Show all listing" translate>All</button>
-            <button id="btnAddListing" *ngIf="currentUser" class="btn btn-info btn-md" ngbTooltip="Add new listing" (click)="addListing(content);">
+        <div class="col-6 noSidePadding">
+            <button id="btnGetAll" class="btn btn-info btn-md" [routerLink]="[ '/home']" ngbTooltip="Show all listing"
+                translate>All</button>
+            <button id="btnAddListing" *ngIf="currentUser" class="btn btn-info btn-md" ngbTooltip="Add new listing"
+                (click)="addListing(content);">
                 <i class="fa fa-plus-square fa-lg" aria-hidden="true"></i>
             </button>
         </div>
@@ -28,33 +30,45 @@
             <i class="fa fa-map-o"></i> Map
         </button>
     </div> -->
-    <div *ngIf="listView">
+    <div *ngIf="listView" class="nopadding">
         <div id="products" class="row nopadding">
-            <div class="card card-padding item col-6 col-md-3 col-lg-3" style="border:none;" *ngFor="let claim of claimsPage">
+            <div class="card card-product card-padding item col-6 col-md-3 col-lg-3" *ngFor="let claim of claimsPage">
                 <div *ngIf="isAdmin" class="row nopadding" style="cursor:default;">
-                    <i class="fa fa-trash-o fa-lg onAdmin" (click)="Remove_Listing(claim._id, deleteConfirmation)" ngbTooltip="delete listing" aria-hidden="true"></i>
+                    <i class="fa fa-trash-o fa-lg onAdmin" (click)="Remove_Listing(claim._id, deleteConfirmation)"
+                        ngbTooltip="delete listing" aria-hidden="true"></i>
                     <i class="fa fa-eye fa-lg onAdmin" ngbTooltip="move to review" aria-hidden="true"></i>
                 </div>
                 <div class="thumbnail clearfix text-center nopadding" (click)="selectOffer(claim._id)">
                     <div *ngIf="claim.imgUrl != ''">
                         <img class="card-img-top img-fluid cusHeight" src="{{claim.imgUrl}}" alt="" />
-                        <h5>{{claim.businessName}}</h5>
                     </div>
-                    <div *ngIf="claim.imgUrl == ''" class="mt-5 mb-5 cusHeight">
-                        <h3>{{claim.businessName}}</h3>
+                    <div *ngIf="claim.imgUrl == ''">
+                        <div class="cusHeight">
+                            <h3>{{claim.businessName}}</h3>
+                        </div>
                     </div>
                     <div *ngFor="let discount of claim.offers" class="caption card-body row">
                         <div class="col-10 nopadding text-left">
-                            <label class="inner list-group-item-heading">
-                                {{discount.title}}
+                            <label class="text-danger">
+                                {{discount.amount * discount.discount | currency:"$"}}
                             </label>
+                            <small class="text-muted">
+                                <s>{{discount.amount | currency:"$"}}</s>
+                            </small>
                         </div>
-                        <div class="col-2 nopadding text-right">
-                            <small [class]="discount.numOfPurchases >= discount.groupCount ? 'float-right text-success' : 'float-right text-danger'">
-                                {{discount.numOfPurchases == null? 0 : discount.numOfPurchases}}/{{discount.groupCount
-                                == null?1 : discount.groupCount}}</small>
+                        <div class="row noSidePadding">
+                            <h6 class="text-left">{{discount.title}}</h6>
+                        </div>
+                        <div class="col-12 nopadding">
+                            <small class="float-left text-muted">{{claim.businessName}}</small>
+                            <small style="float:right !important" [class]="discount.numOfPurchases >= discount.groupCount ? 'text-success' : 'text-danger'">
+                                {{discount.numOfPurchases == null? 0 :
+                                discount.numOfPurchases}}/{{discount.groupCount
+                                == null?1 : discount.groupCount}}
+                            </small>
                         </div>
                     </div>
+
                     <!-- <div class="caption card-body">
                         <p class="group card-title inner list-group-item-heading">
                             {{claim.overallTitle}}</p>
