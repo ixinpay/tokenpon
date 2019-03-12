@@ -50,11 +50,14 @@
                     <div *ngFor="let discount of claim.offers" class="caption card-body row">
                         <div class="col-10 nopadding text-left">
                             <label class="text-danger">
-                                {{discount.amount * discount.discount | currency:"$"}}
+                                {{discount.amount * (1-discount.discount) | currency:"$"}}
                             </label>
                             <small class="text-muted">
                                 <s>{{discount.amount | currency:"$"}}</s>
                             </small>
+                            <label class="text-success">
+                                ({{discount.amount * discount.discount | currency:"$"}})
+                            </label>
                         </div>
                         <div class="row noSidePadding">
                             <h6 class="text-left">{{discount.title}}</h6>
