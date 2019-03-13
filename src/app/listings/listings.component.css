@@ -118,9 +118,12 @@
     cursor: pointer;
   }
   .cusHeight{
-      height: 150px;
-      min-height: 10vh;
-      max-height: 16vh;
+      height: 200px;
+      min-height: 18vh;
+      max-height: 22vh;
+      /* width: 100%;
+      min-width: 26vh;
+      max-width: 30vh; */
   }
 
   ngb-pagination /deep/ .pagination {

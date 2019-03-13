@@ -153,6 +153,17 @@
                                 </h5>
                             </div>
                             <div class="row col-12">
+                                <label class="text-danger mr-2">
+                                    {{model.discounts[i].amount * (1-model.discounts[i].discount) | currency:"$"}}
+                                </label>
+                                <small class="text-muted mr-2">
+                                    <s>{{model.discounts[i].amount | currency:"$"}}</s>
+                                </small>
+                                <label class="text-success">
+                                    ({{model.discounts[i].amount * model.discounts[i].discount | currency:"$"}})
+                                </label>
+                            </div>
+                            <div class="row col-12">
                                 <label class="mr-2">Description:</label>
                                 <label>{{field.description}}</label>
                             </div>

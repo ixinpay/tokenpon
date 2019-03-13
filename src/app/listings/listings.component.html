@@ -40,7 +40,7 @@
                 </div>
                 <div class="thumbnail clearfix text-center nopadding" (click)="selectOffer(claim._id)">
                     <div *ngIf="claim.imgUrl != ''">
-                        <img class="card-img-top img-fluid cusHeight" src="{{claim.imgUrl}}" alt="" />
+                        <img class="card-img-top img-fluid cusHeight" style="width:100% !important" src="{{claim.imgUrl}}" alt="" />
                     </div>
                     <div *ngIf="claim.imgUrl == ''">
                         <div class="cusHeight">
