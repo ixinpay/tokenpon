@@ -275,17 +275,17 @@ export class ProfileComponent implements OnInit {
     this.oothService.transferToken(this.toAddress, this.token)
       .then(res => {
         if (res.status == 200) {
-          this.translate.get('Tokens transferred successfully!')
+          this.translate.get(this.globals.unit + ' transferred successfully!')
             .subscribe(trans => {
               console.log(trans);
-              this.toasterService.pop("success", "Tokens transferred successfully!");
+              this.toasterService.pop("success", this.globals.unit + " transferred successfully!");
             });
         }
         else {
-          this.translate.get('Failed to transfer tokens!')
+          this.translate.get('Failed to transfer ' + this.globals.unit)
             .subscribe(trans => {
               console.log(trans);
-              this.toasterService.pop("error", "Failed to transfer tokens!");
+              this.toasterService.pop("error", "Failed to transfer " + this.globals.unit);
             });
         }
       });

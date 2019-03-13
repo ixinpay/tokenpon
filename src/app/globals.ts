@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { IndexKind } from 'typescript';
 
 @Injectable()
 export class Globals {
@@ -10,6 +11,7 @@ export class Globals {
   readonly tokenDeductAmmount_TokenponDownVote = 5;
   readonly TokenponAppId = 1;
   readonly ChainpostAppId = 2;
+  readonly unit = 'iXin';
   readonly action = { comment: "comment", like: "like", dislike: "dislike", post: "post", login: "login" };
   readonly TokenponShareDealSubject = "Your friend has shared a deal with you";
   readonly TokenponShareDealBody = "Your friend has shared the following deal with you<br/>";

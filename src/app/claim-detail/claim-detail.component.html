@@ -244,13 +244,13 @@
                         placement="top" ngbTooltip="you liked it" [style.cursor]="!alreadyDisliked ? 'pointer' : 'auto'">
                         <i style="font-size: medium;">{{likes}} likes</i>
                         <br>
-                        <label style="font-size: small" translate>(earn 5 tokens)</label>
+                        <label style="font-size: small" translate>(earn 5 {{globals.unit}})</label>
                     </i>
                     <i (click)="thumbsDown()" [ngClass]="{ 'fa-thumbs-down-clicked': alreadyDisliked }" class="far fa-thumbs-down fa-lg col-sm-6 col-md-3"
                         placement="top" ngbTooltip="you didn't like it"  [style.cursor]="!alreadyLiked ? 'pointer' : 'auto'">
                         <i style="font-size: medium;">{{dislikes}} dislikes</i>
                         <br>
-                        <label style="font-size: small" translate>(to dislike costs 10 tokens)</label>
+                        <label style="font-size: small" translate>(to dislike costs 10 {{globals.unit}})</label>
                     </i>
                 </div>
             </div>
